@@ -8,10 +8,7 @@ import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-
 import { getUrl } from "../../../utils";
 import { runDateOfUpdateTests } from "../../shared/dateOfUpdateTestSuite";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
-import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config/constants";
 import TransactionGeneralPartner from "../../../../../domain/entities/TransactionGeneralPartner";
 
 runDateOfUpdateTests({
@@ -23,30 +20,16 @@ runDateOfUpdateTests({
   serviceNameTranslationKey: "updateGeneralPartnerPerson",
   kind: PartnerKind.UPDATE_GENERAL_PARTNER_PERSON,
   changeTypeKey: "generalPartnerPerson",
-  existingDate: { day: "10", month: "10", year: "2024" },
   getDisplayedName: (entity) => {
     const generalPartner = entity as TransactionGeneralPartner;
     return `${generalPartner?.data?.forename?.toUpperCase()} ${generalPartner?.data?.surname?.toUpperCase()}`;
   },
   additionalSetup: () => {
-    const companyProfile = new CompanyProfileBuilder().build();
-
-    const companyAppointmentPerson = new CompanyAppointmentBuilder()
-      .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
-      .withAppointmentId("AP123456P")
-      .withCompanyNumber(companyProfile?.data?.companyNumber ?? "")
-      .isPerson()
-      .build();
-
-    const [surname, forename] = companyAppointmentPerson?.name?.split(", ") ?? [];
-
     const generalPartner = new GeneralPartnerBuilder()
       .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
       .isPerson()
       .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
       .withAppointmentId("AP123456P")
-      .withForename(forename)
-      .withSurname(surname)
       .withDateOfUpdate("2024-10-10")
       .build();
 

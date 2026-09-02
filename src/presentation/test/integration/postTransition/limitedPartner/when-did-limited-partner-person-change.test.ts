@@ -8,10 +8,7 @@ import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-
 import { getUrl } from "../../../utils";
 import { runDateOfUpdateTests } from "../../shared/dateOfUpdateTestSuite";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
-import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
-import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config/constants";
 import TransactionLimitedPartner from "../../../../../domain/entities/TransactionLimitedPartner";
 
 runDateOfUpdateTests({
@@ -23,30 +20,16 @@ runDateOfUpdateTests({
   serviceNameTranslationKey: "updateLimitedPartnerPerson",
   kind: PartnerKind.UPDATE_LIMITED_PARTNER_PERSON,
   changeTypeKey: "limitedPartnerPerson",
-  existingDate: { day: "10", month: "10", year: "2024" },
   getDisplayedName: (entity) => {
     const limitedPartner = entity as TransactionLimitedPartner;
     return `${limitedPartner?.data?.forename?.toUpperCase()} ${limitedPartner?.data?.surname?.toUpperCase()}`;
   },
   additionalSetup: () => {
-    const companyProfile = new CompanyProfileBuilder().build();
-
-    const companyAppointmentPerson = new CompanyAppointmentBuilder()
-      .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
-      .withAppointmentId("AP123456P")
-      .withCompanyNumber(companyProfile?.data?.companyNumber ?? "")
-      .isPerson()
-      .build();
-
-    const [surname, forename] = companyAppointmentPerson?.name?.split(", ") ?? [];
-
     const limitedPartner = new LimitedPartnerBuilder()
       .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
       .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON)
       .withAppointmentId("AP123456P")
-      .withForename(forename)
-      .withSurname(surname)
       .withDateOfUpdate("2024-10-10")
       .build();
 

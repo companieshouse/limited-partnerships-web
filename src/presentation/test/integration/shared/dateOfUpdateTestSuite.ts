@@ -28,9 +28,8 @@ export interface DateOfUpdateTestConfig {
   kind: PartnershipKind | PartnerKind;
   changeTypeKey: string;
   getDisplayedName: (entity: DateOfUpdateEntity) => string;
-  // feeds any entity-specific gateways (e.g. a general/limited partner and its company appointment) and returns the entity under test
+  // feeds any entity-specific gateways (e.g. a general/limited partner) and returns the entity under test
   additionalSetup?: () => DateOfUpdateEntity;
-  existingDate?: { day: string; month: string; year: string };
 }
 
 export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
@@ -44,14 +43,14 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
     kind,
     changeTypeKey,
     getDisplayedName,
-    additionalSetup,
-    existingDate = { day: "01", month: "01", year: "2023" }
+    additionalSetup
   } = config;
 
   const dateFieldType = enTranslationText.errorMessages.dateOfUpdate.changeType[changeTypeKey];
   const dateFieldTypeCy = cyTranslationText.errorMessages.dateOfUpdate.changeType[changeTypeKey];
 
   let entity: DateOfUpdateEntity;
+  let existingDateOfUpdate: { day: string; month: string; year: string };
 
   describe("Date of update page", () => {
     beforeEach(() => {
@@ -68,6 +67,9 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
       entity = additionalSetup ? additionalSetup() : limitedPartnership;
+
+      const [year, month, day] = entity.data?.date_of_update?.split("-") as string[];
+      existingDateOfUpdate = { day, month, year };
     });
 
     describe("GET date of update page", () => {
@@ -96,9 +98,9 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
         const res = await request(app).get(url);
 
         expect(res.status).toBe(200);
-        expect(res.text).toMatch(new RegExp(`<input[^>]*name="date_of_update-year"[^>]*value="${existingDate.year}"[^>]*>`));
-        expect(res.text).toMatch(new RegExp(`<input[^>]*name="date_of_update-month"[^>]*value="${existingDate.month}"[^>]*>`));
-        expect(res.text).toMatch(new RegExp(`<input[^>]*name="date_of_update-day"[^>]*value="${existingDate.day}"[^>]*>`));
+        expect(res.text).toMatch(new RegExp(`<input[^>]*name="date_of_update-year"[^>]*value="${existingDateOfUpdate.year}"[^>]*>`));
+        expect(res.text).toMatch(new RegExp(`<input[^>]*name="date_of_update-month"[^>]*value="${existingDateOfUpdate.month}"[^>]*>`));
+        expect(res.text).toMatch(new RegExp(`<input[^>]*name="date_of_update-day"[^>]*value="${existingDateOfUpdate.day}"[^>]*>`));
       });
     });
 
