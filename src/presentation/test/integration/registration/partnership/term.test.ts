@@ -36,6 +36,8 @@ describe("Email Page", () => {
         testTranslations(res.text, enTranslationText.partnership.termPage);
         expect(res.text).toContain(`${enTranslationText.partnership.termPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`);
         expect(res.text).not.toContain("WELSH -");
+
+        expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       });
 
       it("should load the page with Welsh text", async () => {

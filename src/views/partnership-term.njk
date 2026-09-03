@@ -3,6 +3,11 @@
 {% set pageTitle = i18n.partnership.termPage.title %}
 {% set publicRegisterInformationLine1 = i18n.partnership.termPage.publicRegisterLine1 %}
 
+{% set buttonText = i18n.buttons.saveAndContinue %}
+{% if SHOW_CONTINUE_BUTTON(journeyTypes, serviceName, i18n) %}
+  {% set buttonText = i18n.buttons.continue %}
+{% endif %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -51,7 +56,7 @@
         </div>
        
         {{ govukButton({
-          text: i18n.buttons.saveAndContinue,
+          text: buttonText,
           attributes: {
             "id": "submit",
             "onclick": "const selected = document.querySelector('input[name=term]:checked'); if (selected) { _paq.push(['trackEvent', 'Limited Partnerships Term', 'selection', selected.nextElementSibling.innerHTML]); }"

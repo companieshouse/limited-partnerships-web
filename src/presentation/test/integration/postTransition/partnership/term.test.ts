@@ -49,6 +49,8 @@ describe("Term Page", () => {
         expect(res.text).not.toContain("WELSH -");
         expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipTerm);
         expect(res.text).toContain(BACK_LINK);
+
+        expect(res.text).toContain(enTranslationText.buttons.continue);
       });
 
       it("should load the page with Welsh text", async () => {
@@ -60,9 +62,10 @@ describe("Term Page", () => {
           `${cyTranslationText.partnership.termPage.title} - ${cyTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
         );
         testTranslations(res.text, cyTranslationText.partnership.termPage);
-        expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
         expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipTerm);
         expect(res.text).toContain(BACK_LINK);
+
+        expect(res.text).toContain(cyTranslationText.buttons.continue);
       });
 
       it("should load the page with ids", async () => {

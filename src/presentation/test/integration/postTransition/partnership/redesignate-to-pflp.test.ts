@@ -40,6 +40,8 @@ describe("Redesignate to pflp page", () => {
       expect(res.text).toContain(enTranslationText.partnership.redesignateToPflpPage.cost.replace("{{ cost }}", process.env.COST_LP8D_REDESIGNATE_TO_PFLP as string));
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipRedesignateToPFLP);
       expect(res.text).toContain(BACK_LINK);
+
+      expect(res.text).toContain(enTranslationText.buttons.continue);
     });
 
     it("should load the page with Welsh text", async () => {

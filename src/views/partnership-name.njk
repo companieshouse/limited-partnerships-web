@@ -30,6 +30,11 @@
 
 {% set pageTitle = title  %}
 
+{% set buttonText = i18n.buttons.saveAndContinue %}
+{% if SHOW_CONTINUE_BUTTON(journeyTypes, serviceName, i18n) %}
+  {% set buttonText = i18n.buttons.continue %}
+{% endif %}
+
 {% block content %}
 
 <div class="govuk-grid-row">
@@ -89,7 +94,7 @@
       </div>
 
       {{ govukButton({
-        text: i18n.buttons.saveAndContinue,
+        text: buttonText,
         attributes: {
           "id": "submit",
           "onclick": "_paq.push(['trackEvent', 'Limited Partnerships name', 'name-ending', document.querySelector('input[name=name_ending]:checked').nextElementSibling.innerHTML])"
