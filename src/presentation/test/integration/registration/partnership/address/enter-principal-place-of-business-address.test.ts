@@ -47,6 +47,8 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
         "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
+
+      expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     });
 
     it("should load the enter principal place of business page with Welsh text", async () => {
