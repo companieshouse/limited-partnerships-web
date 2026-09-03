@@ -77,6 +77,12 @@ describe("Enter Usual Residential Address Page", () => {
         expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
         expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
         expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+
+        if (partnerKind === PartnerKind.ADD_GENERAL_PARTNER_PERSON) {
+          expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
+        } else {
+          expect(res.text).toContain(enTranslationText.buttons.continue);
+        }
       }
     );
 

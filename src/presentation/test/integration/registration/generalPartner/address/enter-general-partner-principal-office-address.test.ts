@@ -60,6 +60,8 @@ describe("Enter general partner's principal office manual address page", () => {
       expect(res.text).not.toContain(generalPartnerPerson.forename?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerPerson.surname?.toUpperCase());
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+
+      expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     });
 
     it("should load enter general partners principal office address page with Welsh text", async () => {
