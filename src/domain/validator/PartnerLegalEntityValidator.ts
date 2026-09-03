@@ -6,6 +6,7 @@ import {
 import { CEASE_DATE_FIELD, DATE_EFFECTIVE_FROM_FIELD, DATE_OF_UPDATE_FIELD } from "../../config";
 import UIErrors from "../entities/UIErrors";
 import { validateDate } from "./DateValidators";
+import { buildDateOfUpdateErrorMessages } from "./dateOfUpdateErrorMessages";
 import { capitalContributionValidation, isCapitalContributionApplicable } from "./capitalContributionValidator";
 import { PartnerType } from "../types";
 
@@ -24,7 +25,7 @@ class PartnerLegalEntityValidator {
 
     this.ceaseDateErrorMessages = i18n?.errorMessages?.ceaseDate ?? {};
     this.dateEffectiveFromErrorMessages = i18n?.errorMessages?.dateEffectiveFrom ?? {};
-    this.dateOfUpdateErrorMessages = i18n?.errorMessages?.dateOfUpdate ?? {};
+    this.dateOfUpdateErrorMessages = buildDateOfUpdateErrorMessages(data.pageType, i18n);
 
     this.currencies = i18n?.currencies || {};
     this.errorMessages = {
@@ -77,8 +78,7 @@ class PartnerLegalEntityValidator {
         uiErrors,
         DATE_OF_UPDATE_FIELD,
         this.dateOfUpdateErrorMessages,
-        this.data.registration_date,
-        this.data.pageKey
+        this.data.registration_date
       );
     }
 

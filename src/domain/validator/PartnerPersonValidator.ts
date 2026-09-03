@@ -15,6 +15,7 @@ import {
 import UIErrors from "../entities/UIErrors";
 import { PartnerType } from "../types";
 import { validateDate } from "./DateValidators";
+import { buildDateOfUpdateErrorMessages } from "./dateOfUpdateErrorMessages";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
 import {
   isAddPartnerPage,
@@ -52,7 +53,7 @@ class PartnerPersonValidator {
 
     this.dateEffectiveFromErrorMessages = i18n?.errorMessages?.dateEffectiveFrom ?? {};
     this.ceaseDateErrorMessages = i18n?.errorMessages?.ceaseDate ?? {};
-    this.dateOfUpdateErrorMessages = i18n?.errorMessages?.dateOfUpdate ?? {};
+    this.dateOfUpdateErrorMessages = buildDateOfUpdateErrorMessages(data.pageType, i18n);
 
     return this;
   }
@@ -83,8 +84,7 @@ class PartnerPersonValidator {
         uiErrors,
         DATE_OF_UPDATE_FIELD,
         this.dateOfUpdateErrorMessages,
-        this.data.registration_date,
-        this.data.pageKey
+        this.data.registration_date
       );
 
       return uiErrors;
