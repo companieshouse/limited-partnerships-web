@@ -21,8 +21,7 @@ import {
   TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP,
   CHS_URL,
   TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP,
-  JOURNEY_QUERY_PARAM,
-  DATE_OF_UPDATE_TYPE_PREFIX
+  JOURNEY_QUERY_PARAM
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils";
 import CompanyService from "../../../application/service/CompanyService";
@@ -214,14 +213,11 @@ class LimitedPartnershipController extends AbstractController {
         );
 
         let template = super.templateName(pageRouting.currentUrl);
-        if (pageRouting.currentUrl.includes(DATE_OF_UPDATE_TYPE_PREFIX)) {
-          template = DATE_OF_UPDATE_TEMPLATE;
-        } else if (pageRouting.currentUrl.includes(CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX)) {
+        if (pageRouting.currentUrl.includes(CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX)) {
           template = CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE;
         }
 
         if (patchResult?.errors) {
-          this.specifyErrorMessagesForDateOfUpdate(patchResult.errors, response, pageRouting);
           return response.render(template, super.makeProps(pageRouting, errorData, patchResult.errors));
         }
 
@@ -273,17 +269,6 @@ class LimitedPartnershipController extends AbstractController {
         next(error);
       }
     };
-  }
-
-  private specifyErrorMessagesForDateOfUpdate(
-    errors: UIErrors,
-    response: Response<any, Record<string, any>>,
-    pageRouting: PageRouting
-  ) {
-    if (errors.errors.errorList[0].href === "#date_of_update") {
-      errors.errors.errorList[0].text = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
-      errors.errors.date_of_update.text = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
-    }
   }
 
   getDateOfUpdate() {

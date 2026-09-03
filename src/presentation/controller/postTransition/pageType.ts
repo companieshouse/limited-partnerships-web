@@ -86,6 +86,10 @@ export const isCeaseDatePage = (pageType: string): boolean => {
 };
 
 const whenDidChangeUpdatePageTypes: string[] = [
+  PostTransitionPageType.whenDidThePartnershipNameChange,
+  PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange,
+  PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange,
+  PostTransitionPageType.whenDidTheTermChange,
   PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
   PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange,
   PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,

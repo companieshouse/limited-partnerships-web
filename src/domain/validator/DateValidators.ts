@@ -28,24 +28,22 @@ export const validateDate = (
   uiErrors: UIErrors,
   dateFieldType: string,
   dateErrorMessages: Record<string, string>,
-  registrationDate?: string,
-  pageKey?: string
+  registrationDate?: string
 ): void => {
   const parts = toDatePartsFromBody(body, dateFieldType);
 
-  const errorKey = firstFailure(parts, [
-    noMissingFields,
-    validFieldLengths,
-    digitsOnly,
-    realDate,
-    registrationDate ? inPastOrToday : inPast,
-    ...(registrationDate ? [notBeforeRegistrationDate(registrationDate)] : [])
-  ]);
+  const rules: DateRule[] = [noMissingFields, validFieldLengths, digitsOnly, realDate];
 
-  if (errorKey !== null) {
-    const entry = dateErrorMessages[errorKey];
-    const text = typeof entry === "object" ? entry?.[pageKey ?? ""] : entry;
-    uiErrors.setWebError(dateFieldType, text);
+  if (registrationDate) {
+    rules.push(inPastOrToday, notBeforeRegistrationDate(registrationDate));
+  } else {
+    rules.push(inPast);
+  }
+
+  const errorKey = firstFailure(parts, rules);
+
+  if (errorKey) {
+    uiErrors.setWebError(dateFieldType, dateErrorMessages[errorKey]);
   }
 };
 

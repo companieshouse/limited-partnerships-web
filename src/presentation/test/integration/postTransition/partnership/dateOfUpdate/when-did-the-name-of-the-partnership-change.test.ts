@@ -1,121 +1,22 @@
-import request from "supertest";
-import { LimitedPartnership, PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-
-import app from "../../../app";
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
-import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
-
 import {
+  WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
   PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL,
-  WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL
+  PARTNERSHIP_NAME_WITH_IDS_URL
 } from "../../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
-import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
-import TransactionBuilder from "../../../../builder/TransactionBuilder";
-import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
-describe("Partnership name change date page", () => {
-  const URL = getUrl(WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL);
+import { PartnershipKind, LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { getUrl } from "../../../../utils";
+import { runDateOfUpdateTests } from "../../../shared/dateOfUpdateTestSuite";
 
-  let partnership: LimitedPartnership;
-
-  beforeEach(() => {
-    appDevDependencies.companyGateway.setError(false);
-    appDevDependencies.cacheRepository.feedCache(null);
-
-    partnership = new LimitedPartnershipBuilder().build();
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([partnership]);
-
-    const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_NAME).build();
-    appDevDependencies.transactionGateway.feedTransactions([transaction]);
-  });
-
-  describe("GET partnership name change date page", () => {
-    it("should load partnership name change date page with english text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`${enTranslationText.dateOfUpdate.partnershipName.title}`);
-      expect(res.text).not.toContain("WELSH -");
-
-      expect(res.text).toContain(
-        `${partnership.data?.partnership_name?.toUpperCase()} ${partnership.data?.name_ending?.toUpperCase()} (${partnership.data?.partnership_number?.toUpperCase()})`
-      );
-      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
-
-      expect(res.text).toContain(enTranslationText.buttons.continue);
-    });
-
-    it("should load partnership name change date page with welsh text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.partnershipName.title}`);
-      expect(res.text).toContain("WELSH -");
-
-      expect(res.text).toContain(
-        `${partnership.data?.partnership_name?.toUpperCase()} ${partnership.data?.name_ending?.toUpperCase()} (${partnership.data?.partnership_number?.toUpperCase()})`
-      );
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
-    });
-
-    it("should populate the date fields with the existing date of update if it exists", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-year"[^>]*value="2024"[^>]*>/);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-month"[^>]*value="10"[^>]*>/);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-day"[^>]*value="10"[^>]*>/);
-    });
-  });
-
-  describe("POST partnership name change date page", () => {
-    it("should navigate to next page with date of update", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidThePartnershipNameChange
-      });
-
-      const REDIRECT_URL = getUrl(PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL);
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-    });
-  });
-
-  it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
-
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-    const originalErrorMessage = "Default";
-    const expectedErrorMessage = toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.partnershipName);
-    const apiErrors: ApiErrors = {
-      errors: { date_of_update: originalErrorMessage }
-    };
-    appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
-
-    const res = await request(app).post(URL).send({
-      pageType: PostTransitionPageType.whenDidThePartnershipNameChange,
-      "date_of_update-day": "10",
-      "date_of_update-month": "01",
-      "date_of_update-year": "2000"
-    });
-
-    expect(res.status).toBe(200);
-    expect(res.text).not.toContain(originalErrorMessage);
-    expect(res.text).toContain(expectedErrorMessage);
-    expect(res.text).toContain("10");
-    expect(res.text).toContain("01");
-    expect(res.text).toContain("2000");
-  });
+runDateOfUpdateTests({
+  url: getUrl(WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL),
+  backLinkUrl: getUrl(PARTNERSHIP_NAME_WITH_IDS_URL),
+  pageType: PostTransitionPageType.whenDidThePartnershipNameChange,
+  redirectUrl: getUrl(PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL),
+  translateExclude: ["registeredOfficeAddress", "principalPlaceOfBusinessAddress", "term", "generalPartner", "limitedPartner"],
+  serviceNameTranslationKey: "updateLimitedPartnershipName",
+  kind: PartnershipKind.UPDATE_PARTNERSHIP_NAME,
+  changeTypeKey: "partnershipName",
+  getDisplayedName: (lp: LimitedPartnership) =>
+    `${lp?.data?.partnership_name?.toUpperCase()} ${lp?.data?.name_ending?.toUpperCase()} (${lp?.data?.partnership_number})`
 });
