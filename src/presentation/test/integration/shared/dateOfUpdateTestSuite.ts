@@ -66,6 +66,8 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
 
         const limitedPartnership = new LimitedPartnershipBuilder().build();
         expect(res.text).toContain(getPartnershipDisplay(limitedPartnership));
+
+        expect(res.text).toContain(translationText.buttons.continue);
       });
     });
 

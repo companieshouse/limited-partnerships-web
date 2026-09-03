@@ -43,6 +43,8 @@ describe("Partnership name change date page", () => {
         `${partnership.data?.partnership_name?.toUpperCase()} ${partnership.data?.name_ending?.toUpperCase()} (${partnership.data?.partnership_number?.toUpperCase()})`
       );
       expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
+
+      expect(res.text).toContain(enTranslationText.buttons.continue);
     });
 
     it("should load partnership name change date page with welsh text", async () => {

@@ -61,30 +61,22 @@ describe("Limited partner legal entity change date page", () => {
 
   describe("GET limited partner legal entity change date page", () => {
     it.each([
-      ["English", "en"],
-      ["Welsh", "cy"]
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
     ])(
       "should load limited partner legal entity change date page with %s text",
-      async (_description: string, lang: string) => {
+      async (_description: string, lang: string, translationText: any) => {
         setLocalesEnabled(true);
         const res = await request(app).get(`${URL}?lang=${lang}`);
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(BACK_LINK_URL);
         expect(res.text).toContain(`${limitedPartner.data?.legal_entity_name?.toUpperCase()}`);
-        if (lang === "cy") {
-          expect(res.text).toContain("WELSH - ");
-          expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.limitedPartner.title}`);
-          expect(
-            countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnerLegalEntity))
-          ).toBe(2);
-        } else {
-          expect(res.text).not.toContain("WELSH -");
-          expect(res.text).toContain(`${enTranslationText.dateOfUpdate.limitedPartner.title}`);
-          expect(
-            countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnerLegalEntity))
-          ).toBe(2);
-        }
+
+        expect(res.text).toContain(`${translationText.dateOfUpdate.limitedPartner.title}`);
+        expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateLimitedPartnerLegalEntity))).toBe(2);
+
+        expect(res.text).toContain(translationText.buttons.continue);
       }
     );
 

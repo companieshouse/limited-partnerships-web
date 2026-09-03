@@ -58,32 +58,26 @@ describe("Limited partner person change date page", () => {
 
   describe("GET limited partner change date page", () => {
     it.each([
-      ["English", "en"],
-      ["Welsh", "cy"]
-    ])("should load limited partner change date page with %s text", async (description: string, lang: string) => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(`${URL}?lang=${lang}`);
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])(
+      "should load limited partner change date page with %s text",
+      async (description: string, lang: string, translationText: Record<string, any>) => {
+        setLocalesEnabled(true);
+        const res = await request(app).get(`${URL}?lang=${lang}`);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(BACK_LINK_URL);
-      expect(res.text).toContain(
-        `${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`
-      );
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(BACK_LINK_URL);
+        expect(res.text).toContain(
+          `${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`
+        );
 
-      if (lang === "cy") {
-        expect(res.text).toContain("WELSH - ");
-        expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.limitedPartner.title}`);
-        expect(
-          countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnerPerson))
-        ).toBe(2);
-      } else {
-        expect(res.text).not.toContain("WELSH -");
-        expect(res.text).toContain(`${enTranslationText.dateOfUpdate.limitedPartner.title}`);
-        expect(
-          countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnerPerson))
-        ).toBe(2);
+        expect(res.text).toContain(`${translationText.dateOfUpdate.limitedPartner.title}`);
+        expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateLimitedPartnerPerson))).toBe(2);
+
+        expect(res.text).toContain(translationText.buttons.continue);
       }
-    });
+    );
 
     it("should populate the date fields with the existing date of update if it exists", async () => {
       const res = await request(app).get(URL);
