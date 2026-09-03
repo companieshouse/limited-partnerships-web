@@ -56,6 +56,8 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       expect(res.text).toContain("Region");
       expect(res.text).toContain(enTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
+
+      expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     });
 
     it("should load the confirm principal office address page with Welsh text", async () => {
