@@ -65,6 +65,8 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
       expect(res.text).toContain(limitedPartnerPerson.forename?.toUpperCase());
       expect(res.text).toContain(limitedPartnerPerson.surname?.toUpperCase());
       expect(res.text).not.toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+
+      expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     });
 
     it("should load enter limited partner's usual residential address manual entry page with welsh text", async () => {

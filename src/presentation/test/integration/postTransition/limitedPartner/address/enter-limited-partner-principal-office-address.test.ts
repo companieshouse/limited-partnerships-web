@@ -94,6 +94,12 @@ describe("Enter limited partner's principal office manual address page", () => {
             getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)
             : getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
         expect(res.text).toContain(BACK_LINK);
+
+        if (journey === "add") {
+          expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
+        } else {
+          expect(res.text).toContain(enTranslationText.buttons.continue);
+        }
       }
     );
   });

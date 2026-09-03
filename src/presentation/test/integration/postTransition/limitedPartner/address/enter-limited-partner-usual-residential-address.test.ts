@@ -3,7 +3,7 @@ import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import * as config from "../../../../../../config";
 
 import {
@@ -44,35 +44,50 @@ describe("Enter Usual Residential Address Page", () => {
   });
 
   describe("GET Enter limited partners usual residential address", () => {
-    it("should load enter limited partners usual residential address page with english text", async () => {
-      setLocalesEnabled(true);
+    it.each([
+      [PartnerKind.ADD_LIMITED_PARTNER_PERSON, enTranslationText.serviceName.addLimitedPartner],
+      [PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, enTranslationText.serviceName.updateLimitedPartnerPerson]
+    ])(
+      "should load enter limited partners usual residential address page with english text",
+      async (partnerKind: PartnerKind, serviceName: string) => {
+        setLocalesEnabled(true);
 
-      const res = await request(app).get(URL + "?lang=en");
+        const transaction = new TransactionBuilder().withKind(partnerKind).build();
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.enterAddress, [
-        "registeredOfficeAddress",
-        "principalPlaceOfBusinessAddress",
-        "jurisdictionCountry",
-        "postcodeMissing",
-        "correspondenceAddress",
-        "principalOfficeAddress",
-        "postcodeOptional",
-        "generalPartner",
-        "personWithSignificantControl",
-        "errorMessages",
-        // uk countries
-        "countryEngland",
-        "countryScotland",
-        "countryWales",
-        "countryNorthernIreland"
-      ]);
-      expect(res.text).not.toContain("WELSH -");
-      expect(res.text).toContain(limitedPartnerPerson.forename?.toUpperCase());
-      expect(res.text).toContain(limitedPartnerPerson.surname?.toUpperCase());
-      expect(res.text).not.toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
-      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
-    });
+        const res = await request(app).get(URL + "?lang=en");
+
+        expect(res.status).toBe(200);
+        testTranslations(res.text, enTranslationText.address.enterAddress, [
+          "registeredOfficeAddress",
+          "principalPlaceOfBusinessAddress",
+          "jurisdictionCountry",
+          "postcodeMissing",
+          "correspondenceAddress",
+          "principalOfficeAddress",
+          "postcodeOptional",
+          "generalPartner",
+          "personWithSignificantControl",
+          "errorMessages",
+          // uk countries
+          "countryEngland",
+          "countryScotland",
+          "countryWales",
+          "countryNorthernIreland"
+        ]);
+        expect(res.text).not.toContain("WELSH -");
+        expect(res.text).toContain(limitedPartnerPerson.forename?.toUpperCase());
+        expect(res.text).toContain(limitedPartnerPerson.surname?.toUpperCase());
+        expect(res.text).not.toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+        expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+
+        if (partnerKind === PartnerKind.ADD_LIMITED_PARTNER_PERSON) {
+          expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
+        } else {
+          expect(res.text).toContain(enTranslationText.buttons.continue);
+        }
+      }
+    );
 
     it("should load enter limited partners usual residential address manual entry page with welsh text", async () => {
       setLocalesEnabled(true);
