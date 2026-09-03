@@ -61,6 +61,8 @@ describe("General Partner cease date page", () => {
       expect(countOccurrences(res.text, translationText.serviceName.removeGeneralPartnerEntity)).toBe(2);
       expect(res.text).toContain(customerFeedbackUrlMap.removeGeneralPartnerEntity);
       expect(res.text).toContain(BACK_LINK);
+
+      expect(res.text).toContain(translationText.buttons.continue);
     });
   });
 

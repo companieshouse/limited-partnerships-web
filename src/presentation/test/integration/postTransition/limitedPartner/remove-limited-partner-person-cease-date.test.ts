@@ -61,6 +61,8 @@ describe("Limited Partner Person cease date page", () => {
       expect(countOccurrences(res.text, translationText.serviceName.removeLimitedPartnerPerson)).toBe(2);
       expect(res.text).toContain(customerFeedbackUrlMap.removeLimitedPartnerPerson);
       expect(res.text).toContain(BACK_LINK);
+
+      expect(res.text).toContain(translationText.buttons.continue);
     });
   });
 
