@@ -1,4 +1,4 @@
-{% if (IS_POST_TRANSITION_NOT_ADD(journeyTypes, serviceName, i18n)) %}
+{% if (SHOW_CONTINUE_BUTTON(journeyTypes, serviceName, i18n)) %}
   {{ govukButton({
     text: i18n.buttons.continue,
     attributes: {

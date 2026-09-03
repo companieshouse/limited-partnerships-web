@@ -21,7 +21,7 @@ import { setCountriesDropdown } from "../utils/countries";
 import { setNationalitiesDropdown } from "../utils/nationalities";
 import { setCurrenciesDropdown } from "../utils/currencies";
 import { setSicCodesList } from "../utils/sic-codes";
-import { isPostTransitionNotAdd } from "../utils/isPostTransitionNotAdd";
+import { showContinueButton } from "../utils/isPostTransitionNotAdd";
 
 export const appConfig = (app: express.Application) => {
   // set some app variables from the environment
@@ -73,7 +73,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("SET_NATIONALITIES_DROPDOWN", setNationalitiesDropdown);
   nunjucksEnv.addGlobal("SET_CURRENCIES_DROPDOWN", setCurrenciesDropdown);
   nunjucksEnv.addGlobal("SET_SIC_CODES_LIST", setSicCodesList);
-  nunjucksEnv.addGlobal("IS_POST_TRANSITION_NOT_ADD", isPostTransitionNotAdd);
+  nunjucksEnv.addGlobal("SHOW_CONTINUE_BUTTON", showContinueButton);
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
