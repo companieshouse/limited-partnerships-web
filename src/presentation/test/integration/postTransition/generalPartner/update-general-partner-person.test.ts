@@ -65,6 +65,8 @@ describe("Update General Partner Person Page", () => {
       }
       expect(res.text).toContain(customerFeedbackUrlMap.updateGeneralPartnerPerson);
       expect(res.text).toContain(BACK_LINK);
+
+      expect(res.text).toContain(translationText.buttons.continue);
     });
 
     it.each([

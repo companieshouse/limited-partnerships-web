@@ -76,6 +76,8 @@ describe("Update General Partner Legal Entity Page", () => {
         }
         expect(res.text).toContain(customerFeedbackUrlMap.updateGeneralPartnerLegalEntity);
         expect(res.text).toContain(BACK_LINK);
+
+        expect(res.text).toContain(translationText.buttons.continue);
       }
     );
 
