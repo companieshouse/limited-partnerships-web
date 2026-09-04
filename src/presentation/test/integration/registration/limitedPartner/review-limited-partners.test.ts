@@ -12,12 +12,15 @@ import {
   GENERAL_PARTNERS_URL,
   LIMITED_PARTNERS_URL,
   REVIEW_LIMITED_PARTNERS_URL,
+  REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   TELL_US_ABOUT_PSC_URL
 } from "../../../../controller/registration/url";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
 
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
+import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
 
 import { REGISTRATION_WITH_IDS_URL, SERVICE_NAME_KEY_REGISTRATION } from "../../../../../config/constants";
 
@@ -67,3 +70,25 @@ it.each([
     expect(res.headers.location).toContain(REDIRECT_URL);
   }
 );
+
+it("should redirect to review persons with significant control page when there are PSCs and has_person_with_significant_control is true", async () => {
+  const limitedPartnership = new LimitedPartnershipBuilder()
+    .withPartnershipType(PartnershipType.LP)
+    .withHasPersonWithSignificantControl(true)
+    .build();
+  appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+  const limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().build();
+  appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
+  const personWithSignificantControl = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
+  appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
+  const res = await request(app).post(getUrl(config.url)).send({
+    pageType: RegistrationPageType.reviewLimitedPartners,
+    add_another_partner: "no"
+  });
+
+  expect(res.status).toBe(302);
+  expect(res.headers.location).toContain(getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL));
+});

@@ -172,7 +172,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
     new GeneralPartnerRegistrationController(limitedPartnershipService, generalPartnerService, limitedPartnerService);
 
   const limitedPartnerRegistrationController: LimitedPartnerRegistrationController =
-    new LimitedPartnerRegistrationController(limitedPartnershipService, generalPartnerService, limitedPartnerService);
+    new LimitedPartnerRegistrationController(limitedPartnershipService, generalPartnerService, limitedPartnerService, personWithSignificantControlService);
 
   const personWithSignificantControlRegistrationController: PersonWithSignificantControlRegistrationController =
     new PersonWithSignificantControlRegistrationController(

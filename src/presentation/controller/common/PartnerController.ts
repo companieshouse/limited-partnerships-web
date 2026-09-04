@@ -10,6 +10,7 @@ import AbstractController from "../AbstractController";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 import CompanyService, { DataIncludingPartners } from "../../../application/service/CompanyService";
 
 import { Ids, PartnerType, Tokens } from "../../../domain/types";
@@ -30,12 +31,14 @@ import {
   DATE_OF_UPDATE_TEMPLATE,
 } from "../../../config/constants";
 import { resetFormerNamesIfPreviousNameIsFalse } from "../../../infrastructure/gateway/utils";
+import { REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL } from "../registration/url";
 
 abstract class PartnerController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
     protected readonly generalPartnerService: GeneralPartnerService,
     protected readonly limitedPartnerService: LimitedPartnerService,
+    protected readonly personWithSignificantControlService?: PersonWithSignificantControlService,
     protected readonly companyService?: CompanyService
   ) {
     super();
@@ -380,6 +383,16 @@ abstract class PartnerController extends AbstractController {
     }
   ) {
     const { limitedPartnership } = await this.getEntities(tokens, ids);
+
+    // redirect to psc review if > 0 psc and has_person_with_significant_control == true
+    const pscs = await this.personWithSignificantControlService?.getPersonsWithSignificantControl(tokens, ids.transactionId);
+    if (pscs && pscs.personsWithSignificantControl.length > 0) {
+      const lpship = await this.limitedPartnershipService.getLimitedPartnership(tokens, ids.transactionId, ids.submissionId);
+      if (lpship.data?.has_person_with_significant_control === true) {
+        pageRouting.nextUrl = REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL;
+        return;
+      }
+    }
 
     if (
       limitedPartnership.data?.partnership_type === PartnershipType.SLP ||
