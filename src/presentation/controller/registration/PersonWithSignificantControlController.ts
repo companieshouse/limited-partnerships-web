@@ -385,12 +385,15 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
   private convertNatureOfControlTypesToArrayOrReturnError(request: Request, response: Response) {
     const { pageType } = super.extract(request);
+    const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
     if (isWhichTypeOfNatureOfControlPage(pageType)) {
       if (!request.body?.nature_of_control_types?.length) {
         const uiErrors = new UIErrors().setWebError(
           "nature_of_control_types",
-          response.locals.i18n.errorMessages.personWithSignificantControl.whichTypeOfNatureOfControl.natureOfControlTypesMissing
+          response.locals.i18n.errorMessages.personWithSignificantControl.whichTypeOfNatureOfControl.natureOfControlTypesMissing[
+            pageRouting?.data?.personWithSignificantControlType
+          ]
         );
 
         return uiErrors;

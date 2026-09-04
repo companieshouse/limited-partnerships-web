@@ -48,7 +48,10 @@ const registrationRoutingRelevantLegalEntityWhichTypeOfNatureOfControl = {
   previousUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
   currentUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
-  pageType: RegistrationPageType.whichTypeOfNatureOfControlRelevantLegalEntity
+  pageType: RegistrationPageType.whichTypeOfNatureOfControlRelevantLegalEntity,
+  data: {
+    personWithSignificantControlType: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY
+  }
 };
 
 // OTHER REGISTRABLE PERSON
@@ -64,7 +67,10 @@ const registrationRoutingOtherRegistrablePersonWhichTypeOfNatureOfControl = {
   previousUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
   currentUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
-  pageType: RegistrationPageType.whichTypeOfNatureOfControlOtherRegistrablePerson
+  pageType: RegistrationPageType.whichTypeOfNatureOfControlOtherRegistrablePerson,
+  data: {
+    personWithSignificantControlType: PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON
+  }
 };
 
 // INDIVIDUAL PERSON
@@ -80,7 +86,10 @@ const registrationRoutingIndividualPersonWhichTypeOfNatureOfControl = {
   previousUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_WITH_IDS_URL,
   currentUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
   nextUrl: url.ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
-  pageType: RegistrationPageType.whichTypeOfNatureOfControlIndividualPerson
+  pageType: RegistrationPageType.whichTypeOfNatureOfControlIndividualPerson,
+  data: {
+    personWithSignificantControlType: PersonWithSignificantControlType.INDIVIDUAL_PERSON
+  }
 };
 
 // NATURE OF CONTROL
