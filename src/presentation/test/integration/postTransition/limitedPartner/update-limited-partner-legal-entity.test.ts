@@ -83,6 +83,8 @@ describe("Update Limited Partner Legal Entity Page", () => {
         }
         expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnerLegalEntity);
         expect(res.text).toContain(BACK_LINK);
+
+        expect(res.text).toContain(translationText.buttons.continue);
       }
     );
 

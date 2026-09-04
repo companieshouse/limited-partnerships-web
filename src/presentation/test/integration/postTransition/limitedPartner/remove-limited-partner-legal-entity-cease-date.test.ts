@@ -61,6 +61,8 @@ describe("Limited Partner LegalEntity cease date page", () => {
       expect(countOccurrences(res.text, translationText.serviceName.removeLimitedPartnerEntity)).toBe(2);
       expect(res.text).toContain(customerFeedbackUrlMap.removeLimitedPartnerEntity);
       expect(res.text).toContain(BACK_LINK);
+
+      expect(res.text).toContain(translationText.buttons.continue);
     });
   });
 

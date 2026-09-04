@@ -39,6 +39,8 @@ describe("Enter Registered Office Address Page", () => {
       ]);
       testTranslations(res.text, enTranslationText.address.registeredOffice, ["newRequirement"]);
       expect(res.text).not.toContain("WELSH -");
+
+      expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     });
 
     it("should load the enter registered office address page with Welsh text", async () => {
@@ -55,6 +57,7 @@ describe("Enter Registered Office Address Page", () => {
         "principalOfficeAddress",
         "errorMessages"
       ]);
+
       testTranslations(res.text, cyTranslationText.address.registeredOffice, ["newRequirement"]);
     });
   });

@@ -2,7 +2,7 @@ import request from "supertest";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../../../app";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../../config";
 
@@ -44,8 +44,14 @@ describe("Enter general partner's principal office manual address page", () => {
   });
 
   describe("Get enter general partner's principal office address page", () => {
-    it("should load enter general partners principal office address page with English text", async () => {
+    it.each([
+      [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
+      [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
+    ])("should load enter general partners principal office address page with English text", async (partnerKind: PartnerKind, serviceName: string) => {
       setLocalesEnabled(true);
+
+      const transaction = new TransactionBuilder().withKind(partnerKind).build();
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
       const res = await request(app).get(URL + "?lang=en");
 
@@ -64,7 +70,14 @@ describe("Enter general partner's principal office manual address page", () => {
       expect(res.text).not.toContain(generalPartnerPerson.forename?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerPerson.surname?.toUpperCase());
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
+
+      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+
+      if (partnerKind === PartnerKind.ADD_GENERAL_PARTNER_PERSON) {
+        expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
+      } else {
+        expect(res.text).toContain(enTranslationText.buttons.continue);
+      }
     });
 
     it("should load enter general partners principal office address page with Welsh text", async () => {

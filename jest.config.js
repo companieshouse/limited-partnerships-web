@@ -1,7 +1,7 @@
 module.exports = {
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
-  moduleFileExtensions: ['ts', 'js', 'json'],
+  moduleFileExtensions: ['ts', 'js', 'json', 'njk'],
   transform: {
     '^.+\\.(ts|js)$': require.resolve('ts-jest'),
   },

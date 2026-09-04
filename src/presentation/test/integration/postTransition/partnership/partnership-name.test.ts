@@ -52,9 +52,11 @@ describe("Name Page", () => {
       expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
       expect(res.text).toContain(`${expected.title} - ${cyTranslationText.serviceName.updateLimitedPartnershipName} - GOV.UK`);
       testTranslations(res.text, expected, exclude);
-      expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipName);
       expect(res.text).toContain(BACK_LINK);
+
+      expect(res.text).toContain(enTranslationText.buttons.continue);
     });
 
     it.each([
@@ -81,9 +83,10 @@ describe("Name Page", () => {
       expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
       expect(res.text).toContain(`${expected.title} - ${enTranslationText.serviceName.updateLimitedPartnershipName} - GOV.UK`);
       testTranslations(res.text, expected, exclude);
-      expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipName);
       expect(res.text).toContain(BACK_LINK);
+
+      expect(res.text).toContain(enTranslationText.buttons.continue);
     });
 
     it("should load the name page with data from api", async () => {

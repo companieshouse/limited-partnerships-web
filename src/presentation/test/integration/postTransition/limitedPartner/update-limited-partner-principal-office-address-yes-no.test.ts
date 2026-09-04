@@ -76,6 +76,8 @@ describe("Update Principal Office Address Yes No Page", () => {
         } else {
           expect(res.text).not.toContain("WELSH -");
         }
+
+        expect(res.text).toContain(translationText.buttons.continue);
       }
     );
 

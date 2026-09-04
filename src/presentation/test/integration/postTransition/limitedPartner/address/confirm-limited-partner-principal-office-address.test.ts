@@ -73,6 +73,12 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
 
       const expectedServiceName = journey === "add" ? translationtext.serviceName.addLimitedPartner : translationtext.serviceName.updateLimitedPartnerLegalEntity;
       expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
+
+      if (journey === "add") {
+        expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
+      } else {
+        expect(res.text).toContain(enTranslationText.buttons.continue);
+      }
     });
 
     it.each([

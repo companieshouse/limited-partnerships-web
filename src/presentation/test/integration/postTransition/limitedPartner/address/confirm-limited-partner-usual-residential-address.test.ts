@@ -2,7 +2,7 @@ import request from "supertest";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 
 import {
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -52,23 +52,39 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
   });
 
   describe("GET Confirm Usual Residential Address Page", () => {
-    it("should load the confirm usual residential address page with English text", async () => {
-      setLocalesEnabled(true);
+    it.each([
+      [PartnerKind.ADD_LIMITED_PARTNER_PERSON, enTranslationText.serviceName.addLimitedPartner],
+      [PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, enTranslationText.serviceName.updateLimitedPartnerPerson]
+    ])(
+      "should load the confirm usual residential address page with English text",
+      async (partnerKind: PartnerKind, serviceName: string) => {
+        setLocalesEnabled(true);
 
-      const res = await request(app).get(URL + "?lang=en");
+        const transaction = new TransactionBuilder().withKind(partnerKind).build();
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.confirm.limitedPartnerUsualResidentialAddress);
-      expect(res.text).not.toContain("WELSH -");
+        const res = await request(app).get(URL + "?lang=en");
 
-      expect(res.text).toContain("4 Line 1");
-      expect(res.text).toContain("Line 2");
-      expect(res.text).toContain("Stoke-On-Trent");
-      expect(res.text).toContain("Region");
-      expect(res.text).toContain(enTranslationText.countries.england);
-      expect(res.text).toContain("ST6 3LJ");
-      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
-    });
+        expect(res.status).toBe(200);
+        testTranslations(res.text, enTranslationText.address.confirm.limitedPartnerUsualResidentialAddress);
+        expect(res.text).not.toContain("WELSH -");
+
+        expect(res.text).toContain("4 Line 1");
+        expect(res.text).toContain("Line 2");
+        expect(res.text).toContain("Stoke-On-Trent");
+        expect(res.text).toContain("Region");
+        expect(res.text).toContain(enTranslationText.countries.england);
+        expect(res.text).toContain("ST6 3LJ");
+
+        expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+
+        if (partnerKind === PartnerKind.ADD_LIMITED_PARTNER_PERSON) {
+          expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
+        } else {
+          expect(res.text).toContain(enTranslationText.buttons.continue);
+        }
+      }
+    );
 
     it("should load the confirm usual residential address page with Welsh text", async () => {
       setLocalesEnabled(true);

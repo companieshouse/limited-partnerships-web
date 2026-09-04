@@ -92,6 +92,8 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
         expect(res.text).toContain(getDisplayedName(entity));
         expect(res.text).toContain(customerFeedbackUrlMap[serviceNameTranslationKey]);
         expect(res.text).toContain(backLinkUrl);
+
+        expect(res.text).toContain(translationText.buttons.continue);
       });
 
       it("should populate the date fields with the existing date of update if it exists", async () => {

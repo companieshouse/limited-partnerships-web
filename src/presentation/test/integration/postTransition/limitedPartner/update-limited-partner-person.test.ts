@@ -65,6 +65,8 @@ describe("Update Limited Partner Person Page", () => {
       }
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnerPerson);
       expect(res.text).toContain(BACK_LINK);
+
+      expect(res.text).toContain(translationText.buttons.continue);
     });
 
     it.each([

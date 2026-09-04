@@ -82,6 +82,8 @@ describe("Enter Principal Place Of Business Address Page", () => {
       ).toBe(2);
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress);
       expect(res.text).toContain(BACK_LINK);
+
+      expect(res.text).toContain(enTranslationText.buttons.continue);
     });
 
     it("should load the enter principal place of business address page with Welsh text", async () => {

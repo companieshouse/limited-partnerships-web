@@ -61,6 +61,8 @@ describe("Enter Registered Office Address Page", () => {
       ).toBe(2);
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipRegisteredOfficeAddress);
       expect(res.text).toContain(BACK_LINK);
+
+      expect(res.text).toContain(enTranslationText.buttons.continue);
     });
 
     it("should load the enter registered office address page with Welsh text", async () => {

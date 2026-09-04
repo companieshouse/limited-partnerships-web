@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../../../app";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
 import {
@@ -50,23 +50,39 @@ describe("Confirm General Partner Principal Office Address Page", () => {
   });
 
   describe("GET Confirm Principal Office Address Page", () => {
-    it("should load the confirm principal office address page with English text", async () => {
-      setLocalesEnabled(true);
+    it.each([
+      [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
+      [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
+    ])(
+      "should load the confirm principal office address page with English text",
+      async (partnerKind: PartnerKind, serviceName: string) => {
+        setLocalesEnabled(true);
 
-      const res = await request(app).get(URL + "?lang=en");
+        const transaction = new TransactionBuilder().withKind(partnerKind).build();
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.confirm.principalOfficeAddress);
-      expect(res.text).not.toContain("WELSH -");
+        const res = await request(app).get(URL + "?lang=en");
 
-      expect(res.text).toContain("4 Line 1");
-      expect(res.text).toContain("Line 2");
-      expect(res.text).toContain("Stoke-On-Trent");
-      expect(res.text).toContain("Region");
-      expect(res.text).toContain(enTranslationText.countries.england);
-      expect(res.text).toContain("ST6 3LJ");
-      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
-    });
+        expect(res.status).toBe(200);
+        testTranslations(res.text, enTranslationText.address.confirm.principalOfficeAddress);
+        expect(res.text).not.toContain("WELSH -");
+
+        expect(res.text).toContain("4 Line 1");
+        expect(res.text).toContain("Line 2");
+        expect(res.text).toContain("Stoke-On-Trent");
+        expect(res.text).toContain("Region");
+        expect(res.text).toContain(enTranslationText.countries.england);
+        expect(res.text).toContain("ST6 3LJ");
+
+        expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+
+        if (partnerKind === PartnerKind.ADD_GENERAL_PARTNER_PERSON) {
+          expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
+        } else {
+          expect(res.text).toContain(enTranslationText.buttons.continue);
+        }
+      }
+    );
 
     it("should load the confirm principal office address page with Welsh text", async () => {
       setLocalesEnabled(true);
