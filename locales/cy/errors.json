@@ -236,7 +236,12 @@
                 "nationality2Same": "WELSH - Second nationality must be different from the first"
             },
             "whichTypeOfNatureOfControl": {
-                "natureOfControlTypesMissing": "WELSH - Select at least one type of nature of control"
+                "natureOfControlTypesMissing": {
+                    "INDIVIDUAL_PERSON": "WELSH - Tell us how this individual holds control over the limited partnership",
+                    "RELEVANT_LEGAL_ENTITY": "WELSH - Tell us how this RLE holds control over the limited partnership",
+                    "OTHER_REGISTRABLE_PERSON": "WELSH - Tell us how this ORP holds control over the limited partnership"
+
+                }
             },
             "addNatureOfControl": {
                 "individual": {

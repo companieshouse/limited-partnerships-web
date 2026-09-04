@@ -1,4 +1,9 @@
 import request from "supertest";
+import {
+  NatureOfControlType,
+  PersonWithSignificantControlType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
@@ -19,8 +24,8 @@ import RegistrationPageType from "../../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
 import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";
-import { NatureOfControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+
 let relevantLegalEntity: TransactionPersonWithSignificantControl;
 let otherRegistrablePerson: TransactionPersonWithSignificantControl;
 let individualPerson: TransactionPersonWithSignificantControl;
@@ -166,12 +171,19 @@ describe("Which Type of Nature of Control Page", () => {
     });
 
     it.each([
-      ["orp", orp.url, orpPageType, "en", enTranslationText],
-      ["rle", rle.url, rlePageType, "en", enTranslationText],
-      ["ip", ip.url, ipPageType, "cy", cyTranslationText]
+      ["orp", orp.url, orpPageType, "en", enTranslationText, PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON],
+      ["rle", rle.url, rlePageType, "en", enTranslationText, PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY],
+      ["ip", ip.url, ipPageType, "cy", cyTranslationText, PersonWithSignificantControlType.INDIVIDUAL_PERSON]
     ])(
       "should render the page with an error if no nature_of_control_types is sent - %s",
-      async (_description, url, pageType, lang, translationText) => {
+      async (
+        _description,
+        url,
+        pageType,
+        lang,
+        translationText,
+        personWithSignificantControlType: PersonWithSignificantControlType
+      ) => {
         const personWithSignificantControl = getPscByPageType(pageType);
         appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
 
@@ -184,7 +196,9 @@ describe("Which Type of Nature of Control Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          translationText.errorMessages.personWithSignificantControl.whichTypeOfNatureOfControl.natureOfControlTypesMissing
+          translationText.errorMessages.personWithSignificantControl.whichTypeOfNatureOfControl.natureOfControlTypesMissing[
+            personWithSignificantControlType
+          ]
         );
       }
     );

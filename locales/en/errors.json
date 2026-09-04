@@ -236,7 +236,12 @@
                 "nationality2Same": "Second nationality must be different from the first"
             },
             "whichTypeOfNatureOfControl": {
-                "natureOfControlTypesMissing": "Select at least one type of nature of control"
+                "natureOfControlTypesMissing": {
+                    "INDIVIDUAL_PERSON": "Tell us how this individual holds control over the limited partnership",
+                    "RELEVANT_LEGAL_ENTITY": "Tell us how this RLE holds control over the limited partnership",
+                    "OTHER_REGISTRABLE_PERSON": "Tell us how this ORP holds control over the limited partnership"
+
+                }
             },
             "addNatureOfControl": {
                 "individual": {
