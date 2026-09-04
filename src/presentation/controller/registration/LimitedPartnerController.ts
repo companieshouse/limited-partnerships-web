@@ -2,6 +2,7 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PartnerController from "../common/PartnerController";
+import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 
 import {
   ADD_LIMITED_PARTNER_PERSON_URL,
@@ -21,9 +22,10 @@ class LimitedPartnerRegistrationController extends PartnerController {
   constructor(
     limitedPartnershipService: LimitedPartnershipService,
     generalPartnerService: GeneralPartnerService,
-    limitedPartnerService: LimitedPartnerService
+    limitedPartnerService: LimitedPartnerService,
+    personWithSignificantControlService: PersonWithSignificantControlService
   ) {
-    super(limitedPartnershipService, generalPartnerService, limitedPartnerService);
+    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, personWithSignificantControlService);
   }
 
   getPageRouting() {

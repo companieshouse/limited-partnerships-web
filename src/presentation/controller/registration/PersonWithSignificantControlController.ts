@@ -106,6 +106,16 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         }
 
         if (personsWithSignificantControl.length === 0) {
+          // If there are no persons with significant control, redirect to the "Tell us about PSC" page.
+          // and remove the value stored for the "Tell us about PSC" page.
+          await this.limitedPartnershipService.sendPageData(
+            tokens,
+            ids.transactionId,
+            ids.submissionId,
+            pageType as RegistrationPageType,
+            { has_person_with_significant_control: null }
+          );
+
           const redirect = super.insertIdsInUrl(TELL_US_ABOUT_PSC_URL, ids, request.url);
 
           response.redirect(redirect);

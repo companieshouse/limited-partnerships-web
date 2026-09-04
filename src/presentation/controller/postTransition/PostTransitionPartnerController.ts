@@ -64,7 +64,7 @@ class PostTransitionPartnerController extends PartnerController {
     companyService: CompanyService,
     private readonly transactionService: TransactionService
   ) {
-    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, companyService);
+    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, undefined, companyService);
   }
 
   getContinueSavedFilingPage() {

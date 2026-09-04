@@ -30,7 +30,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
     companyService: CompanyService,
     private readonly postTransitionPartnerController: PostTransitionPartnerController
   ) {
-    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, companyService);
+    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, undefined, companyService);
   }
 
   getPageRouting() {

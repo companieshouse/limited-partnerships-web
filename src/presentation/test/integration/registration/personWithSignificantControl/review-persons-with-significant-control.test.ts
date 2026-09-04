@@ -15,6 +15,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import PersonWithSignificantControlBuilder, { personWithSignificantControlOtherRegistrablePerson, personWithSignificantControlRelevantLegalEntity } from "../../../builder/PersonWithSignificantControlBuilder";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+
 describe("Review Persons With Significant Control Page", () => {
   const URL = getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL);
   const REDIRECT_URL = getUrl(CHECK_YOUR_ANSWERS_URL);
