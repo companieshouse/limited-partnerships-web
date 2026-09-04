@@ -1,7 +1,8 @@
 import {
   isCeaseDatePage,
   isAddPartnerPage,
-  isWhenDidChangeUpdatePage
+  isWhenDidChangeUpdatePage,
+  isPrincipalOfficeAddressYesNoPage
 } from "../../presentation/controller/postTransition/pageType";
 import { CEASE_DATE_FIELD, DATE_EFFECTIVE_FROM_FIELD, DATE_OF_UPDATE_FIELD } from "../../config";
 import UIErrors from "../entities/UIErrors";
@@ -16,6 +17,7 @@ class PartnerLegalEntityValidator {
   private dateEffectiveFromErrorMessages: Record<string, string> = {};
   private ceaseDateErrorMessages: Record<string, string> = {};
   private dateOfUpdateErrorMessages: Record<string, string> = {};
+  private principalOfficeAddressErrorMessages: Record<string, string> = {};
 
   private currencies: Record<string, any> = {};
   private errorMessages: Record<string, any> = {};
@@ -26,7 +28,7 @@ class PartnerLegalEntityValidator {
     this.ceaseDateErrorMessages = i18n?.errorMessages?.ceaseDate ?? {};
     this.dateEffectiveFromErrorMessages = i18n?.errorMessages?.dateEffectiveFrom ?? {};
     this.dateOfUpdateErrorMessages = buildDateOfUpdateErrorMessages(data.pageType, i18n);
-
+    this.principalOfficeAddressErrorMessages = i18n?.errorMessages?.address?.principalOfficeAddress ?? {};
     this.currencies = i18n?.currencies || {};
     this.errorMessages = {
       ...i18n?.errorMessages?.partners?.addPartner,
@@ -80,6 +82,15 @@ class PartnerLegalEntityValidator {
         this.dateOfUpdateErrorMessages,
         this.data.registration_date
       );
+    }
+
+    if (isPrincipalOfficeAddressYesNoPage(this.data.pageType)) {
+      if (!this.data.update_principal_office_address_required) {
+        uiErrors.setWebError(
+          "update_principal_office_address_required",
+          this.principalOfficeAddressErrorMessages.updateYesNoRequired
+        );
+      }
     }
 
     if (

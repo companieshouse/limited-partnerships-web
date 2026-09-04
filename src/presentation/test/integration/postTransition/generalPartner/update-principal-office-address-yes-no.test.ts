@@ -102,5 +102,15 @@ describe("Update Principal Office Address Yes No Page", () => {
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
+
+    it("should return validation error when no option is selected", async () => {
+      const res = await request(app).post(`${URL}`).send({
+        pageType: PostTransitionPageType.updateGeneralPartnerPrincipalOfficeAddressYesNo
+      });
+
+      expect(res.status).toBe(200);
+      const errorMessage = enTranslationText.errorMessages.address.principalOfficeAddress.updateYesNoRequired;
+      expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(2);
+    });
   });
 });

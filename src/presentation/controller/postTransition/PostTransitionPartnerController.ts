@@ -477,6 +477,10 @@ class PostTransitionPartnerController extends PartnerController {
             return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, renderData, result.errors));
           }
 
+          if (result?.errors.errors["update_principal_office_address_required"]) {
+            return response.render(UPDATE_ADDRESS_YES_NO_TEMPLATE, super.makeProps(pageRouting, renderData, result.errors));
+          }
+
           response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
 
           return;
@@ -501,8 +505,15 @@ class PostTransitionPartnerController extends PartnerController {
   }> {
     let partnerEntity = {} as GeneralPartner | LimitedPartner;
 
-    let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> =
-      await this.limitedPartnershipService.getLimitedPartnership(tokens, ids.transactionId, ids.submissionId);
+    let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> = {};
+
+    if (ids.submissionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+    }
 
     if (this.companyService) {
       const registration_date = await this.companyService.getCompanyIncorporationDate(tokens, ids.companyId);
