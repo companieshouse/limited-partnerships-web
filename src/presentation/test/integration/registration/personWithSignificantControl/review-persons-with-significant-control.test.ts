@@ -98,11 +98,22 @@ describe("Review Persons With Significant Control Page", () => {
       it("should redirect to person with significant control start page when list is empty", async () => {
         appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([]);
 
+        const sendPageDataSpy = jest.spyOn(appDevDependencies.limitedPartnershipGateway, "sendPageData");
+
         const res = await request(app).get(URL);
 
         const redirectUrl = getUrl(TELL_US_ABOUT_PSC_URL);
+
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+
+        expect(sendPageDataSpy).toHaveBeenCalledWith(
+          expect.anything(),
+          appDevDependencies.transactionGateway.transactionId,
+          appDevDependencies.limitedPartnershipGateway.submissionId,
+          RegistrationPageType.reviewPersonsWithSignificantControl,
+          { has_person_with_significant_control: null }
+        );
       });
     });
   });
