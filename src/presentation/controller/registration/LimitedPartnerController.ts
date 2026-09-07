@@ -25,7 +25,7 @@ class LimitedPartnerRegistrationController extends PartnerController {
     limitedPartnerService: LimitedPartnerService,
     personWithSignificantControlService: PersonWithSignificantControlService
   ) {
-    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, personWithSignificantControlService);
+    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, undefined, personWithSignificantControlService);
   }
 
   getPageRouting() {

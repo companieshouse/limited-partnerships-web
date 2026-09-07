@@ -38,8 +38,8 @@ abstract class PartnerController extends AbstractController {
     protected readonly limitedPartnershipService: LimitedPartnershipService,
     protected readonly generalPartnerService: GeneralPartnerService,
     protected readonly limitedPartnerService: LimitedPartnerService,
+    protected readonly companyService?: CompanyService,
     protected readonly personWithSignificantControlService?: PersonWithSignificantControlService,
-    protected readonly companyService?: CompanyService
   ) {
     super();
   }
