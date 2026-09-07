@@ -384,20 +384,19 @@ abstract class PartnerController extends AbstractController {
   ) {
     const { limitedPartnership } = await this.getEntities(tokens, ids);
 
-    // redirect to psc review if > 0 psc and has_person_with_significant_control == true
-    const pscs = await this.personWithSignificantControlService?.getPersonsWithSignificantControl(tokens, ids.transactionId);
-    if (pscs && pscs.personsWithSignificantControl.length > 0) {
-      const lpship = await this.limitedPartnershipService.getLimitedPartnership(tokens, ids.transactionId, ids.submissionId);
-      if (lpship.data?.has_person_with_significant_control === true) {
-        pageRouting.nextUrl = REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL;
-        return;
-      }
-    }
-
     if (
       limitedPartnership.data?.partnership_type === PartnershipType.SLP ||
       limitedPartnership.data?.partnership_type === PartnershipType.SPFLP
     ) {
+      // redirect to psc review if > 0 psc and has_person_with_significant_control == true
+      const personsWithSignificantControl = await this.personWithSignificantControlService?.getPersonsWithSignificantControl(tokens, ids.transactionId);
+      if (personsWithSignificantControl && personsWithSignificantControl.personsWithSignificantControl.length > 0) {
+        if (limitedPartnership.data?.has_person_with_significant_control === true) {
+          pageRouting.nextUrl = REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL;
+          return;
+        }
+      }
+
       pageRouting.nextUrl = super.insertIdsInUrl(urls.pscRedirectUrl, ids);
     }
   }

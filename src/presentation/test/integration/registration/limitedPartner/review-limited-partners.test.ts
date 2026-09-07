@@ -51,30 +51,19 @@ const config = {
 runReviewLimitedPartnersTests(config);
 
 it.each([
-  [PartnershipType.LP, getUrl(CHECK_YOUR_ANSWERS_URL)],
-  [PartnershipType.PFLP, getUrl(CHECK_YOUR_ANSWERS_URL)],
-  [PartnershipType.SLP, getUrl(TELL_US_ABOUT_PSC_URL)],
-  [PartnershipType.SPFLP, getUrl(TELL_US_ABOUT_PSC_URL)]
-])(
-  "should redirect to the appropriate page based on partnership type",
-  async (partnershipType: PartnershipType, REDIRECT_URL: string) => {
-    const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+  [PartnershipType.SLP, true, REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL],
+  [PartnershipType.SPFLP, true, REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL],
+  [PartnershipType.LP, true, CHECK_YOUR_ANSWERS_URL],
+  [PartnershipType.PFLP, true, CHECK_YOUR_ANSWERS_URL],
+  [PartnershipType.SLP, false, TELL_US_ABOUT_PSC_URL],
+  [PartnershipType.SPFLP, false, TELL_US_ABOUT_PSC_URL],
+  [PartnershipType.LP, false, CHECK_YOUR_ANSWERS_URL],
+  [PartnershipType.PFLP, false, CHECK_YOUR_ANSWERS_URL],
 
-    const res = await request(app).post(getUrl(config.url)).send({
-      pageType: RegistrationPageType.reviewLimitedPartners,
-      add_another_partner: "no"
-    });
-
-    expect(res.status).toBe(302);
-    expect(res.headers.location).toContain(REDIRECT_URL);
-  }
-);
-
-it("should redirect to review persons with significant control page when there are PSCs and has_person_with_significant_control is true", async () => {
+])("should redirect to the appropriate page for partnershipType %s when hasPersonWithSignificantControl is %s (redirectUrl: %s)", async (partnershipType: PartnershipType, hasPersonWithSignificantControl: boolean, redirectUrl: string) => {
   const limitedPartnership = new LimitedPartnershipBuilder()
-    .withPartnershipType(PartnershipType.LP)
-    .withHasPersonWithSignificantControl(true)
+    .withPartnershipType(partnershipType)
+    .withHasPersonWithSignificantControl(hasPersonWithSignificantControl)
     .build();
   appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -90,5 +79,5 @@ it("should redirect to review persons with significant control page when there a
   });
 
   expect(res.status).toBe(302);
-  expect(res.headers.location).toContain(getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL));
+  expect(res.headers.location).toContain(getUrl(redirectUrl));
 });
