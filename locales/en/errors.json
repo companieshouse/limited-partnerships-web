@@ -92,8 +92,8 @@
                 "noOptionSelectedEnd": " is in the UK or overseas"
              },
 
-            "principalOfficeAddress": {
-                "updateYesNoRequired": "Select whether you need to update this partner's principal office address"
+            "addressYesNoRequired": {
+                "principalOfficeAddress": "Select whether you need to update this partner's principal office address"
             }
         },
 

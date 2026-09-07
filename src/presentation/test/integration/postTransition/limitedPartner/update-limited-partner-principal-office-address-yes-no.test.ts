@@ -118,7 +118,7 @@ describe("Update Principal Office Address Yes No Page", () => {
       });
 
       expect(res.status).toBe(200);
-      const errorMessage = enTranslationText.errorMessages.address.principalOfficeAddress.updateYesNoRequired;
+      const errorMessage = enTranslationText.errorMessages.address.addressYesNoRequired.principalOfficeAddress;
       expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(2);
     });
   });
