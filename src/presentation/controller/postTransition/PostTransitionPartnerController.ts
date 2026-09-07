@@ -14,7 +14,7 @@ import CompanyService, { DataIncludingPartners } from "../../../application/serv
 import TransactionService from "../../../application/service/TransactionService";
 
 import PartnerController from "../common/PartnerController";
-import PostTransitionPageType, { isLegalEntity } from "./pageType";
+import PostTransitionPageType, { isLegalEntity, isPrincipalOfficeAddressYesNoPage } from "./pageType";
 import postTransitionRouting from "./routing";
 import {
   CEASE_DATE_TEMPLATE,
@@ -457,6 +457,25 @@ class PostTransitionPartnerController extends PartnerController {
           pageKey: partner
         };
 
+        if (isPrincipalOfficeAddressYesNoPage(pageType)) {
+          const errors = this.validatePrincipalOfficeAddressYesNoPage(request, response);
+          if (errors?.hasErrors()) {
+            const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
+            const { data: renderData } = this.buildPartnerErrorRenderData(
+              pageType,
+              pageRouting,
+              limitedPartnership,
+              partnerEntity,
+              { update_principal_office_address_required: null },
+              partner
+            );
+
+            return response.render(
+              UPDATE_ADDRESS_YES_NO_TEMPLATE,
+              super.makeProps(pageRouting, renderData, errors)
+            );
+          }
+        }
         const result = await super.sendData(partner, tokens, ids, data);
 
         if (result?.errors) {
@@ -475,10 +494,6 @@ class PostTransitionPartnerController extends PartnerController {
 
           if (result?.errors.errors["date_of_update"]) {
             return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, renderData, result.errors));
-          }
-
-          if (result?.errors.errors["update_principal_office_address_required"]) {
-            return response.render(UPDATE_ADDRESS_YES_NO_TEMPLATE, super.makeProps(pageRouting, renderData, result.errors));
           }
 
           response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
@@ -536,6 +551,19 @@ class PostTransitionPartnerController extends PartnerController {
       limitedPartnership,
       partnerEntity
     };
+  }
+
+  private validatePrincipalOfficeAddressYesNoPage(request: Request, response: Response){
+
+    const selectedValue = request.body?.update_principal_office_address_required;
+
+    if (selectedValue === undefined || selectedValue === null) {
+      return new UIErrors().setWebError(
+        "update_principal_office_address_required",
+        response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress
+      );
+    }
+    return;
   }
 
   private async comparePartnerDetails(partner: GeneralPartner | LimitedPartner, request: Request) {
