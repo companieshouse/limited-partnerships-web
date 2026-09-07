@@ -390,11 +390,10 @@ abstract class PartnerController extends AbstractController {
     ) {
       // redirect to psc review if > 0 psc and has_person_with_significant_control == true
       const personsWithSignificantControl = await this.personWithSignificantControlService?.getPersonsWithSignificantControl(tokens, ids.transactionId);
-      if (
-        personsWithSignificantControl &&
+      const shouldRedirectToPersonsWithSignificantControlReviewPage = personsWithSignificantControl &&
         personsWithSignificantControl.personsWithSignificantControl.length > 0 &&
-        limitedPartnership.data?.has_person_with_significant_control === true
-      ) {
+        limitedPartnership.data?.has_person_with_significant_control;
+      if (shouldRedirectToPersonsWithSignificantControlReviewPage) {
         pageRouting.nextUrl = REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL;
         return;
       }
