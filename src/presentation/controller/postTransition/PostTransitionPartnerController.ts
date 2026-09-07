@@ -563,7 +563,6 @@ class PostTransitionPartnerController extends PartnerController {
         response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress
       );
     }
-    return;
   }
 
   private async comparePartnerDetails(partner: GeneralPartner | LimitedPartner, request: Request) {
