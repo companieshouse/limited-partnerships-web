@@ -5,6 +5,8 @@
   {% include "includes/styles/print.njk" %}
 {% endblock %}
 
+{% set suppressBackLink = true %}
+
 {% set pageTitle = i18n.confirmationPage.title %}
 {% if journeyTypes.isTransition %}
   {% set pageTitle = i18n.confirmationPage.transition.title %}
@@ -39,7 +41,7 @@
 
     {% if journeyTypes.isRegistration %}
 
-      <p class="govuk-body">{{ i18n.confirmationPage.filingReceived }} {{ props.data.limitedPartnership.data.partnership_name | upper }}.</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.filingReceived }} {{ props.data.limitedPartnership.data.partnership_name | upper }} {{ props.data.limitedPartnership.data.name_ending | upper }}.</p>
       <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.userEmail }}</strong>.</p>
 
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
@@ -50,7 +52,7 @@
 
     {% elif journeyTypes.isTransition %}
 
-      <p class="govuk-body">{{ i18n.confirmationPage.filing.partnershipName }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}). {{ i18n.confirmationPage.filing.sentEmail }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.filing.confirm }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.filing.partnershipName }} {{ props.data.limitedPartnership.data.partnership_name | upper }} {{ props.data.limitedPartnership.data.name_ending | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}). {{ i18n.confirmationPage.filing.sentEmail }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.filing.confirm }}</p>
 
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
 
@@ -86,11 +88,11 @@
     {% endif %}
 
     {% if journeyTypes.isTransition %}
-      <p class="govuk-body hide-on-print">
+      <p class="govuk-body hide-on-print govuk-!-static-padding-bottom-4">
         <a href="https://www.smartsurvey.co.uk/s/file-for-lp-conf/" target="_blank" class="govuk-link" data-event-id="survey-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
       </p>
     {% elif journeyTypes.isRegistration %}
-      <p class="govuk-body hide-on-print">
+      <p class="govuk-body hide-on-print govuk-!-static-padding-bottom-4">
         <a href="https://www.smartsurvey.co.uk/s/register-a-lp-conf/" target="_blank" class="govuk-link" data-event-id="survey-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
       </p>
     {% endif %}
