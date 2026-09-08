@@ -100,6 +100,10 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
     transactionId: string,
     submissionId: string
   ): Promise<LimitedPartnership> {
+    if (!submissionId) {
+      throw new Error(`Submission ID is required`);
+    }
+
     if (this.error) {
       throw new Error(`Not found: ${submissionId}`);
     }

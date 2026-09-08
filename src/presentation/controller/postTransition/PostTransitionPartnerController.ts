@@ -496,23 +496,28 @@ class PostTransitionPartnerController extends PartnerController {
     ids: Ids,
     partner: PartnerType
   ): Promise<{
-    limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners>;
+    limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> | undefined;
     partnerEntity: GeneralPartner | LimitedPartner;
   }> {
+    console.log("!!!!!!!!!!!!!!!! ids ", ids);
     let partnerEntity = {} as GeneralPartner | LimitedPartner;
 
-    let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> =
-      await this.limitedPartnershipService.getLimitedPartnership(tokens, ids.transactionId, ids.submissionId);
+    let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> | undefined;
 
-    if (this.companyService) {
-      const registration_date = await this.companyService.getCompanyIncorporationDate(tokens, ids.companyId);
-      limitedPartnership = {
-        ...limitedPartnership,
-        data: {
-          ...limitedPartnership.data,
-          registration_date
-        }
-      };
+    if (ids.submissionId && ids.transactionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(tokens, ids.transactionId, ids.submissionId);
+      console.log("!!!!!!!!!!!!!!!! limitedPartnership ", limitedPartnership);
+
+      if (this.companyService) {
+        const registration_date = await this.companyService.getCompanyIncorporationDate(tokens, ids.companyId);
+        limitedPartnership = {
+          ...limitedPartnership,
+          data: {
+            ...limitedPartnership.data,
+            registration_date
+          }
+        };
+      }
     }
 
     if (partner === PartnerType.generalPartner) {
