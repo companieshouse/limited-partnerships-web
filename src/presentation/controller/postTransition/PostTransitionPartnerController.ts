@@ -14,7 +14,7 @@ import CompanyService, { DataIncludingPartners } from "../../../application/serv
 import TransactionService from "../../../application/service/TransactionService";
 
 import PartnerController from "../common/PartnerController";
-import PostTransitionPageType, { isLegalEntity } from "./pageType";
+import PostTransitionPageType, { isLegalEntity, isPrincipalOfficeAddressYesNoPage } from "./pageType";
 import postTransitionRouting from "./routing";
 import {
   CEASE_DATE_TEMPLATE,
@@ -457,6 +457,25 @@ class PostTransitionPartnerController extends PartnerController {
           pageKey: partner
         };
 
+        if (isPrincipalOfficeAddressYesNoPage(pageType)) {
+          const errors = this.validatePrincipalOfficeAddressYesNoPage(request, response);
+          if (errors?.hasErrors()) {
+            const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
+            const { data: renderData } = this.buildPartnerErrorRenderData(
+              pageType,
+              pageRouting,
+              limitedPartnership,
+              partnerEntity,
+              { update_principal_office_address_required: null },
+              partner
+            );
+
+            return response.render(
+              UPDATE_ADDRESS_YES_NO_TEMPLATE,
+              super.makeProps(pageRouting, renderData, errors)
+            );
+          }
+        }
         const result = await super.sendData(partner, tokens, ids, data);
 
         if (result?.errors) {
@@ -501,8 +520,15 @@ class PostTransitionPartnerController extends PartnerController {
   }> {
     let partnerEntity = {} as GeneralPartner | LimitedPartner;
 
-    let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> =
-      await this.limitedPartnershipService.getLimitedPartnership(tokens, ids.transactionId, ids.submissionId);
+    let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> = {};
+
+    if (ids.submissionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+    }
 
     if (this.companyService) {
       const registration_date = await this.companyService.getCompanyIncorporationDate(tokens, ids.companyId);
@@ -525,6 +551,18 @@ class PostTransitionPartnerController extends PartnerController {
       limitedPartnership,
       partnerEntity
     };
+  }
+
+  private validatePrincipalOfficeAddressYesNoPage(request: Request, response: Response){
+
+    const selectedValue = request.body?.update_principal_office_address_required;
+
+    if (selectedValue === undefined || selectedValue === null) {
+      return new UIErrors().setWebError(
+        "update_principal_office_address_required",
+        response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress
+      );
+    }
   }
 
   private async comparePartnerDetails(partner: GeneralPartner | LimitedPartner, request: Request) {

@@ -135,4 +135,12 @@ export const isUpdatePartnerPage = (pageType: string): boolean => {
   return updatePartnerPageTypes.includes(pageType);
 };
 
+export const isPrincipalOfficeAddressYesNoPage = (pageType: string): boolean => {
+  const principalOfficeAddressYesNoPageTypes: string[] = [
+    PostTransitionPageType.updateGeneralPartnerPrincipalOfficeAddressYesNo,
+    PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo
+  ];
+  return principalOfficeAddressYesNoPageTypes.includes(pageType);
+};
+
 export default PostTransitionPageType;

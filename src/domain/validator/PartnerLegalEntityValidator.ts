@@ -26,7 +26,6 @@ class PartnerLegalEntityValidator {
     this.ceaseDateErrorMessages = i18n?.errorMessages?.ceaseDate ?? {};
     this.dateEffectiveFromErrorMessages = i18n?.errorMessages?.dateEffectiveFrom ?? {};
     this.dateOfUpdateErrorMessages = buildDateOfUpdateErrorMessages(data.pageType, i18n);
-
     this.currencies = i18n?.currencies || {};
     this.errorMessages = {
       ...i18n?.errorMessages?.partners?.addPartner,

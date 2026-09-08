@@ -203,6 +203,8 @@ const postTransitionRoutingUpdatePrincipalOfficeAddressYesNo = {
     nextYesUrl: ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     nextNoUrl: url.WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
     titleKey: "principalOfficeAddress",
+    partnerType: PartnerType.generalPartner,
+    partnerEntityType: PartnerEntityType.legalEntity,
     fieldName: "update_principal_office_address_required",
     trackingLabel: "update-principal-office-address-yes-no"
   }

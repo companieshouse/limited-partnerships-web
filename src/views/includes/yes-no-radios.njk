@@ -20,6 +20,7 @@
 {{ govukRadios({
   classes: "govuk-radios--inline",
   name: props.data.fieldName,
+  errorMessage: props.errors[props.data.fieldName] if props.errors[props.data.fieldName],
   fieldset: {
     legend: {
       text: pageTitle,
@@ -34,18 +35,12 @@
     {
       value: "true",
       text: i18n.yesAndNo.yes,
-      checked: currentValue === true,
-      attributes: {
-        "required": true
-      }
+      checked: currentValue === true
     },
     {
       value: "false",
       text: i18n.yesAndNo.no,
-      checked: currentValue === false,
-      attributes: {
-        "required": true
-      }
+      checked: currentValue === false
     }
   ]
 }) }}
