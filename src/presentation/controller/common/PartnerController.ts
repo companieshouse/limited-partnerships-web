@@ -10,6 +10,7 @@ import AbstractController from "../AbstractController";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 import CompanyService, { DataIncludingPartners } from "../../../application/service/CompanyService";
 
 import { Ids, PartnerType, Tokens } from "../../../domain/types";
@@ -30,13 +31,15 @@ import {
   DATE_OF_UPDATE_TEMPLATE,
 } from "../../../config/constants";
 import { resetFormerNamesIfPreviousNameIsFalse } from "../../../infrastructure/gateway/utils";
+import { REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL } from "../registration/url";
 
 abstract class PartnerController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
     protected readonly generalPartnerService: GeneralPartnerService,
     protected readonly limitedPartnerService: LimitedPartnerService,
-    protected readonly companyService?: CompanyService
+    protected readonly companyService?: CompanyService,
+    protected readonly personWithSignificantControlService?: PersonWithSignificantControlService,
   ) {
     super();
   }
@@ -385,6 +388,16 @@ abstract class PartnerController extends AbstractController {
       limitedPartnership.data?.partnership_type === PartnershipType.SLP ||
       limitedPartnership.data?.partnership_type === PartnershipType.SPFLP
     ) {
+      // redirect to psc review if > 0 psc and has_person_with_significant_control == true
+      const personsWithSignificantControl = await this.personWithSignificantControlService?.getPersonsWithSignificantControl(tokens, ids.transactionId);
+      const shouldRedirectToPersonsWithSignificantControlReviewPage = personsWithSignificantControl &&
+        personsWithSignificantControl.personsWithSignificantControl.length > 0 &&
+        limitedPartnership.data?.has_person_with_significant_control;
+      if (shouldRedirectToPersonsWithSignificantControlReviewPage) {
+        pageRouting.nextUrl = REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL;
+        return;
+      }
+
       pageRouting.nextUrl = super.insertIdsInUrl(urls.pscRedirectUrl, ids);
     }
   }
