@@ -39,6 +39,7 @@ const postTransitionRoutingAddGeneralPartnerLegalEntity = {
   pageType: PostTransitionPageType.addGeneralPartnerLegalEntity,
   data: {
     serviceName: "addGeneralPartner",
+    partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.legalEntity
   }
 };
@@ -190,6 +191,7 @@ const postTransitionRoutingUpdateGeneralPartnerLegalEntity = {
   pageType: PostTransitionPageType.updateGeneralPartnerLegalEntity,
   data: {
     serviceName: "updateGeneralPartnerLegalEntity",
+    partnerType: PartnerType.generalPartner,
     partnerEntityType: PartnerEntityType.legalEntity
   }
 };
