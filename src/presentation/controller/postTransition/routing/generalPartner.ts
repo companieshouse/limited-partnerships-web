@@ -39,7 +39,7 @@ const postTransitionRoutingAddGeneralPartnerLegalEntity = {
   pageType: PostTransitionPageType.addGeneralPartnerLegalEntity,
   data: {
     serviceName: "addGeneralPartner",
-    partnerType: PartnerType.limitedPartner,
+    partnerType: PartnerType.generalPartner,
     partnerEntityType: PartnerEntityType.legalEntity
   }
 };
