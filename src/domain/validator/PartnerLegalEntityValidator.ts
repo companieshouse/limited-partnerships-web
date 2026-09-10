@@ -1,6 +1,7 @@
 import {
-  isAddPartnerPage,
+  isAddPartnerPage as isAddPartnerPagePostTransition,
   isCeaseDatePage,
+  isUpdatePartnerPage as isUpdatePartnerPagePostTransition,
   isWhenDidChangeUpdatePage
 } from "../../presentation/controller/postTransition/pageType";
 import { CEASE_DATE_FIELD, DATE_EFFECTIVE_FROM_FIELD, DATE_OF_UPDATE_FIELD, GOVERNING_LAW_FIELD, LEGAL_ENTITY_NAME_FIELD, LEGAL_ENTITY_REGISTER_NAME_FIELD, LEGAL_ENTITY_REGISTRATION_LOCATION_FIELD, LEGAL_FORM_FIELD, NOT_DISQUALIFIED_STATEMENT_CHECKED_FIELD, REGISTERED_COMPANY_NUMBER_FIELD } from "../../config";
@@ -10,6 +11,8 @@ import { buildDateOfUpdateErrorMessages } from "./dateOfUpdateErrorMessages";
 import { capitalContributionValidation, isCapitalContributionApplicable } from "./capitalContributionValidator";
 import { PartnerType } from "../types";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
+import { isAddPartnerLegalEntityPage as isAddPartnerLegalEntityPageRegistration } from "../../presentation/controller/registration/PageType";
+import { isAddPartnerLegalEntityPage as isAddPartnerLegalEntityPageTransition } from "../../presentation/controller/transition/PageType";
 
 class PartnerLegalEntityValidator {
   private data: Record<string, any> = {};
@@ -51,7 +54,23 @@ class PartnerLegalEntityValidator {
       return uiErrors;
     }
 
-    // legal entity name
+    if (this.isAddOrUpdatePartnerLegalEntityPage()) {
+      // legal entity name
+      this.validateLegalEntityPartner(uiErrors);
+    }
+
+    return uiErrors;
+  }
+
+  private isAddOrUpdatePartnerLegalEntityPage(): boolean {
+    const pageType = this.data.pageType;
+    return isAddPartnerLegalEntityPageRegistration(pageType)
+      || isAddPartnerLegalEntityPageTransition(pageType)
+      || isAddPartnerPagePostTransition(pageType)
+      || isUpdatePartnerPagePostTransition(pageType);
+  }
+
+  private validateLegalEntityPartner(uiErrors: UIErrors) {
     this.validateField(
       this.data.legal_entity_name,
       LEGAL_ENTITY_NAME_FIELD,
@@ -144,8 +163,6 @@ class PartnerLegalEntityValidator {
     if (this.isDisqualifiedStatementValidationRequired()) {
       this.validateDisqualifiedStatement(uiErrors);
     }
-
-    return uiErrors;
   }
 
   private overrideCapitalContributionType(capitalContributionType: string): void {
@@ -186,7 +203,6 @@ class PartnerLegalEntityValidator {
   }
 
   private validateRegistrationLocation(uiErrors: UIErrors) {
-    console.log(this.data);
     if (isFieldValueMissing(this.data.legal_entity_registration_location, LEGAL_ENTITY_REGISTRATION_LOCATION_FIELD, uiErrors, this.errorMessages?.legalEntityCountryRegisteredMissing)) {
       return;
     }
@@ -202,14 +218,14 @@ class PartnerLegalEntityValidator {
   }
 
   private isDateEffectiveFromValidationRequired(): boolean {
-    return this.data.journeyTypes?.isPostTransition && isAddPartnerPage(this.data.pageType);
+    return this.data.journeyTypes?.isPostTransition && isAddPartnerPagePostTransition(this.data.pageType);
   }
 
   private isDisqualifiedStatementValidationRequired(): boolean {
     return (
       this.data.partnerType === PartnerType.generalPartner
       && !this.data.journeyTypes?.isTransition
-      && isAddPartnerPage(this.data.pageType)
+      && isAddPartnerPagePostTransition(this.data.pageType)
     );
   }
 }
