@@ -6,10 +6,13 @@ import {
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL
 } from "../../../../controller/registration/url";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../../utils";
+import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../utils";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import sdkMock from "../../mock/sdkMock";
 import appRealDependencies from "../../../../../app";
+import * as enErrors from "../../../../../../locales/en/errors.json";
+import * as cyErrors from "../../../../../../locales/cy/errors.json";
+
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
@@ -67,83 +70,71 @@ describe("Add General Partner Legal Entity Page", () => {
     });
   });
 
-  describe("Validation", () => {
-    it("should return validation error when legal entity name is missing", async () => {
-      const res = await request(appRealDependencies).post(URL).send({
+  describe.each([
+    ["English", "en", enErrors],
+    ["Welsh", "cy", cyErrors]
+  ])("Validation - %s", (_language, language, errors) => {
+    const validLegalEntity = {
+      pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
+      legal_entity_name: "My Company ltd - GP",
+      legal_form: "Limited Company",
+      governing_law: "Act of law",
+      legal_entity_register_name: "US Register",
+      legal_entity_registration_location: "United States",
+      registered_company_number: "12345678"
+    };
+
+    it("should return all missing validation errors", async () => {
+      const res = await request(appRealDependencies).post(`${URL}?lang=${language}`).send({
         pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
-        legal_form: "Limited Company",
-        governing_law: "Act of law",
-        legal_entity_register_name: "US Register",
-        legal_entity_registration_location: "United States",
-        registered_company_number: "12345678"
       });
 
       expect(res.status).toBe(200);
+
+      const errorMessages = [
+        errors.errorMessages.partners.addPartner.legalEntityNameMissing,
+        errors.errorMessages.partners.addPartner.legalFormMissing,
+        errors.errorMessages.partners.addPartner.governingLawMissing,
+        errors.errorMessages.partners.addPartner.legalEntityRegisterNameMissing,
+        errors.errorMessages.partners.addPartner.registeredCompanyNumberMissing,
+        errors.errorMessages.partners.addPartner.legalEntityCountryRegisteredMissing
+      ];
+
+      errorMessages.forEach((errorMessage) => {
+        expect(res.text).toContain(toEscapedHtml(errorMessage));
+      });
     });
 
-    it("should return validation error when legal form is missing", async () => {
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
-        legal_entity_name: "My Company ltd - GP",
-        governing_law: "Act of law",
-        legal_entity_register_name: "US Register",
-        legal_entity_registration_location: "United States",
-        registered_company_number: "12345678"
+    it.each([
+      ["legal_entity_name", errors.errorMessages.partners.addPartner.legalEntityNameInvalid],
+      ["legal_form", errors.errorMessages.partners.addPartner.legalFormInvalid],
+      ["governing_law", errors.errorMessages.partners.addPartner.governingLawInvalid],
+      ["legal_entity_register_name", errors.errorMessages.partners.addPartner.legalEntityRegisterNameInvalid],
+      ["registered_company_number", errors.errorMessages.partners.addPartner.registeredCompanyNumberInvalid]
+    ])("should return an invalid-character error when %s contains invalid characters", async (field, errorMessage) => {
+      const res = await request(appRealDependencies).post(`${URL}?lang=${language}`).send({
+        ...validLegalEntity,
+        [field]: "Invalid ™ characters"
       });
 
       expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(errorMessage));
     });
 
-    it("should return validation error when governing law is missing", async () => {
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
-        legal_entity_name: "My Company ltd - GP",
-        legal_form: "Limited Company",
-        legal_entity_register_name: "US Register",
-        legal_entity_registration_location: "United States",
-        registered_company_number: "12345678"
+    it.each([
+      ["legal_entity_name", errors.errorMessages.partners.addPartner.legalEntityNameTooLong],
+      ["legal_form", errors.errorMessages.partners.addPartner.legalFormTooLong],
+      ["governing_law", errors.errorMessages.partners.addPartner.governingLawTooLong],
+      ["legal_entity_register_name", errors.errorMessages.partners.addPartner.legalEntityRegisterNameTooLong],
+      ["registered_company_number", errors.errorMessages.partners.addPartner.registeredCompanyNumberTooLong]
+    ])("should return a maximum-length error when %s exceeds 160 characters", async (field, errorMessage) => {
+      const res = await request(appRealDependencies).post(`${URL}?lang=${language}`).send({
+        ...validLegalEntity,
+        [field]: "a".repeat(161)
       });
 
       expect(res.status).toBe(200);
-    });
-
-    it("should return validation error when legal entity register name is missing", async () => {
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
-        legal_entity_name: "My Company ltd - GP",
-        legal_form: "Limited Company",
-        governing_law: "Act of law",
-        legal_entity_registration_location: "United States",
-        registered_company_number: "12345678"
-      });
-
-      expect(res.status).toBe(200);
-    });
-
-    it("should return validation error when registered company number is missing", async () => {
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
-        legal_entity_name: "My Company ltd - GP",
-        legal_form: "Limited Company",
-        governing_law: "Act of law",
-        legal_entity_register_name: "US Register",
-        legal_entity_registration_location: "United States"
-      });
-
-      expect(res.status).toBe(200);
-    });
-
-    it("should return validation error when registration location is missing", async () => {
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
-        legal_entity_name: "My Company ltd - GP",
-        legal_form: "Limited Company",
-        governing_law: "Act of law",
-        legal_entity_register_name: "US Register",
-        registered_company_number: "12345678"
-      });
-
-      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(errorMessage));
     });
   });
 });

@@ -55,7 +55,6 @@ class PartnerLegalEntityValidator {
     }
 
     if (this.isAddOrUpdatePartnerLegalEntityPage()) {
-      // legal entity name
       this.validateLegalEntityPartner(uiErrors);
     }
 
@@ -71,6 +70,7 @@ class PartnerLegalEntityValidator {
   }
 
   private validateLegalEntityPartner(uiErrors: UIErrors) {
+    // legal entity name
     this.validateField(
       this.data.legal_entity_name,
       LEGAL_ENTITY_NAME_FIELD,
