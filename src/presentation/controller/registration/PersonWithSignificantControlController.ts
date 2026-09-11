@@ -446,7 +446,11 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           significant_influence_control: body.significant_influence_control
         };
 
-        const uiErrors = this.natureOfControlValidator.set(natureOfControl, response.locals.i18n).runValidation();
+        const personWithSignificantControlType = personWithSignificantControl.data?.type as PersonWithSignificantControlType;
+
+        const uiErrors = this.natureOfControlValidator
+          .set(natureOfControl, personWithSignificantControlType, response.locals.i18n)
+          .runValidation();
 
         if (uiErrors.hasErrors()) {
           return response.render(

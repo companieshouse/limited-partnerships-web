@@ -249,20 +249,24 @@
             },
             "addNatureOfControl": {
                 "individual": {
-                    "shareOfAssetsMissing": "Select whether the individual holds any right to the share of assets of the limited partnership",
-                    "votingRightsMissing": "Select whether the individual holds any voting rights in the limited partnership",
-                    "significantInfluence": "You can only select significant influence or control if none of the other options apply",
-                    "youMustSelectAtLeastOne": "You must select at least one option that applies, or select 'Significant influence or control' if none of the other options apply"
+                    "shareOfAssetsMissing": "Tell us the share of assets or select 'Does not apply'",
+                    "votingRightsMissing": "Tell us the ownership of voting rights or select 'Does not apply'",
+                    "significantInfluence": "You can only select 'significant influence or control' if the other natures of control do not apply",
+                    "youMustSelectAtLeastOne": {
+                        "individual": "Tell us the individual's nature of control. You must select at least one option that applies.",
+                        "rle": "Tell us the RLE's nature of control. You must select at least one option that applies.",
+                        "orp": "Tell us the ORP's nature of control. You must select at least one option that applies."
+                    } 
                 },
                 "firm": {
-                    "shareOfAssetsMissing": "Select whether the members of the firm hold any right to the share of assets of the limited partnership",
-                    "votingRightsMissing": "Select whether the members of the firm hold any voting rights in the limited partnership",
-                    "youMustSelectAtLeastOne": "You must select at least one option that applies"
+                    "shareOfAssetsMissing": "Tell us the share of assets or select 'Does not apply'",
+                    "votingRightsMissing": "Tell us the ownership of voting rights or select 'Does not apply'",
+                    "youMustSelectAtLeastOne": "Tell us the firm's nature of control. You must select at least one option that applies. "
                 },
                 "trust": {
-                    "shareOfAssetsMissing": "Select whether the trustees of the trust hold any right to the share of assets of the limited partnership",
-                    "votingRightsMissing": "Select whether the trustees of the trust hold any voting rights in the limited partnership",
-                    "youMustSelectAtLeastOne": "You must select at least one option that applies"
+                    "shareOfAssetsMissing": "Tell us the share of assets or select 'Does not apply'",
+                    "votingRightsMissing": "Tell us the ownership of voting rights or select 'Does not apply'",
+                    "youMustSelectAtLeastOne": "Tell us the trust's nature of control. You must select at least one option that applies. "
                 }
             },
             "removePscPage": {
