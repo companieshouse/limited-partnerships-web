@@ -93,7 +93,9 @@
              },
 
             "addressYesNoRequired": {
-                "principalOfficeAddress": "Select whether you need to update this partner's principal office address"
+                "principalOfficeAddress": "Select whether you need to update this partner's principal office address",
+                "usualResidentialAddress": "Select whether you need to update this partner's usual residential address",
+                "correspondenceAddress": "Select whether you need to update this partner's correspondence address"
             }
         },
 

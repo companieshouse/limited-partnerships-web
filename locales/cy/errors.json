@@ -93,7 +93,9 @@
             },
 
             "addressYesNoRequired": {
-                "principalOfficeAddress": "WELSH - Select whether you need to update this partner's principal office address"
+                "principalOfficeAddress": "WELSH - Select whether you need to update this partner's principal office address",
+                "usualResidentialAddress": "WELSH - Select whether you need to update this partner's usual residential address",
+                "correspondenceAddress": "WELSH - Select whether you need to update this partner's correspondence address"
             }
 
         },
