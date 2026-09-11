@@ -1,9 +1,13 @@
 import request from "supertest";
 
 import app from "../../app";
-import { getUrl, toEscapedHtml } from "../../../utils";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../utils";
 
 import { enTranslationText } from "../../../../../test/utils/locales";
+
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
 import PageType from "../../../../controller/PageType";
 
@@ -63,30 +67,45 @@ const config = {
 
 runAddGeneralPartnerLegalEntityTests(config);
 
-it("should return a validation error when date effective from is %s", async () => {
-  const res = await request(app)
-    .post(getUrl(config.url))
-    .send({
-      ...config.pageRouting.get(config.pageType.addGeneralPartnerLegalEntity as PageType),
-      "date_effective_from-day": "222",
-      "date_effective_from-month": "10",
-      "date_effective_from-year": "2024"
-    });
+describe("Post Add General Partner Legal Entity - date effective from validation", () => {
+  beforeEach(() => {
+    setLocalesEnabled(true);
 
-  expect(res.status).toBe(200);
-  expect(res.text).toContain(enTranslationText.errorMessages.dateEffectiveFrom.dayInvalidLength);
-});
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+    appDevDependencies.transactionGateway.feedTransactions([]);
 
-it("should return a validation error when date effective from is before registration date", async () => {
-  const res = await request(app)
-    .post(getUrl(config.url))
-    .send({
-      ...config.pageRouting.get(config.pageType.addGeneralPartnerLegalEntity as PageType),
-      "date_effective_from-day": "22",
-      "date_effective_from-month": "10",
-      "date_effective_from-year": "2011"
-    });
+    const limitedPartnership = new LimitedPartnershipBuilder().build();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-  expect(res.status).toBe(200);
-  expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateEffectiveFrom.beforeRegistrationDate));
+    const companyProfile = new CompanyProfileBuilder().build();
+    appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+  });
+
+  it("should return a validation error when date effective from is invalid", async () => {
+    const res = await request(app)
+      .post(getUrl(config.url))
+      .send({
+        ...config.pageRouting.get(config.pageType.addGeneralPartnerLegalEntity as PageType),
+        "date_effective_from-day": "222",
+        "date_effective_from-month": "10",
+        "date_effective_from-year": "2024"
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(enTranslationText.errorMessages.dateEffectiveFrom.dayInvalidLength);
+  });
+
+  it("should return a validation error when date effective from is before registration date", async () => {
+    const res = await request(app)
+      .post(getUrl(config.url))
+      .send({
+        ...config.pageRouting.get(config.pageType.addGeneralPartnerLegalEntity as PageType),
+        "date_effective_from-day": "22",
+        "date_effective_from-month": "10",
+        "date_effective_from-year": "2011"
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateEffectiveFrom.beforeRegistrationDate));
+  });
 });

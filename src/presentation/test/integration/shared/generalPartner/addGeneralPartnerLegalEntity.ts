@@ -53,6 +53,7 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
       .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
       .withAppointmentId(appDevDependencies.generalPartnerGateway.generalPartnerAppointmentId)
       .withKind(config.partnerKind ?? "")
+      .withNotDisqualifiedStatementChecked(true)
       .build();
 
     beforeEach(() => {
