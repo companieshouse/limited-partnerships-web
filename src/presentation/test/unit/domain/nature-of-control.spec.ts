@@ -6,9 +6,9 @@ import { enTranslationText } from "../../../../test/utils/locales";
 describe("Nature of Control", () => {
   describe("Individual", () => {
     it.each([
-      [ new NatureOfControlBuilder().withShareOfAssets25To50().withVotingRightsDoesNotApply().build(), ],
-      [ new NatureOfControlBuilder().withShareOfAssetsDoesNotApply().withVotingRights50To75().build()],
-      [ new NatureOfControlBuilder().withShareOfAssets50To75().withVotingRights75To100().build()],
+      [ new NatureOfControlBuilder().withShareOfAssets25To50().withVotingRightsDoesNotApply().build() ],
+      [ new NatureOfControlBuilder().withShareOfAssetsDoesNotApply().withVotingRights50To75().build() ],
+      [ new NatureOfControlBuilder().withShareOfAssets50To75().withVotingRights75To100().build() ],
       [ new NatureOfControlBuilder().withShareOfAssetsDoesNotApply().withVotingRightsDoesNotApply().withRightToAppointmentAndRemove().build() ],
       [ new NatureOfControlBuilder().withShareOfAssetsDoesNotApply().withVotingRightsDoesNotApply().withSignificantInfluenceControl().build() ],
       [ new NatureOfControlBuilder().withShareOfAssets25To50().withVotingRightsDoesNotApply().withRightToAppointmentAndRemove().build() ],
