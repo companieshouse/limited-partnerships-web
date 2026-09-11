@@ -18,6 +18,7 @@ import { getServiceTitle, isPostTransition } from "../utils";
 import { SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
 import { PagesRouting } from "../../../../controller/PageRouting";
 import PageType from "../../../../controller/PageType";
+import { runLegalEntityValidationTests } from "../legalEntityValidationTestSuite";
 
 type AddGeneralPartnerLegalEntityTestConfig = {
   url: string;
@@ -53,6 +54,7 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
       .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
       .withAppointmentId(appDevDependencies.generalPartnerGateway.generalPartnerAppointmentId)
       .withKind(config.partnerKind ?? "")
+      .withNotDisqualifiedStatementChecked(true)
       .build();
 
     beforeEach(() => {
@@ -167,6 +169,11 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${getUrl(config.confirmRedirectUrl)}`);
       });
+    });
+
+    runLegalEntityValidationTests({
+      url: getUrl(config.url),
+      pageData: config.pageRouting.get(config.pageType.addGeneralPartnerLegalEntity as PageType) ?? {}
     });
   });
 };

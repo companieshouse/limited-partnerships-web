@@ -173,6 +173,7 @@ const postTransitionRoutingUpdateLimitedPartnerLegalEntity = {
   pageType: PostTransitionPageType.updateLimitedPartnerLegalEntity,
   data: {
     serviceName: "updateLimitedPartnerLegalEntity",
+    partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.legalEntity
   }
 };

@@ -154,7 +154,6 @@
             "monthInvalidLength": "Month must be 1 or 2 numbers",
             "yearInvalidLength": "Year must be 4 numbers",
             "beforeRegistrationDate": "Cease date must be the same as or after the limited partnership's registration date"
-
         },
 
         "dateEffectiveFrom": {
@@ -176,6 +175,28 @@
 
         "partners": {
              "addPartner": {
+                "legalEntityNameMissing": "Enter the legal entity's name",
+                "legalEntityNameInvalid": "Legal entity's name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalEntityNameTooLong": "Legal entity's name must be 160 characters or less",
+
+                "legalFormMissing": "Enter the legal form or corporate identity",
+                "legalFormInvalid": "Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalFormTooLong": "Legal form or corporate identity must be 160 characters or less",
+
+                "governingLawMissing": "Enter the governing law",
+                "governingLawInvalid": "Governing law must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "governingLawTooLong": "Governing law must be 160 characters or less",
+
+                "legalEntityRegisterNameMissing": "Enter the name of the register",
+                "legalEntityRegisterNameInvalid": "Register must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalEntityRegisterNameTooLong": "Name of register must be 160 characters or less",
+
+                "legalEntityCountryRegisteredMissing": "Select the country the entity is registered in",
+
+                "registeredCompanyNumberMissing": "Enter the registration number",
+                "registeredCompanyNumberInvalid": "Registration number must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "registeredCompanyNumberTooLong": "Registration number must be 160 characters or less",
+
                 "firstNameMissing": "Enter the partner's first name",
                 "firstNameInvalid": "First name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "firstNameTooLong": "First name must be 50 characters or less",

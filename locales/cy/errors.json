@@ -176,6 +176,28 @@
 
         "partners": {
              "addPartner": {
+                "legalEntityNameMissing": "WELSH - Enter the legal entity's name",
+                "legalEntityNameInvalid": "WELSH - Legal entity's name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalEntityNameTooLong": "WELSH - Legal entity's name must be 160 characters or less",
+
+                "legalFormMissing": "WELSH - Enter the legal form or corporate identity",
+                "legalFormInvalid": "WELSH - Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalFormTooLong": "WELSH - Legal form or corporate identity must be 160 characters or less",
+
+                "governingLawMissing": "WELSH - Enter the governing law",
+                "governingLawInvalid": "WELSH - Governing law must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "governingLawTooLong": "WELSH - Governing law must be 160 characters or less",
+
+                "legalEntityRegisterNameMissing": "WELSH - Enter the name of the register",
+                "legalEntityRegisterNameInvalid": "WELSH - Register must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalEntityRegisterNameTooLong": "WELSH - Name of register must be 160 characters or less",
+
+                "legalEntityCountryRegisteredMissing": "WELSH - Select the country the entity is registered in",
+                
+                "registeredCompanyNumberMissing": "WELSH - Enter the registration number",
+                "registeredCompanyNumberInvalid": "WELSH - Registration number must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "registeredCompanyNumberTooLong": "WELSH - Registration number must be 160 characters or less",
+                
                 "firstNameMissing": "WELSH - Enter the partner's first name",
                 "firstNameInvalid": "WELSH - First name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "firstNameTooLong": "WELSH - First name must be 50 characters or less",

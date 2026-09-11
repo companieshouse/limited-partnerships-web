@@ -47,7 +47,7 @@
                 {% set countryFormValue = props.data.personWithSignificantControl.data.legal_entity_registration_location %}
                 {% set labelFormatting = "govuk-label govuk-label--m" %}
 
-                {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting, false) }}
+                {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting) }}
 
                 {{ govukInput({
                     label: {
