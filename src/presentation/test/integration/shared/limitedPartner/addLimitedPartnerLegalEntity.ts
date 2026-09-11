@@ -7,8 +7,6 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
-import * as enErrors from "../../../../../../locales/en/errors.json";
-import * as cyErrors from "../../../../../../locales/cy/errors.json";
 
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
@@ -23,6 +21,7 @@ import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feed
 
 import { PagesRouting } from "../../../../controller/PageRouting";
 import PageType from "../../../../controller/PageType";
+import { runLegalEntityValidationTests } from "../legalEntityValidationTestSuite";
 
 type AddLimitedPartnerLegalEntityTestConfig = {
   url: string;
@@ -283,79 +282,14 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
       });
     });
 
-    describe.each([
-      ["English", "en", enErrors],
-      ["Welsh", "cy", cyErrors]
-    ])("Validation - %s", (_language, language, errors) => {
-      const validLegalEntity = {
-        ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
-        partnershipType: PartnershipType.PFLP,
-        legal_entity_name: "My Company ltd - LP",
-        legal_form: "Limited Company",
-        governing_law: "Act of law",
-        legal_entity_register_name: "US Register",
-        legal_entity_registration_location: "United States",
-        registered_company_number: "12345678"
-      };
-
-      beforeEach(() => {
+    runLegalEntityValidationTests({
+      url: getUrl(config.url),
+      pageData: config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType) ?? {},
+      additionalData: { partnershipType: PartnershipType.PFLP },
+      beforeEach: () => {
         const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.PFLP).build();
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-      });
-
-      it("should return all missing validation errors", async () => {
-        const res = await request(app).post(`${getUrl(config.url)}?lang=${language}`).send({
-          ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
-          partnershipType: PartnershipType.PFLP
-        });
-
-        expect(res.status).toBe(200);
-
-        const errorMessages = [
-          errors.errorMessages.partners.addPartner.legalEntityNameMissing,
-          errors.errorMessages.partners.addPartner.legalFormMissing,
-          errors.errorMessages.partners.addPartner.governingLawMissing,
-          errors.errorMessages.partners.addPartner.legalEntityRegisterNameMissing,
-          errors.errorMessages.partners.addPartner.registeredCompanyNumberMissing,
-          errors.errorMessages.partners.addPartner.legalEntityCountryRegisteredMissing
-        ];
-
-        errorMessages.forEach((errorMessage) => {
-          expect(res.text).toContain(toEscapedHtml(errorMessage));
-        });
-      });
-
-      it.each([
-        ["legal_entity_name", errors.errorMessages.partners.addPartner.legalEntityNameInvalid],
-        ["legal_form", errors.errorMessages.partners.addPartner.legalFormInvalid],
-        ["governing_law", errors.errorMessages.partners.addPartner.governingLawInvalid],
-        ["legal_entity_register_name", errors.errorMessages.partners.addPartner.legalEntityRegisterNameInvalid],
-        ["registered_company_number", errors.errorMessages.partners.addPartner.registeredCompanyNumberInvalid]
-      ])("should return an invalid-character error when %s contains invalid characters", async (field, errorMessage) => {
-        const res = await request(app).post(`${getUrl(config.url)}?lang=${language}`).send({
-          ...validLegalEntity,
-          [field]: "Invalid ™ characters"
-        });
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(toEscapedHtml(errorMessage));
-      });
-
-      it.each([
-        ["legal_entity_name", errors.errorMessages.partners.addPartner.legalEntityNameTooLong],
-        ["legal_form", errors.errorMessages.partners.addPartner.legalFormTooLong],
-        ["governing_law", errors.errorMessages.partners.addPartner.governingLawTooLong],
-        ["legal_entity_register_name", errors.errorMessages.partners.addPartner.legalEntityRegisterNameTooLong],
-        ["registered_company_number", errors.errorMessages.partners.addPartner.registeredCompanyNumberTooLong]
-      ])("should return a maximum-length error when %s exceeds 160 characters", async (field, errorMessage) => {
-        const res = await request(app).post(`${getUrl(config.url)}?lang=${language}`).send({
-          ...validLegalEntity,
-          [field]: "a".repeat(161)
-        });
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(toEscapedHtml(errorMessage));
-      });
+      }
     });
   });
 };
