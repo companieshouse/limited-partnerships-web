@@ -14,7 +14,11 @@ import CompanyService, { DataIncludingPartners } from "../../../application/serv
 import TransactionService from "../../../application/service/TransactionService";
 
 import PartnerController from "../common/PartnerController";
-import PostTransitionPageType, { isLegalEntity, isPrincipalOfficeAddressYesNoPage } from "./pageType";
+import PostTransitionPageType, {
+  isLegalEntity,
+  isPrincipalOfficeAddressYesNoPage,
+  isUsualResidentialAddressYesNoPage
+} from "./pageType";
 import postTransitionRouting from "./routing";
 import {
   CEASE_DATE_TEMPLATE,
@@ -457,25 +461,37 @@ class PostTransitionPartnerController extends PartnerController {
           pageKey: partner
         };
 
-        if (isPrincipalOfficeAddressYesNoPage(pageType)) {
-          const errors = this.validatePrincipalOfficeAddressYesNoPage(request, response);
-          if (errors?.hasErrors()) {
-            const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
-            const { data: renderData } = this.buildPartnerErrorRenderData(
-              pageType,
-              pageRouting,
-              limitedPartnership,
-              partnerEntity,
-              { update_principal_office_address_required: null },
-              partner
-            );
+        let errors: UIErrors | undefined;
+        let nullField = {};
 
-            return response.render(
-              UPDATE_ADDRESS_YES_NO_TEMPLATE,
-              super.makeProps(pageRouting, renderData, errors)
-            );
-          }
+        if (isPrincipalOfficeAddressYesNoPage(pageType)) {
+          errors = this.validatePrincipalOfficeAddressYesNoPage(request, response);
+          nullField = { update_principal_office_address_required: null };
+        } else if (isUsualResidentialAddressYesNoPage(pageType)) {
+          errors = this.validateUsualResidentialAddressYesNoPage(request, response);
+          nullField = { update_usual_residential_address_required: null };
+        } else if (pageType === PostTransitionPageType.updateCorrespondenceAddressYesNo) {
+          errors = this.validateCorrespondenceAddressYesNoPage(request, response);
+          nullField = { update_service_address_required: null };
         }
+
+        if (errors?.hasErrors()) {
+          const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
+          const { data: renderData } = this.buildPartnerErrorRenderData(
+            pageType,
+            pageRouting,
+            limitedPartnership,
+            partnerEntity,
+            nullField,
+            partner
+          );
+
+          return response.render(
+            UPDATE_ADDRESS_YES_NO_TEMPLATE,
+            super.makeProps(pageRouting, renderData, errors)
+          );
+        }
+
         const result = await super.sendData(partner, tokens, ids, data);
 
         if (result?.errors) {
@@ -554,13 +570,34 @@ class PostTransitionPartnerController extends PartnerController {
   }
 
   private validatePrincipalOfficeAddressYesNoPage(request: Request, response: Response){
-
     const selectedValue = request.body?.update_principal_office_address_required;
 
     if (selectedValue === undefined || selectedValue === null) {
       return new UIErrors().setWebError(
         "update_principal_office_address_required",
         response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress
+      );
+    }
+  }
+
+  private validateUsualResidentialAddressYesNoPage(request: Request, response: Response){
+    const selectedValue = request.body?.update_usual_residential_address_required;
+
+    if (selectedValue === undefined || selectedValue === null) {
+      return new UIErrors().setWebError(
+        "update_usual_residential_address_required",
+        response.locals.i18n.errorMessages.address.addressYesNoRequired.usualResidentialAddress
+      );
+    }
+  }
+
+  private validateCorrespondenceAddressYesNoPage(request: Request, response: Response){
+    const selectedValue = request.body?.update_service_address_required;
+
+    if (selectedValue === undefined || selectedValue === null) {
+      return new UIErrors().setWebError(
+        "update_service_address_required",
+        response.locals.i18n.errorMessages.address.addressYesNoRequired.correspondenceAddress
       );
     }
   }

@@ -143,4 +143,12 @@ export const isPrincipalOfficeAddressYesNoPage = (pageType: string): boolean => 
   return principalOfficeAddressYesNoPageTypes.includes(pageType);
 };
 
+export const isUsualResidentialAddressYesNoPage = (pageType: string): boolean => {
+  const usualResidentialAddressYesNoPageTypes: string[] = [
+    PostTransitionPageType.updateGeneralPartnerUsualResidentialAddressYesNo,
+    PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo
+  ];
+  return usualResidentialAddressYesNoPageTypes.includes(pageType);
+};
+
 export default PostTransitionPageType;
