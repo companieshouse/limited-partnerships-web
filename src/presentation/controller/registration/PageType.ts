@@ -56,11 +56,13 @@ export const isAddNatureOfControlPage = (pageType: string): boolean => {
   );
 };
 
+const isAddPartnerLegalEntityPageTypes: string[] = [
+  RegistrationPageType.addGeneralPartnerLegalEntity,
+  RegistrationPageType.addLimitedPartnerLegalEntity
+];
+
 export const isAddPartnerLegalEntityPage = (pageType: string): boolean => {
-  return (
-    pageType === RegistrationPageType.addGeneralPartnerLegalEntity ||
-    pageType === RegistrationPageType.addLimitedPartnerLegalEntity
-  );
+  return isAddPartnerLegalEntityPageTypes.includes(pageType);
 };
 
 export default RegistrationPageType;
