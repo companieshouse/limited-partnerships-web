@@ -272,7 +272,8 @@ describe("Add Nature of Control Page", () => {
       [
         "no nature of control is selected",
         {},
-        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.individual.youMustSelectAtLeastOne,
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.individual.youMustSelectAtLeastOne
+          .individual,
         1
       ],
       [
@@ -323,7 +324,8 @@ describe("Add Nature of Control Page", () => {
           right_to_appointment_and_remove: false,
           significant_influence_control: false
         },
-        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.individual.youMustSelectAtLeastOne,
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.individual.youMustSelectAtLeastOne
+          .individual,
         1
       ]
     ])(
