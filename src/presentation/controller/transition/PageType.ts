@@ -22,9 +22,13 @@ enum TransitionPageType {
   checkYourAnswers = "check-your-answers"
 }
 
+const addPartnerLegalEntityPageType: string[] = [
+  TransitionPageType.addGeneralPartnerLegalEntity,
+  TransitionPageType.addLimitedPartnerLegalEntity
+];
+
 export const isAddPartnerLegalEntityPage = (pageType: string): boolean => {
-  return pageType === TransitionPageType.addGeneralPartnerLegalEntity ||
-    pageType === TransitionPageType.addLimitedPartnerLegalEntity;
+  return addPartnerLegalEntityPageType.includes(pageType);
 };
 
 export default TransitionPageType;
