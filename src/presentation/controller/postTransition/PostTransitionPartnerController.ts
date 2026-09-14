@@ -462,17 +462,29 @@ class PostTransitionPartnerController extends PartnerController {
         };
 
         let errors: UIErrors | undefined;
-        let nullField = {};
+        let fieldToReset = {};
 
         if (isPrincipalOfficeAddressYesNoPage(pageType)) {
-          errors = this.validatePrincipalOfficeAddressYesNoPage(request, response);
-          nullField = { update_principal_office_address_required: null };
+          errors = this.validateAddressYesNoPage(
+            request,
+            "update_principal_office_address_required",
+            response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress
+          );
+          fieldToReset = { update_principal_office_address_required: null };
         } else if (isUsualResidentialAddressYesNoPage(pageType)) {
-          errors = this.validateUsualResidentialAddressYesNoPage(request, response);
-          nullField = { update_usual_residential_address_required: null };
+          errors = this.validateAddressYesNoPage(
+            request,
+            "update_usual_residential_address_required",
+            response.locals.i18n.errorMessages.address.addressYesNoRequired.usualResidentialAddress
+          );
+          fieldToReset = { update_usual_residential_address_required: null };
         } else if (pageType === PostTransitionPageType.updateCorrespondenceAddressYesNo) {
-          errors = this.validateCorrespondenceAddressYesNoPage(request, response);
-          nullField = { update_service_address_required: null };
+          errors = this.validateAddressYesNoPage(
+            request,
+            "update_service_address_required",
+            response.locals.i18n.errorMessages.address.addressYesNoRequired.correspondenceAddress
+          );
+          fieldToReset = { update_service_address_required: null };
         }
 
         if (errors?.hasErrors()) {
@@ -482,7 +494,7 @@ class PostTransitionPartnerController extends PartnerController {
             pageRouting,
             limitedPartnership,
             partnerEntity,
-            nullField,
+            fieldToReset,
             partner
           );
 
@@ -569,36 +581,11 @@ class PostTransitionPartnerController extends PartnerController {
     };
   }
 
-  private validatePrincipalOfficeAddressYesNoPage(request: Request, response: Response){
-    const selectedValue = request.body?.update_principal_office_address_required;
+  private validateAddressYesNoPage(request: Request, fieldName: string, errorMessage: string) {
+    const selectedValue = request.body[fieldName];
 
     if (selectedValue === undefined || selectedValue === null) {
-      return new UIErrors().setWebError(
-        "update_principal_office_address_required",
-        response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress
-      );
-    }
-  }
-
-  private validateUsualResidentialAddressYesNoPage(request: Request, response: Response){
-    const selectedValue = request.body?.update_usual_residential_address_required;
-
-    if (selectedValue === undefined || selectedValue === null) {
-      return new UIErrors().setWebError(
-        "update_usual_residential_address_required",
-        response.locals.i18n.errorMessages.address.addressYesNoRequired.usualResidentialAddress
-      );
-    }
-  }
-
-  private validateCorrespondenceAddressYesNoPage(request: Request, response: Response){
-    const selectedValue = request.body?.update_service_address_required;
-
-    if (selectedValue === undefined || selectedValue === null) {
-      return new UIErrors().setWebError(
-        "update_service_address_required",
-        response.locals.i18n.errorMessages.address.addressYesNoRequired.correspondenceAddress
-      );
+      return new UIErrors().setWebError(fieldName, errorMessage);
     }
   }
 
