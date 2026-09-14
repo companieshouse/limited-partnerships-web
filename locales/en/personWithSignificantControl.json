@@ -182,9 +182,8 @@
             "moreThan75": "75% or more",
             "doesNotApply": "does not apply",
             "ownershipOfRightToAppointOrRemove": "Ownership of right to appoint or remove management",
-            "selectOwnershipHint": "Select if this statement applies",
+            "selectHint": "Select if this statement applies",
             "sigInfluenceOrControl": "Significant influence or control",
-            "selectSigInfluenceHint": "Only select this statement if the other natures of control do not apply",
 
             "individual": {
                 "title": "What is the individual's nature of control?",

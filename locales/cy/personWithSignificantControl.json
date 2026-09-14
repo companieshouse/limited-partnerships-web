@@ -181,9 +181,8 @@
             "moreThan75": "WELSH - 75% or more",
             "doesNotApply": "WELSH - does not apply",
             "ownershipOfRightToAppointOrRemove": "WELSH - Ownership of right to appoint or remove management",
-            "selectOwnershipHint": "WELSH - Select if this statement applies",
+            "selectHint": "WELSH - Select if this statement applies",
             "sigInfluenceOrControl": "WELSH - Significant influence or control",
-            "selectSigInfluenceHint": "WELSH - Only select this statement if the other natures of control do not apply",
 
             "individual": {
                 "title": "WELSH - What is the individual's nature of control?",
