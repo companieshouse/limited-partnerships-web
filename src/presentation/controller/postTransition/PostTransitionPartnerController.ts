@@ -15,7 +15,7 @@ import TransactionService from "../../../application/service/TransactionService"
 
 import PartnerController from "../common/PartnerController";
 import PostTransitionPageType, {
-  isLegalEntity,
+  isLegalEntityPage,
   isPrincipalOfficeAddressYesNoPage,
   isUsualResidentialAddressYesNoPage
 } from "./pageType";
@@ -329,7 +329,7 @@ class PostTransitionPartnerController extends PartnerController {
             companyName: limitedPartnershipData?.partnership_name ?? "",
             companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
-          isLegalEntity(pageType) ? data?.legalEntity.description : data?.person.description
+          isLegalEntityPage(pageType) ? data?.legalEntity.description : data?.person.description
         );
 
         let result: any = {};
@@ -345,7 +345,7 @@ class PostTransitionPartnerController extends PartnerController {
           result = await this.setResultFromAppointment(
             request,
             resultAppointment,
-            isLegalEntity(pageType),
+            isLegalEntityPage(pageType),
             data,
             partner,
             result,
@@ -354,7 +354,7 @@ class PostTransitionPartnerController extends PartnerController {
         } else {
           const dataToSend = {
             ...request.body,
-            kind: isLegalEntity(pageType) ? data?.legalEntity.kind : data?.person.kind,
+            kind: isLegalEntityPage(pageType) ? data?.legalEntity.kind : data?.person.kind,
             partnerType: partner,
             partnerEntityType: pageRouting?.data?.partnerEntityType,
             journeyTypes: response.locals.journeyTypes,

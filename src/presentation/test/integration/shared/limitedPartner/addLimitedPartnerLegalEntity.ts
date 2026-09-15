@@ -4,7 +4,7 @@ import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limi
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 
@@ -21,6 +21,7 @@ import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feed
 
 import { PagesRouting } from "../../../../controller/PageRouting";
 import PageType from "../../../../controller/PageType";
+import { runLegalEntityValidationTests } from "../legalEntityValidationTestSuite";
 
 type AddLimitedPartnerLegalEntityTestConfig = {
   url: string;
@@ -159,14 +160,13 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
         expect(res.text).toContain(`Redirecting to ${getUrl(config.redirectUrl)}`);
       });
 
-      // validation tests skipped until proper validation logic is implemented
-      it.skip("should replay entered data when invalid data is entered and a validation error occurs", async () => {
+      it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
         const res = await request(app)
           .post(getUrl(config.url))
           .send({
             ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
             partnershipType: PartnershipType.LP,
-            legal_entity_name: "INVALID-CHARACTERS-FORENAME",
+            legal_entity_name: "Invalid ™ characters",
             legal_form: "Limited Company",
             governing_law: "Act of law",
             legal_entity_register_name: "US Register",
@@ -179,12 +179,16 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
 
         expect(res.status).toBe(200);
 
-        expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
+        expect(res.text).toContain(toEscapedHtml("Invalid ™ characters"));
         expect(res.text).toContain("Limited Company");
         expect(res.text).toContain("United States");
-        expect(res.text).toContain("11111");
-        expect(res.text).toContain("EUR");
-        expect(res.text).toContain("SHARES");
+        expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.partners.addPartner.legalEntityNameInvalid));
+
+        if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
+          expect(res.text).toContain("11111");
+          expect(res.text).toContain("EUR");
+          expect(res.text).toContain("SHARES");
+        }
       });
 
       if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
@@ -244,11 +248,10 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
         expect(res.status).toBe(302);
       });
 
-      // validation tests skipped until proper validation logic is implemented
-      it.skip("should replay entered data when invalid data is entered and a validation error occurs", async () => {
+      it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
         const res = await request(app).post(getUrl(config.urlWithIds)).send({
           ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
-          legal_entity_name: "INVALID-CHARACTERS-FORENAME",
+          legal_entity_name: "Invalid ™ characters",
           legal_form: "Limited Company",
           governing_law: "Act of law",
           legal_entity_register_name: "US Register",
@@ -258,11 +261,10 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
 
         expect(res.status).toBe(200);
 
-        expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
+        expect(res.text).toContain(toEscapedHtml("Invalid ™ characters"));
         expect(res.text).toContain("Limited Company");
         expect(res.text).toContain("United States");
-
-        expect(res.text).toContain("limited partner name is invalid");
+        expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.partners.addPartner.legalEntityNameInvalid));
       });
 
       it("should send the limited partner details and go to confirm ura address page if already saved", async () => {
@@ -278,6 +280,16 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
 
         expect(res.text).toContain(`Redirecting to ${getUrl(config.confirmRedirectUrl)}`);
       });
+    });
+
+    runLegalEntityValidationTests({
+      url: getUrl(config.url),
+      pageData: config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType) ?? {},
+      additionalData: { partnershipType: PartnershipType.PFLP },
+      beforeEach: () => {
+        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.PFLP).build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      }
     });
   });
 };

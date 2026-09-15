@@ -110,7 +110,7 @@ const legalEntityPageTypes: string[] = [
   PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange
 ];
 
-export const isLegalEntity = (pageType: string): boolean => {
+export const isLegalEntityPage = (pageType: string): boolean => {
   return legalEntityPageTypes.includes(pageType);
 };
 
