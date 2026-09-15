@@ -40,7 +40,7 @@
             "chooseAddress": {
                 "selectionRequired": "WELSH - Select an address from the list"
             },
-            
+
             "confirm": {
                 "countryMissing": "WELSH - We cannot identify the country for this address. Select Change, then select the country."
             },
@@ -49,30 +49,30 @@
                 "premisesMissing": "WELSH - Enter a property name or number",
                 "premisesLength": "WELSH - Property name or number must be 200 characters or less",
                 "premisesInvalid": "WELSH - Property name or number must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
-    
+
                 "addressLine1Missing": "WELSH - Enter address line 1, typically the building and street",
                 "addressLine1Invalid": "WELSH - Address line 1 must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "addressLine1Length": "WELSH - Address line 1 must be 50 characters or less",
-    
+
                 "addressLine2Invalid": "WELSH - Address line 2 must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "addressLine2Length": "WELSH - Address line 2 must be 50 characters or less",
-    
+
                 "localityMissing": "WELSH - Enter a town or city",
                 "localityInvalid": "WELSH - Town or city must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "localityLength": "WELSH - Town or city must be 50 characters or less",
-    
+
                 "regionInvalid": "WELSH - County must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "regionLength": "WELSH - County must be 50 characters or less",
-    
+
                 "postcodeMissing": "WELSH - Enter a postcode",
                 "postcodeInvalid": "WELSH - Postcode must only include letters a to z, numbers and spaces",
                 "postcodeFormat": "WELSH - Invalid postcode format",
                 "postalCodeLength": "WELSH - Postcode must be 20 characters or less",
-    
+
                 "notMainland": "WELSH - Enter a UK mainland postcode",
-    
+
                 "countryMissing": "WELSH - Select a country",
-    
+
                 "jurisdictionCountry": "WELSH - You must enter a country that matches your jurisdiction",
                 "jurisdictionEnglandAndWales": "WELSH - You must enter a postcode which is in England or Wales",
                 "jurisdictionNorthernIreland": "WELSH - You must enter a postcode which is in Northern Ireland",
@@ -240,10 +240,10 @@
                 "governingLawTooLong": "WELSH - Governing law must be 160 characters or less"
             },
             "addIndividualPerson": {
-                "consentCheckedMissing": "WELSH - Confirm that this person knows their details are being supplied as part of this application",
+                "consentCheckedMissing": "WELSH - Confirm that this person knows their details are being provided as part of this application",
                 "titleInvalid": "WELSH - Title must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "titleTooLong": "WELSH - Title must be 50 characters or less",
-                
+
                 "otherTitleMissing": "WELSH - Enter their title",
                 "otherTitleShouldBeEmpty": "WELSH - Other title must only be provided when title is 'OTHER'",
                 "otherTitleInvalid": "WELSH - Other title must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
@@ -259,7 +259,7 @@
                 "lastNameMissing": "WELSH - Enter their last name",
                 "lastNameInvalid": "WELSH - Last name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "lastNameTooLong": "WELSH - Last name must be 160 characters or less",
-                
+
                 "nationality1Missing": "WELSH - Select their nationality",
                 "nationality2Same": "WELSH - Second nationality must be different from the first"
             },
