@@ -99,6 +99,11 @@ class PersonWithSignificantControlBuilder {
     return this;
   }
 
+  withEnteredOnRegister(enteredOnRegister: boolean) {
+    this.data.entered_on_register = enteredOnRegister;
+    return this;
+  }
+
   withTitle(title: string) {
     this.data.title = title;
     return this;
