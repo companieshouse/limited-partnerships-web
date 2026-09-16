@@ -46,14 +46,14 @@
     <div class="govuk-grid-column-two-thirds">
 
       <form class="form" method="post">
-        <input type="hidden" name="pageType" value={{ props.pageType }}>     
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
 
         {% include "includes/csrf_token.njk" %}
 
         {% include "includes/errors.njk" %}
-        
-        {% include "includes/proposed-name.njk" %}  
-    
+
+        {% include "includes/proposed-name.njk" %}
+
         <h1 class="govuk-heading-xl">{{ i18n.partner.addPartnerPersonPage.limitedPartner.title }}</h1>
 
         {% set partner = "limitedPartner" %}
@@ -93,20 +93,13 @@
             {
               value: "true",
               text: i18n.partner.addPartnerPersonPage.limitedPartner.previousName.yes,
-              attributes: {
-                required: true,
-                "role": "radiogroup"
-              } if not journeyTypes.isRegistration,
               conditional: {
                 html: previousHtmlPerson
               }
             },
             {
               value: "false",
-              text: i18n.partner.addPartnerPersonPage.limitedPartner.previousName.no,
-              attributes: {
-                required: true
-              } if not journeyTypes.isRegistration
+              text: i18n.partner.addPartnerPersonPage.limitedPartner.previousName.no
             }
           ],
           errorMessage: props.errors.previous_name if props.errors
@@ -131,38 +124,26 @@
               classes: "govuk-input--width-2",
               label: i18n.partner.addPartnerPersonPage.dateDay,
               name: "day",
-              value: date_of_birth_day,
-              attributes: {
-                required: true,
-                pattern: "[0-9]*"
-              } if not journeyTypes.isRegistration
+              value: date_of_birth_day
             },
             {
               classes: "govuk-input--width-2",
               label: i18n.partner.addPartnerPersonPage.dateMonth,
               name: "month",
-              value: date_of_birth_month,
-              attributes: {
-                required: true,
-                pattern: "[0-9]*"
-              } if not journeyTypes.isRegistration
+              value: date_of_birth_month
             },
             {
               classes: "govuk-input--width-4",
               label: i18n.partner.addPartnerPersonPage.dateYear,
               name: "year",
-              value: date_of_birth_year,
-              attributes: {
-                required: true,
-                pattern: "[0-9]*"
-              } if not journeyTypes.isRegistration
+              value: date_of_birth_year
             }
           ]
         }) }}
 
         {% set nationalityField = props.data.limitedPartner.data.nationality1 %}
         {% set nationalityFieldSelectPrompt = i18n.partner.addPartnerPersonPage.nationalitySelectPrompt %}
-        {% set nationalityFieldRequired = "true" if not journeyTypes.isRegistration else "false" %}
+        {% set nationalityFieldRequired = "false" %}
         {% set nationalityFieldText = i18n.partner.addPartnerPersonPage.nationality %}
         {% set nationalityFieldHintText = "" %}
         {% set nationalityFieldNameId = "nationality1" %}
@@ -175,10 +156,10 @@
         {% set nationalityFieldHintText = i18n.partner.addPartnerPersonPage.secondNationalityHint  %}
         {% set nationalityFieldNameId = "nationality2" %}
         {% include "includes/nationalities.njk" %}
-        
+
         {% if journeyTypes.isRegistration or journeyTypes.isPostTransition %}
           {% include "includes/capital-contribution.njk" %}
-        {% endif %} 
+        {% endif %}
 
         {% if journeyTypes.isPostTransition %}
           {{ govukDateInput({
@@ -200,31 +181,19 @@
                 classes: "govuk-input--width-2",
                 label: i18n.partner.addPartnerPersonPage.dateDay,
                 name: "day",
-                value: date_effective_from_day,
-                attributes: {
-                  required: true,
-                  pattern: "[0-9]*"
-                }
+                value: date_effective_from_day
               },
               {
                 classes: "govuk-input--width-2",
                 label: i18n.partner.addPartnerPersonPage.dateMonth,
                 name: "month",
-                value: date_effective_from_month,
-                attributes: {
-                  required: true,
-                  pattern: "[0-9]*"
-                }
+                value: date_effective_from_month
               },
               {
                 classes: "govuk-input--width-4",
                 label: i18n.partner.addPartnerPersonPage.dateYear,
                 name: "year",
-                value: date_effective_from_year,
-                attributes: {
-                  required: true,
-                  pattern: "[0-9]*"
-                }
+                value: date_effective_from_year
               }
             ]
           }) }}
