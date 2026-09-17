@@ -105,20 +105,22 @@
             "publish": "WELSH - and publish a copy of this on the public register."
         },
         "rejected": "WELSH - If it's rejected, we'll explain why and tell you what you can do next. We'll also refund the registration fee.",
-        "filing": {
-            "partnershipName": "WELSH - We've received your filing for",
-            "sentEmail": "WELSH - We've sent an email to",
-            "confirm": "WELSH - to confirm."
-        },
-        "processUpdate": "WELSH - We'll process the update as soon as possible. This will usually take no more than 5 working days.",
-        "willSendEmailTo": "WELSH - We'll send an email to",
-        "updatePublicRegister": "WELSH - to confirm when we've updated the information on the public register.",
         "avis": {
             "message": "WELSH - What did you think of this service?",
             "time": "WELSH - (takes 30 seconds)"
         },
         "transition" : {
-            "title": "WELSH - Application submitted"
+            "filingReceived": "WELSH - We've received your filing with new required information for",
+            "applicationProcess" : "WELSH - We'll process this filing within 5 working days, and email",
+            "accepted" : "WELSH - If the filing is accepted, we'll publish the new information on the public register (except protected or sensitive information).",
+            "rejected" : "WELSH - If it's rejected, we'll explain why and tell you what you can do next.",
+            "confirmationStatement" : "WELSH - Confirmation statement",
+            "fileStatement" : "WELSH - All limited partnerships are now required to file an annual confirmation statement.",
+            "searchRegister" : "WELSH - After we've accepted the new required information, you can check when the next confirmation statement is due by searching for the partnership on the",
+            "registerName" : "WELSH - Companies House register",
+            "whatNext" : "WELSH - What do you want to do now?",
+            "howFileconfirmationStatement" : "WELSH - Find out how to file a confirmation statement",
+            "startNewTransition" : "WELSH - Provide new required information for a different limited partnership"
         },
         "postTransition": {
             "title": "WELSH - Update submitted",

@@ -60,13 +60,6 @@ describe("Confirmation Page", () => {
 });
 
 const excludedKeysRegistration = [
-  "provideMoreInformation",
-  "tellUsAboutPSCs",
-  "download",
-  "filing",
-  "processUpdate",
-  "willSendEmailTo",
-  "updatePublicRegister",
   "postTransition",
   "transition"
 ];
