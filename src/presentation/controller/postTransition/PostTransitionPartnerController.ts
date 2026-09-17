@@ -14,7 +14,11 @@ import CompanyService, { DataIncludingPartners } from "../../../application/serv
 import TransactionService from "../../../application/service/TransactionService";
 
 import PartnerController from "../common/PartnerController";
-import PostTransitionPageType, { isLegalEntity, isPrincipalOfficeAddressYesNoPage } from "./pageType";
+import PostTransitionPageType, {
+  isLegalEntityPage,
+  isPrincipalOfficeAddressYesNoPage,
+  isUsualResidentialAddressYesNoPage
+} from "./pageType";
 import postTransitionRouting from "./routing";
 import {
   CEASE_DATE_TEMPLATE,
@@ -325,7 +329,7 @@ class PostTransitionPartnerController extends PartnerController {
             companyName: limitedPartnershipData?.partnership_name ?? "",
             companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
-          isLegalEntity(pageType) ? data?.legalEntity.description : data?.person.description
+          isLegalEntityPage(pageType) ? data?.legalEntity.description : data?.person.description
         );
 
         let result: any = {};
@@ -341,7 +345,7 @@ class PostTransitionPartnerController extends PartnerController {
           result = await this.setResultFromAppointment(
             request,
             resultAppointment,
-            isLegalEntity(pageType),
+            isLegalEntityPage(pageType),
             data,
             partner,
             result,
@@ -350,7 +354,7 @@ class PostTransitionPartnerController extends PartnerController {
         } else {
           const dataToSend = {
             ...request.body,
-            kind: isLegalEntity(pageType) ? data?.legalEntity.kind : data?.person.kind,
+            kind: isLegalEntityPage(pageType) ? data?.legalEntity.kind : data?.person.kind,
             partnerType: partner,
             partnerEntityType: pageRouting?.data?.partnerEntityType,
             journeyTypes: response.locals.journeyTypes,
@@ -457,25 +461,49 @@ class PostTransitionPartnerController extends PartnerController {
           pageKey: partner
         };
 
-        if (isPrincipalOfficeAddressYesNoPage(pageType)) {
-          const errors = this.validatePrincipalOfficeAddressYesNoPage(request, response);
-          if (errors?.hasErrors()) {
-            const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
-            const { data: renderData } = this.buildPartnerErrorRenderData(
-              pageType,
-              pageRouting,
-              limitedPartnership,
-              partnerEntity,
-              { update_principal_office_address_required: null },
-              partner
-            );
+        let errors: UIErrors | undefined;
+        let fieldToReset = {};
 
-            return response.render(
-              UPDATE_ADDRESS_YES_NO_TEMPLATE,
-              super.makeProps(pageRouting, renderData, errors)
-            );
-          }
+        if (isPrincipalOfficeAddressYesNoPage(pageType)) {
+          errors = this.validateAddressYesNoPage(
+            request.body.update_principal_office_address_required,
+            "update_principal_office_address_required",
+            response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress
+          );
+          fieldToReset = { update_principal_office_address_required: null };
+        } else if (isUsualResidentialAddressYesNoPage(pageType)) {
+          errors = this.validateAddressYesNoPage(
+            request.body.update_usual_residential_address_required,
+            "update_usual_residential_address_required",
+            response.locals.i18n.errorMessages.address.addressYesNoRequired.usualResidentialAddress
+          );
+          fieldToReset = { update_usual_residential_address_required: null };
+        } else if (pageType === PostTransitionPageType.updateCorrespondenceAddressYesNo) {
+          errors = this.validateAddressYesNoPage(
+            request.body.update_service_address_required,
+            "update_service_address_required",
+            response.locals.i18n.errorMessages.address.addressYesNoRequired.correspondenceAddress
+          );
+          fieldToReset = { update_service_address_required: null };
         }
+
+        if (errors?.hasErrors()) {
+          const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
+          const { data: renderData } = this.buildPartnerErrorRenderData(
+            pageType,
+            pageRouting,
+            limitedPartnership,
+            partnerEntity,
+            fieldToReset,
+            partner
+          );
+
+          return response.render(
+            UPDATE_ADDRESS_YES_NO_TEMPLATE,
+            super.makeProps(pageRouting, renderData, errors)
+          );
+        }
+
         const result = await super.sendData(partner, tokens, ids, data);
 
         if (result?.errors) {
@@ -553,15 +581,9 @@ class PostTransitionPartnerController extends PartnerController {
     };
   }
 
-  private validatePrincipalOfficeAddressYesNoPage(request: Request, response: Response){
-
-    const selectedValue = request.body?.update_principal_office_address_required;
-
+  private validateAddressYesNoPage(selectedValue, fieldName: string, errorMessage: string) {
     if (selectedValue === undefined || selectedValue === null) {
-      return new UIErrors().setWebError(
-        "update_principal_office_address_required",
-        response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress
-      );
+      return new UIErrors().setWebError(fieldName, errorMessage);
     }
   }
 

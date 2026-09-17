@@ -110,7 +110,7 @@ const legalEntityPageTypes: string[] = [
   PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange
 ];
 
-export const isLegalEntity = (pageType: string): boolean => {
+export const isLegalEntityPage = (pageType: string): boolean => {
   return legalEntityPageTypes.includes(pageType);
 };
 
@@ -141,6 +141,14 @@ export const isPrincipalOfficeAddressYesNoPage = (pageType: string): boolean => 
     PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo
   ];
   return principalOfficeAddressYesNoPageTypes.includes(pageType);
+};
+
+export const isUsualResidentialAddressYesNoPage = (pageType: string): boolean => {
+  const usualResidentialAddressYesNoPageTypes: string[] = [
+    PostTransitionPageType.updateGeneralPartnerUsualResidentialAddressYesNo,
+    PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo
+  ];
+  return usualResidentialAddressYesNoPageTypes.includes(pageType);
 };
 
 export default PostTransitionPageType;
