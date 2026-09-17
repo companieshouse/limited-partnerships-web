@@ -6,7 +6,7 @@ import {
 import IPersonWithSignificantControlGateway from "../../../domain/IPersonWithSignificantControlGateway";
 import { Tokens } from "../../../domain/types";
 
-import { removeEmptyStringValues, validateAndFormatPersonDateOfBirth } from "../utils";
+import { removeEmptyStringValues, resetRegisterDataIfEnteredOnRegisterIsFalse, validateAndFormatPersonDateOfBirth } from "../utils";
 import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";
 import { checkForBadRequest, makeApiCallWithRetry } from "../api";
 import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
@@ -17,8 +17,10 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
     transactionId: string,
     data: Partial<PersonWithSignificantControl>
   ): Promise<string> {
-    const personWithSignificantControl: PersonWithSignificantControl = { data: removeEmptyStringValues(data) };
+    resetRegisterDataIfEnteredOnRegisterIsFalse(data);
     validateAndFormatPersonDateOfBirth(data);
+
+    const personWithSignificantControl: PersonWithSignificantControl = { data: removeEmptyStringValues(data) };
 
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
@@ -85,6 +87,7 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
     personWithSignificantControlId: string,
     data: Partial<PersonWithSignificantControl>
   ): Promise<void> {
+    resetRegisterDataIfEnteredOnRegisterIsFalse(data);
     validateAndFormatPersonDateOfBirth(data);
 
     const apiCall = {

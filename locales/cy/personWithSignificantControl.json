@@ -49,14 +49,15 @@
                 "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
             },
             "addRelevantLegalEntity": {
-                "title": "WELSH - Add a relevant legal entity PSC",
+                "title": "WELSH - Add a PSC (relevant legal entity)",
 
-                "legalEntityName" : "WELSH - What is the relevant legal entity (RLE)'s name?",
-                "whichRegister" : "WELSH - Which register is it entered in? (if applicable)",
+                "legalEntityName" : "WELSH - What is the name of the relevant legal entity (RLE)?",
+                "whichRegister" : "WELSH - What is the name of the register?",
                 "whichRegisterHint" : "WELSH - For example, the Register of Companies UK.",
-                "countryRegistered" : "WELSH - Which country is it registered in? (if applicable)",
-                "registrationNumber" : "WELSH - What is the registration number? (if applicable)",
-                "registrationNumberHint" : "WELSH - For example, the company number."
+                "countryRegistered" : "WELSH - Which country is it registered in?",
+                "registrationNumber" : "WELSH - What is its registration number?",
+                "registrationNumberHint" : "WELSH - For example, the company number.",
+                "enteredOnRegister" : "WELSH - Is the entity entered on a register?"
             },
             "addOtherRegistrablePerson": {
                 "title": "WELSH - Add a PSC (other registrable person)",

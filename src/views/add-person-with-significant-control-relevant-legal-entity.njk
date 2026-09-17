@@ -5,6 +5,16 @@
 {% set pageTitle = pageContent.addRelevantLegalEntity.title %}
 {% set publicRegisterInformationLine1 = pageContent.commonEntityFields.publicRegisterLine1 %}
 
+{% set entered_on_register = props.data.personWithSignificantControl.data.entered_on_register %}
+{% if entered_on_register is defined %}
+  {% if entered_on_register == "true" or entered_on_register == true %}
+    {% set entered_on_register = true %}
+  {% elif entered_on_register == "false" or entered_on_register == false %}
+    {% set entered_on_register = false %}
+  {% endif %}
+{% endif %}
+
+
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -27,42 +37,77 @@
                 
                 {% include "pages/personWithSignificantControl/add-person-with-significant-control.njk" %}
 
-                {{ govukInput({
-                    label: {
-                        text: pageContent.addRelevantLegalEntity.whichRegister,
-                        classes: "govuk-label govuk-label--m"
-                    },
-                    hint: {
-                        text: pageContent.addRelevantLegalEntity.whichRegisterHint
-                    },
-                    id: "legal_entity_register_name",
-                    name: "legal_entity_register_name",
-                    value: props.data.personWithSignificantControl.data.legal_entity_register_name,
-                    errorMessage: props.errors.legal_entity_register_name if props.errors
-                }) }}
+                {% set enteredOnRegisterHtml %}
+                    
+                    {# Which country #}
+                    {% set countryText = pageContent.addRelevantLegalEntity.countryRegistered %}
+                    {% set countryFormId = "legal_entity_registration_location" %}
+                    {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
+                    {% set countryFormValue = props.data.personWithSignificantControl.data.legal_entity_registration_location %}
+                    {% set labelFormatting = "govuk-label govuk-label--m" %}
 
-                {% set countryText = pageContent.addRelevantLegalEntity.countryRegistered %}
-                {% set countryFormId = "legal_entity_registration_location" %}
-                {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
-                {% set countryFormValue = props.data.personWithSignificantControl.data.legal_entity_registration_location %}
-                {% set labelFormatting = "govuk-label govuk-label--m" %}
+                    {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting) }}
+                    
+                    {# Which Register #}
+                    {{ govukInput({
+                        label: {
+                            text: pageContent.addRelevantLegalEntity.whichRegister,
+                            classes: "govuk-label govuk-label--m"
+                        },
+                        hint: {
+                            text: pageContent.addRelevantLegalEntity.whichRegisterHint
+                        },
+                        id: "legal_entity_register_name",
+                        name: "legal_entity_register_name",
+                        value: props.data.personWithSignificantControl.data.legal_entity_register_name,
+                        errorMessage: props.errors.legal_entity_register_name if props.errors
+                    }) }}
 
-                {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting) }}
+                    {# Registration number #}
+                    {{ govukInput({
+                        label: {
+                            text: pageContent.addRelevantLegalEntity.registrationNumber,
+                            classes: "govuk-label govuk-label--m"
+                        },
+                        hint: {
+                            text: pageContent.addRelevantLegalEntity.registrationNumberHint
+                        },
+                        id: "registered_company_number",
+                        name: "registered_company_number",
+                        classes: "govuk-!-width-one-half",
+                        inputmode: "numeric",
+                        value: props.data.personWithSignificantControl.data.registered_company_number,
+                        errorMessage: props.errors.registered_company_number if props.errors
+                    }) }}
+                    
+                {% endset -%}
 
-                {{ govukInput({
-                    label: {
-                        text: pageContent.addRelevantLegalEntity.registrationNumber,
-                        classes: "govuk-label govuk-label--m"
+                {{ govukRadios({
+                    classes: "govuk-radios",
+                    name: "entered_on_register",
+                    fieldset: {
+                        legend: {
+                            text: pageContent.addRelevantLegalEntity.enteredOnRegister,
+                            isPageHeading: false,
+                            classes: "govuk-fieldset__legend--m"
+                        }
                     },
-                    hint: {
-                        text: pageContent.addRelevantLegalEntity.registrationNumberHint
-                    },
-                    id: "registered_company_number",
-                    name: "registered_company_number",
-                    classes: "govuk-!-width-one-half",
-                    inputmode: "numeric",
-                    value: props.data.personWithSignificantControl.data.registered_company_number,
-                    errorMessage: props.errors.registered_company_number if props.errors
+                    items: [
+                        {
+                            value: "true",
+                            text: i18n.yesAndNo.yes,
+                            checked: entered_on_register === true,
+                            conditional: {
+                                html: enteredOnRegisterHtml
+                            }
+                        },
+                        {
+                            value: "false",
+                            text: i18n.yesAndNo.no,
+                            checked: entered_on_register === false
+                        }
+                    ],
+                    errorMessage: props.errors.entered_on_register if props.errors
                 }) }}
 
                 {% include "includes/public-register-information.njk" %}
