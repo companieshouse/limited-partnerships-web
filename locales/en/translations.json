@@ -105,20 +105,22 @@
             "publish": "and publish a copy of this on the public register."
         },
         "rejected": "If it's rejected, we'll explain why and tell you what you can do next. We'll also refund the registration fee.",
-        "filing": {
-            "partnershipName": "We've received your filing for",
-            "sentEmail": "We've sent an email to",
-            "confirm": "to confirm."
-        },
-        "processUpdate": "We'll process the update as soon as possible. This will usually take no more than 5 working days.",
-        "willSendEmailTo": "We'll send an email to",
-        "updatePublicRegister": "to confirm when we've updated the information on the public register.",
         "avis": {
             "message": "What did you think of this service?",
             "time": "(takes 30 seconds)"
         },
         "transition" : {
-            "title": "Application submitted"
+            "filingReceived": "We've received your filing with new required information for",
+            "applicationProcess" : "We'll process this filing within 5 working days, and email",
+            "accepted" : "If the filing is accepted, we'll publish the new information on the public register (except protected or sensitive information).",
+            "rejected" : "If it's rejected, we'll explain why and tell you what you can do next.",
+            "confirmationStatement" : "Confirmation statement",
+            "fileStatement" : "All limited partnerships are now required to file an annual confirmation statement.",
+            "searchRegister" : "After we've accepted the new required information, you can check when the next confirmation statement is due by searching for the partnership on the",
+            "registerName" : "Companies House register",
+            "whatNext" : "What do you want to do now?",
+            "howFileConfirmationStatement" : "Find out how to file a confirmation statement",
+            "startNewTransition" : "Provide new required information for a different limited partnership"
         },
         "postTransition": {
             "title": "Update submitted",

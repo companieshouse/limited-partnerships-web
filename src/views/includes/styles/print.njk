@@ -1,6 +1,6 @@
 
 <style>
-  
+
   @media print {
 
     /* To test the styles */
@@ -92,6 +92,17 @@
     /* Hide any elements with class hide-on-print */
     .hide-on-print {
       display: none !important;
+    }
+
+    /* Suppress output of the URL in the 'href' attribute of an anchor tag */
+    .hide-href-on-print::after {
+      content: none !important;
+      display: none !important;
+    }
+
+    /* Show any elements with class show-on-print */
+    .show-on-print {
+      display: inline !important;
     }
 
     /* Set the content of the main div to 100%

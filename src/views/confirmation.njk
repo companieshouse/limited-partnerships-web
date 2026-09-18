@@ -8,9 +8,7 @@
 {% set suppressBackLink = true %}
 
 {% set pageTitle = i18n.confirmationPage.title %}
-{% if journeyTypes.isTransition %}
-  {% set pageTitle = i18n.confirmationPage.transition.title %}
-{% elif journeyTypes.isPostTransition %}
+{% if journeyTypes.isPostTransition %}
   {% set pageTitle = i18n.confirmationPage.postTransition.title %}
 {% endif %}
 
@@ -52,12 +50,28 @@
 
     {% elif journeyTypes.isTransition %}
 
-      <p class="govuk-body">{{ i18n.confirmationPage.filing.partnershipName }} {{ props.data.limitedPartnership.data.partnership_name | upper }} {{ props.data.limitedPartnership.data.name_ending | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}). {{ i18n.confirmationPage.filing.sentEmail }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.filing.confirm }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.transition.filingReceived }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>
+
+      <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.userEmail }}</strong>.</p>
 
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
 
-      <p class="govuk-body">{{ i18n.confirmationPage.processUpdate }}</p>
-      <p class="govuk-body">{{ i18n.confirmationPage.willSendEmailTo }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.updatePublicRegister }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.transition.applicationProcess }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.applicationAcceptedOrRejected }}</p>
+
+      <p class="govuk-body">{{ i18n.confirmationPage.transition.accepted }} {{ i18n.confirmationPage.transition.rejected }}</p>
+
+      <h2 class="govuk-heading-m">{{ i18n.confirmationPage.transition.confirmationStatement }}</h2>
+
+      <p class="govuk-body">{{ i18n.confirmationPage.transition.fileStatement }}</p>
+
+      <p class="govuk-body">{{ i18n.confirmationPage.transition.searchRegister }} <a href="https://find-and-update.company-information.service.gov.uk/" class="govuk-link show-on-print hide-href-on-print">{{ i18n.confirmationPage.transition.registerName }}</a>.</p>
+
+      <h2 class="govuk-heading-m hide-on-print">{{ i18n.confirmationPage.transition.whatNext }}</h2>
+
+      <p class="govuk-body hide-on-print">
+        <a href="https://www.gov.uk/" class="govuk-link">{{ i18n.confirmationPage.transition.howFileConfirmationStatement }}</a><br>
+        <a href="/limited-partnerships/transition/continue-saved-filing" class="govuk-link">{{ i18n.confirmationPage.transition.startNewTransition }}</a>
+      </p>
 
     {% elif journeyTypes.isPostTransition %}
 
@@ -89,7 +103,7 @@
 
     {% if journeyTypes.isTransition %}
       <p class="govuk-body hide-on-print govuk-!-static-padding-bottom-4">
-        <a href="https://www.smartsurvey.co.uk/s/file-for-lp-conf/" target="_blank" class="govuk-link" data-event-id="survey-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
+        <a href="https://www.smartsurvey.co.uk/s/prov-new-requ-info-about-lp-conf/" target="_blank" class="govuk-link" data-event-id="survey-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
       </p>
     {% elif journeyTypes.isRegistration %}
       <p class="govuk-body hide-on-print govuk-!-static-padding-bottom-4">
