@@ -119,7 +119,7 @@
             "searchRegister" : "WELSH - After we've accepted the new required information, you can check when the next confirmation statement is due by searching for the partnership on the",
             "registerName" : "WELSH - Companies House register",
             "whatNext" : "WELSH - What do you want to do now?",
-            "howFileconfirmationStatement" : "WELSH - Find out how to file a confirmation statement",
+            "howFileConfirmationStatement" : "WELSH - Find out how to file a confirmation statement",
             "startNewTransition" : "WELSH - Provide new required information for a different limited partnership"
         },
         "postTransition": {
