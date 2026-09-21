@@ -18,6 +18,7 @@ import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilde
 import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";
 import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+
 describe("Add Person With Significant Control Relevant Legal Entity Page", () => {
   const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL);
   const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL);
@@ -86,6 +87,30 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
       expect(res.status).toBe(200);
       expect(res.text).toContain(toEscapedHtml(personWithSignificantControl?.data?.legal_entity_name ?? ""));
     });
+
+    it.each([
+      ["show", "Yes", true, "govuk-radios__conditional"],
+      ["hide", "No", false, "govuk-radios__conditional govuk-radios__conditional--hidden"]
+    ])("should %s the register fields when entered on a register is %s", async (_visibility, _answer, enteredOnRegister, classes) => {
+      const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL);
+      const personWithSignificantControlBuilder = new PersonWithSignificantControlBuilder()
+        .isRelevantLegalEntity()
+        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+        .withEnteredOnRegister(enteredOnRegister);
+
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
+        personWithSignificantControlBuilder.build()
+      ]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`value="${enteredOnRegister}" checked`);
+      expect(res.text).toContain(`class="${classes}" id="conditional-entered_on_register"`);
+      expect(res.text).toContain('id="legal_entity_registration_location"');
+      expect(res.text).toContain('id="legal_entity_register_name"');
+      expect(res.text).toContain('id="registered_company_number"');
+    });
   });
 
   describe("Post Add Relevant Legal Entity Page", () => {
@@ -109,6 +134,30 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
       expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl[0].data.type).toEqual(
         PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY
       );
+    });
+
+    it("should reset the register fields when entered on a register is No", async () => {
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder().isRelevantLegalEntity().build();
+
+      expect(personWithSignificantControl.data?.legal_entity_registration_location).toEqual("United States");
+      expect(personWithSignificantControl.data?.legal_entity_register_name).toEqual("US Register");
+      expect(personWithSignificantControl.data?.registered_company_number).toEqual("12345678");
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity,
+          type: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY,
+          ...personWithSignificantControl.data,
+          entered_on_register: "false"
+        });
+
+      expect(res.status).toBe(302);
+
+      const savedData = appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl[0].data;
+      expect(savedData.legal_entity_registration_location).toEqual("");
+      expect(savedData.legal_entity_register_name).toEqual("");
+      expect(savedData.registered_company_number).toEqual("");
     });
 
     it("should return a validation error when invalid data is entered", async () => {
