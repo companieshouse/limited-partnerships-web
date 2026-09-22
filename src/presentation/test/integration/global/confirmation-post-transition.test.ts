@@ -448,13 +448,13 @@ describe("Confirmation Page", () => {
       [
         enTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP,
         "limited-partnership#update-partnership-redesignate-to-pflp",
-        enTranslationText.confirmationPage.postTransition.registeredOfficeAddress,
+        enTranslationText.confirmationPage.postTransition.typePflp,
         "en"
       ],
       [
         cyTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP,
         "limited-partnership#update-partnership-redesignate-to-pflp",
-        cyTranslationText.confirmationPage.postTransition.registeredOfficeAddress,
+        cyTranslationText.confirmationPage.postTransition.typePflp,
         "cy"
       ]
     ])(
