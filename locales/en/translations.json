@@ -97,7 +97,8 @@
         "filingReceived" : "We've received your filing to register",
         "sentEmailTo" : "We've sent a confirmation email to",
         "happensNext" : "What happens next",
-        "applicationProcess" : "We'll process this filing within 2 working days, and email",
+        "applicationProcessTwoDays" : "We'll process this filing within 2 working days, and email",
+        "applicationProcessFiveDays" : "We'll process this filing within 5 working days, and email",
         "applicationAcceptedOrRejected" : "to let you know if it's been accepted or rejected.",
         "accepted": {
             "explain": "If it's accepted we'll register the limited partnership and publish its information on the Companies House public register. We'll send a certificate of registration to",
@@ -105,30 +106,48 @@
             "publish": "and publish a copy of this on the public register."
         },
         "rejected": "If it's rejected, we'll explain why and tell you what you can do next. We'll also refund the registration fee.",
+        "rejectedNoFee" : "If it's rejected, we'll explain why and tell you what you can do next.",
+        "whatNow" : "What do you want to do now?",
         "avis": {
             "message": "What did you think of this service?",
             "time": "(takes 30 seconds)"
         },
         "transition" : {
             "filingReceived": "We've received your filing with new required information for",
-            "applicationProcess" : "We'll process this filing within 5 working days, and email",
             "accepted" : "If the filing is accepted, we'll publish the new information on the public register (except protected or sensitive information).",
-            "rejected" : "If it's rejected, we'll explain why and tell you what you can do next.",
             "confirmationStatement" : "Confirmation statement",
             "fileStatement" : "All limited partnerships are now required to file an annual confirmation statement.",
             "searchRegister" : "After we've accepted the new required information, you can check when the next confirmation statement is due by searching for the partnership on the",
             "registerName" : "Companies House register",
-            "whatNext" : "What do you want to do now?",
             "howFileConfirmationStatement" : "Find out how to file a confirmation statement",
             "startNewTransition" : "Provide new required information for a different limited partnership"
         },
         "postTransition": {
             "title": "Update submitted",
-            "sentEmailTo" : "We have sent a confirmation email to",
             "registeredOfficeAddress": "We've received your filing to update the registered office address for",
             "name": "We've received your filing to update the name of",
             "term": "We've received your filing to update the term of the partnership for",
-            "principalPlaceOfBusinessAddress": "We've received your filing to update the principal place of business address for",
+            "typeDesignate": "We've received your filing to designate",
+            "typePflp": "as a private fund limited partnership",
+            "principalOfficeAddress": "We've received your filing to update the principal office address for",
+            "updateWontShow": "This update will not show on the public register until we accept the filing.",
+            "processFilingConfirmation": "to let you know if it's been accepted or rejected.",
+            "accepted": {
+                "registeredOfficeAddress": "If it's accepted, we'll publish the new registered office address on the public register.",
+                "principalOfficeAddress": "If it's accepted, we'll publish the new principal office address on the public register.",
+                "term": "If it's accepted, we'll update the term of the partnership on the public register.",
+                "name": "If it's accepted, we'll publish the partnership's name on the public register. We'll send a certificate confirming the change to",
+                "type": "If it's accepted, we'll update the partnership type on the public register. We'll send a certificate confirming the designation to",
+                "partner": "If it's accepted, we'll update this information on the public register.",
+                "emailAddress": "the partnership's registered email address",
+                "publishCopy": "and publish a copy of this on the public register"
+            },
+            "namePflpFilingRejected": "If it's rejected, we'll explain why and tell you what you can do next. We'll also refund the fee.",
+            "confirmationStatementTitle": "If you need to file a confirmation statement",
+            "confirmationStatementBody": "As long as all required updates have been submitted, you can file a confirmation statement. You do not need to wait for the updates to be accepted.",
+            "returnPartnershipOverview": "Return to the partnership overview",
+            "fileConfirmationStatement": "File a confirmation statement",
+            "fileForDifferentPartnership": "File for a different limited partnership",
             "partner": {
                 "addPartner": "We've received your filing to add",
                 "removePartner": "We've received your filing to remove",
@@ -137,14 +156,7 @@
                 "limitedPartnerType": "as a limited partner of",
                 "updateGeneralPartnerType": "who is a general partner of",
                 "updateLimitedPartnerType": "who is a limited partner of",
-                "updateWontShow": "This update will not show on the public register until we accept the filing.",
-                "processFiling": "We'll process this filing withing 5 working days, and email",
-                "processFilingConfirmation": "to let you know if it's been accepted or rejected.",
-                "filingAccepted": "If it's accepted, we'll update this information on the public register.",
-                "updateFilingAccepted": "If it's accepted, we'll publish the new information on the public register.",
-                "filingRejected": "If it's rejected, we'll explain why and tell you what to do next.",
-                "confirmationStatementTitle": "If you need to file a confirmation statement",
-                "confirmationStatementBody": "As long as all required updates have been submitted, you can file a confirmation statement. You do not need to wait for the updates to be accepted."
+                "updateFilingAccepted": "If it's accepted, we'll publish the new information on the public register."
             }
         }
     },

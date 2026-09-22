@@ -436,25 +436,25 @@ describe("Confirmation Page", () => {
       [
         enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress,
         "limited-partnership#update-partnership-principal-place-of-business-address",
-        enTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress,
+        enTranslationText.confirmationPage.postTransition.principalOfficeAddress,
         "en"
       ],
       [
         cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress,
         "limited-partnership#update-partnership-principal-place-of-business-address",
-        cyTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress,
+        cyTranslationText.confirmationPage.postTransition.principalOfficeAddress,
         "cy"
       ],
       [
         enTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP,
         "limited-partnership#update-partnership-redesignate-to-pflp",
-        enTranslationText.confirmationPage.postTransition.registeredOfficeAddress,
+        enTranslationText.confirmationPage.postTransition.typePflp,
         "en"
       ],
       [
         cyTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP,
         "limited-partnership#update-partnership-redesignate-to-pflp",
-        cyTranslationText.confirmationPage.postTransition.registeredOfficeAddress,
+        cyTranslationText.confirmationPage.postTransition.typePflp,
         "cy"
       ]
     ])(
