@@ -18,6 +18,7 @@ import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSign
 import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";
 import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+
 describe("Add Person With Significant Control Other registrable person Page", () => {
   const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
   const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
@@ -131,12 +132,12 @@ describe("Add Person With Significant Control Other registrable person Page", ()
     });
 
     it.each([
-      ["legal_entity_name", "legalEntityNameMissing"],
-      ["legal_form", "legalFormMissing"],
-      ["governing_law", "governingLawMissing"]
+      ["legal_entity_name", "addOtherRegistrablePerson", "legalEntityNameMissing"],
+      ["legal_form", "sharedLegalDetails", "legalFormMissing"],
+      ["governing_law", "sharedLegalDetails", "governingLawMissing"]
     ])(
       "should show a missing-field error when %s is empty",
-      async (field: string, errorKey: string) => {
+      async (field: string, errorBlock: string, errorKey: string) => {
         const personWithSignificantControl = new PersonWithSignificantControlBuilder()
           .isOtherRegistrablePerson()
           .build();
@@ -151,7 +152,7 @@ describe("Add Person With Significant Control Other registrable person Page", ()
           });
 
         const errorMessage = (
-          enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson as Record<string, string>
+          enTranslationText.errorMessages.personWithSignificantControl[errorBlock] as Record<string, string>
         )[errorKey];
 
         expect(res.status).toBe(200);
@@ -161,12 +162,12 @@ describe("Add Person With Significant Control Other registrable person Page", ()
     );
 
     it.each([
-      ["legal_entity_name", "legalEntityNameInvalid"],
-      ["legal_form", "legalFormInvalid"],
-      ["governing_law", "governingLawInvalid"]
+      ["legal_entity_name", "addOtherRegistrablePerson", "legalEntityNameInvalid"],
+      ["legal_form", "sharedLegalDetails", "legalFormInvalid"],
+      ["governing_law", "sharedLegalDetails", "governingLawInvalid"]
     ])(
       "should show an invalid-characters error when %s contains too many characters",
-      async (field: string, errorKey: string) => {
+      async (field: string, errorBlock: string, errorKey: string) => {
         const personWithSignificantControl = new PersonWithSignificantControlBuilder()
           .isOtherRegistrablePerson()
           .build();
@@ -181,7 +182,7 @@ describe("Add Person With Significant Control Other registrable person Page", ()
           });
 
         const errorMessage = (
-          enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson as Record<string, string>
+          enTranslationText.errorMessages.personWithSignificantControl[errorBlock] as Record<string, string>
         )[errorKey];
 
         expect(res.status).toBe(200);
@@ -191,12 +192,12 @@ describe("Add Person With Significant Control Other registrable person Page", ()
     );
 
     it.each([
-      ["legal_entity_name", "legalEntityNameTooLong"],
-      ["legal_form", "legalFormTooLong"],
-      ["governing_law", "governingLawTooLong"]
+      ["legal_entity_name", "addOtherRegistrablePerson", "legalEntityNameTooLong"],
+      ["legal_form", "sharedLegalDetails", "legalFormTooLong"],
+      ["governing_law", "sharedLegalDetails", "governingLawTooLong"]
     ])(
-      "should show a too long string error when %s contains disallowed characters",
-      async (field: string, errorKey: string) => {
+      "should show a too long string error when %s contains too many characters",
+      async (field: string, errorBlock: string, errorKey: string) => {
         const personWithSignificantControl = new PersonWithSignificantControlBuilder()
           .isOtherRegistrablePerson()
           .build();
@@ -211,7 +212,7 @@ describe("Add Person With Significant Control Other registrable person Page", ()
           });
 
         const errorMessage = (
-          enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson as Record<string, string>
+          enTranslationText.errorMessages.personWithSignificantControl[errorBlock] as Record<string, string>
         )[errorKey];
 
         expect(res.status).toBe(200);
@@ -234,12 +235,10 @@ describe("Add Person With Significant Control Other registrable person Page", ()
           governing_law: ""
         });
 
-      const expected = enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson;
-
       expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(expected.legalEntityNameMissing));
-      expect(res.text).toContain(toEscapedHtml(expected.legalFormMissing));
-      expect(res.text).toContain(toEscapedHtml(expected.governingLawMissing));
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson.legalEntityNameMissing));
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.personWithSignificantControl.sharedLegalDetails.legalFormMissing));
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.personWithSignificantControl.sharedLegalDetails.governingLawMissing));
       expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
     });
   });
@@ -308,12 +307,10 @@ describe("Add Person With Significant Control Other registrable person Page", ()
           governing_law: ""
         });
 
-      const expected = enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson;
-
       expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(expected.legalEntityNameMissing));
-      expect(res.text).toContain(toEscapedHtml(expected.legalFormMissing));
-      expect(res.text).toContain(toEscapedHtml(expected.governingLawMissing));
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson.legalEntityNameMissing));
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.personWithSignificantControl.sharedLegalDetails.legalFormMissing));
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.personWithSignificantControl.sharedLegalDetails.governingLawMissing));
     });
   });
 });

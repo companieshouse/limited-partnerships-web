@@ -10,7 +10,7 @@ import { validateDate } from "./DateValidators";
 import { buildDateOfUpdateErrorMessages } from "./dateOfUpdateErrorMessages";
 import { capitalContributionValidation, isCapitalContributionApplicable } from "./capitalContributionValidator";
 import { PartnerType } from "../types";
-import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
+import { isFieldValueMissing, validateField } from "./FieldValidators";
 import { isAddPartnerLegalEntityPage as isAddPartnerLegalEntityPageRegistration } from "../../presentation/controller/registration/PageType";
 import { isAddPartnerLegalEntityPage as isAddPartnerLegalEntityPageTransition } from "../../presentation/controller/transition/PageType";
 
@@ -71,61 +71,71 @@ class PartnerLegalEntityValidator {
 
   private validateLegalEntityPartner(uiErrors: UIErrors) {
     // legal entity name
-    this.validateField(
+    validateField(
       this.data.legal_entity_name,
       LEGAL_ENTITY_NAME_FIELD,
       160,
       uiErrors,
-      this.errorMessages?.legalEntityNameMissing,
-      this.errorMessages?.legalEntityNameInvalid,
-      this.errorMessages?.legalEntityNameTooLong
+      {
+        missingMessage: this.errorMessages?.legalEntityNameMissing,
+        invalidMessage: this.errorMessages?.legalEntityNameInvalid,
+        tooLongMessage: this.errorMessages?.legalEntityNameTooLong
+      }
     );
 
     // legal form
-    this.validateField(
+    validateField(
       this.data.legal_form,
       LEGAL_FORM_FIELD,
       160,
       uiErrors,
-      this.errorMessages?.legalFormMissing,
-      this.errorMessages?.legalFormInvalid,
-      this.errorMessages?.legalFormTooLong
+      {
+        missingMessage: this.errorMessages?.legalFormMissing,
+        invalidMessage: this.errorMessages?.legalFormInvalid,
+        tooLongMessage: this.errorMessages?.legalFormTooLong
+      }
     );
 
     // governing law
-    this.validateField(
+    validateField(
       this.data.governing_law,
       GOVERNING_LAW_FIELD,
       160,
       uiErrors,
-      this.errorMessages?.governingLawMissing,
-      this.errorMessages?.governingLawInvalid,
-      this.errorMessages?.governingLawTooLong
+      {
+        missingMessage: this.errorMessages?.governingLawMissing,
+        invalidMessage: this.errorMessages?.governingLawInvalid,
+        tooLongMessage: this.errorMessages?.governingLawTooLong
+      }
     );
 
     // register
-    this.validateField(
+    validateField(
       this.data.legal_entity_register_name,
       LEGAL_ENTITY_REGISTER_NAME_FIELD,
       160,
       uiErrors,
-      this.errorMessages?.legalEntityRegisterNameMissing,
-      this.errorMessages?.legalEntityRegisterNameInvalid,
-      this.errorMessages?.legalEntityRegisterNameTooLong
+      {
+        missingMessage: this.errorMessages?.legalEntityRegisterNameMissing,
+        invalidMessage: this.errorMessages?.legalEntityRegisterNameInvalid,
+        tooLongMessage: this.errorMessages?.legalEntityRegisterNameTooLong
+      }
     );
 
     // country registered
     this.validateRegistrationLocation(uiErrors);
 
     // registration number
-    this.validateField(
+    validateField(
       this.data.registered_company_number,
       REGISTERED_COMPANY_NUMBER_FIELD,
       160,
       uiErrors,
-      this.errorMessages?.registeredCompanyNumberMissing,
-      this.errorMessages?.registeredCompanyNumberInvalid,
-      this.errorMessages?.registeredCompanyNumberTooLong
+      {
+        missingMessage: this.errorMessages?.registeredCompanyNumberMissing,
+        invalidMessage: this.errorMessages?.registeredCompanyNumberInvalid,
+        tooLongMessage: this.errorMessages?.registeredCompanyNumberTooLong
+      }
     );
 
     // contributions
@@ -186,20 +196,6 @@ class PartnerLegalEntityValidator {
       errorMessages,
       registrationDate
     );
-  }
-
-  private validateField(fieldValue: string | undefined, fieldName: string, maxLength: number, uiErrors: UIErrors, missingMessage: string, invalidMessage: string, tooLongMessage: string) {
-    if (isFieldValueMissing(fieldValue, fieldName, uiErrors, missingMessage)) {
-      return;
-    }
-
-    if (containsInvalidCharacters(fieldValue, fieldName, uiErrors, invalidMessage)) {
-      return;
-    }
-
-    if (isFieldValueTooLong(fieldValue, maxLength, fieldName, uiErrors, tooLongMessage)) {
-      return;
-    }
   }
 
   private validateRegistrationLocation(uiErrors: UIErrors) {

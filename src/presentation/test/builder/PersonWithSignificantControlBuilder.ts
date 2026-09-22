@@ -29,6 +29,7 @@ export const personWithSignificantControlRelevantLegalEntity = {
   legal_entity_register_name: "US Register",
   legal_entity_registration_location: "United States",
   registered_company_number: "12345678",
+  entered_on_register: 'true',
   type: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY
 };
 

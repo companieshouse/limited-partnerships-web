@@ -19,7 +19,10 @@ export default class OtherRegistrablePscValidator {
     this.legal_entity_name = data.legal_entity_name;
     this.legal_form = data.legal_form;
     this.governing_law = data.governing_law;
-    this.errorMessages = i18n?.errorMessages?.personWithSignificantControl?.addOtherRegistrablePerson || {};
+    this.errorMessages = {
+      ...i18n?.errorMessages?.personWithSignificantControl?.sharedLegalDetails,
+      ...i18n?.errorMessages?.personWithSignificantControl?.addOtherRegistrablePerson
+    };
     return this;
   }
 
