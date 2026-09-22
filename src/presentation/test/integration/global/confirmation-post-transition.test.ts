@@ -436,13 +436,13 @@ describe("Confirmation Page", () => {
       [
         enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress,
         "limited-partnership#update-partnership-principal-place-of-business-address",
-        enTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress,
+        enTranslationText.confirmationPage.postTransition.principalOfficeAddress,
         "en"
       ],
       [
         cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress,
         "limited-partnership#update-partnership-principal-place-of-business-address",
-        cyTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress,
+        cyTranslationText.confirmationPage.postTransition.principalOfficeAddress,
         "cy"
       ],
       [
