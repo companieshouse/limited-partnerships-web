@@ -13,6 +13,7 @@
 {% set votingRightsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.votingRightsHint | replace("individual", pscType)  %}
 {% set ownershipCheckboxText = i18n.personWithSignificantControl.addNatureOfControlPage.individual.ownershipCheckboxText | replace("individual", pscType)  %}
 {% set sigInfluenceCheckboxText = i18n.personWithSignificantControl.addNatureOfControlPage.individual.sigInfluenceCheckboxText | replace("individual", pscType)  %}
+{% set sigInfluenceHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.sigInfluenceHint %}
 
 {% block content %}
     {% include "pages/natureOfControl/nature-of-control-form.njk" %}
