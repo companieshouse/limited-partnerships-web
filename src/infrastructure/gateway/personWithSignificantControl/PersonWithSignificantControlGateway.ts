@@ -6,7 +6,7 @@ import {
 import IPersonWithSignificantControlGateway from "../../../domain/IPersonWithSignificantControlGateway";
 import { Tokens } from "../../../domain/types";
 
-import { removeEmptyStringValues, resetRegisterDataIfEnteredOnRegisterIsFalse, validateAndFormatPersonDateOfBirth } from "../utils";
+import { removeEmptyStringValues, validateAndFormatPersonDateOfBirth } from "../utils";
 import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";
 import { checkForBadRequest, makeApiCallWithRetry } from "../api";
 import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
@@ -17,7 +17,6 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
     transactionId: string,
     data: Partial<PersonWithSignificantControl>
   ): Promise<string> {
-    resetRegisterDataIfEnteredOnRegisterIsFalse(data);
     validateAndFormatPersonDateOfBirth(data);
 
     const personWithSignificantControl: PersonWithSignificantControl = { data: removeEmptyStringValues(data) };
@@ -62,10 +61,7 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
     return response?.resource ?? {};
   }
 
-  public async getPersonsWithSignificantControl(
-    opt: Tokens,
-    transactionId: string
-  ): Promise<PersonWithSignificantControl[]> {
+  public async getPersonsWithSignificantControl(opt: Tokens, transactionId: string): Promise<PersonWithSignificantControl[]> {
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "getPersonsWithSignificantControl",
@@ -87,13 +83,16 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
     personWithSignificantControlId: string,
     data: Partial<PersonWithSignificantControl>
   ): Promise<void> {
-    resetRegisterDataIfEnteredOnRegisterIsFalse(data);
     validateAndFormatPersonDateOfBirth(data);
 
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "patchPersonWithSignificantControl",
-      args: [transactionId, personWithSignificantControlId, removeEmptyStringValues(data, ["legal_entity_register_name", "registered_company_number"])]
+      args: [
+        transactionId,
+        personWithSignificantControlId,
+        removeEmptyStringValues(data, ["legal_entity_register_name", "registered_company_number"])
+      ]
     };
 
     const response = await makeApiCallWithRetry<Resource<void>>(opt, apiCall);

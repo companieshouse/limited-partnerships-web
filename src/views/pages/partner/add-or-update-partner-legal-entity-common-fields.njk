@@ -55,34 +55,4 @@
 {% set countryListRequired = false %}
 {% set entityTranslation = i18n.partner.addOrUpdatePartnerLegalEntityPage %}
 
-{% set enteredOnRegisterHtml %}
-  {% include "includes/enteredOnRegisterHtml.njk" %}
-{% endset %}
-
-{{ govukRadios({
-  classes: "govuk-radios",
-  name: "entered_on_register",
-  fieldset: {
-    legend: {
-      text: i18n.partner.addOrUpdatePartnerLegalEntityPage.enteredOnRegister,
-      isPageHeading: false,
-      classes: "govuk-fieldset__legend--m"
-    }
-  },
-  items: [
-    {
-      value: "true",
-      text: i18n.yesAndNo.yes,
-      checked: entityType.entered_on_register === "true" or entityType.entered_on_register === true,
-      conditional: { 
-        html: enteredOnRegisterHtml
-      }
-    },
-    {
-      value: "false",
-      text: i18n.yesAndNo.no,
-      checked: entityType.entered_on_register === "false" or entityType.entered_on_register === false
-    }
-  ],
-  errorMessage: props.errors.entered_on_register if props.errors.entered_on_register
-}) }}
+{% include "includes/enteredOnRegisterHtml.njk" %}

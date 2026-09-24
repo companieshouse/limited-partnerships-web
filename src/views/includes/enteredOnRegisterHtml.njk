@@ -1,43 +1,72 @@
+{% set enteredOnRegisterHtml %}
+  {% if countryListRequired %}
+    {# Which country #}
+    {% set countryText = entityTranslation.countryRegistered %}
+    {% set countryFormId = "legal_entity_registration_location" %}
+    {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
+    {% set countryFormValue = entityType.legal_entity_registration_location %}
+    {% set labelFormatting = "govuk-label govuk-label--m" %}
 
-{% if countryListRequired %}
-  {# Which country #}
-  {% set countryText = entityType.countryRegistered %}
-  {% set countryFormId = "legal_entity_registration_location" %}
-  {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
-  {% set countryFormValue = entityType.legal_entity_registration_location %}
-  {% set labelFormatting = "govuk-label govuk-label--m" %}
+    {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting) }}
+  {% endif %}
 
-  {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting) }}
-{% endif %}
+  {# Which Register #}
+  {{ govukInput({
+      label: {
+          text: entityTranslation.whichRegister,
+          classes: "govuk-label govuk-label--m"
+      },
+      hint: {
+          text: entityTranslation.whichRegisterHint
+      },
+      id: "legal_entity_register_name",
+      name: "legal_entity_register_name",
+      value: entityType.legal_entity_register_name,
+      errorMessage: props.errors.legal_entity_register_name if props.errors
+  }) }}
 
-{# Which Register #}
-{{ govukInput({
-    label: {
-        text: entityTranslation.whichRegister,
-        classes: "govuk-label govuk-label--m"
-    },
-    hint: {
-        text: entityTranslation.whichRegisterHint
-    },
-    id: "legal_entity_register_name",
-    name: "legal_entity_register_name",
-    value: entityType.legal_entity_register_name,
-    errorMessage: props.errors.legal_entity_register_name if props.errors
-}) }}
+  {# Registration number #}
+  {{ govukInput({
+      label: {
+          text: entityTranslation.registrationNumber,
+          classes: "govuk-label govuk-label--m"
+      },
+      hint: {
+          text: entityTranslation.registrationNumberHint
+      },
+      id: "registered_company_number",
+      name: "registered_company_number",
+      classes: "govuk-!-width-one-half",
+      inputmode: "numeric",
+      value: entityType.registered_company_number,
+      errorMessage: props.errors.registered_company_number if props.errors
+  }) }}
+{% endset %}
 
-{# Registration number #}
-{{ govukInput({
-    label: {
-        text: entityTranslation.registrationNumber,
-        classes: "govuk-label govuk-label--m"
+{{ govukRadios({
+    classes: "govuk-radios",
+    name: "entered_on_register",
+    fieldset: {
+        legend: {
+            text: entityTranslation.enteredOnRegister,
+            isPageHeading: false,
+            classes: "govuk-fieldset__legend--m"
+        }
     },
-    hint: {
-        text: entityTranslation.registrationNumberHint
-    },
-    id: "registered_company_number",
-    name: "registered_company_number",
-    classes: "govuk-!-width-one-half",
-    inputmode: "numeric",
-    value: entityType.registered_company_number,
-    errorMessage: props.errors.registered_company_number if props.errors
+    items: [
+        {
+            value: "true",
+            text: i18n.yesAndNo.yes,
+            checked: entityType.entered_on_register == true,
+            conditional: {
+                html: enteredOnRegisterHtml
+            }
+        },
+        {
+            value: "false",
+            text: i18n.yesAndNo.no,
+            checked: entityType.entered_on_register == false
+        }
+    ],
+    errorMessage: props.errors.entered_on_register if props.errors
 }) }}

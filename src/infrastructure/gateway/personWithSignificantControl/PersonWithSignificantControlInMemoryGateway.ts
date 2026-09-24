@@ -5,7 +5,6 @@ import { Tokens } from "../../../domain/types";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 import TransactionPersonWithSignificantControl from "../../../domain/entities/TransactionPersonWithSignificantControl";
 import { PersonWithSignificantControl } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { resetRegisterDataIfEnteredOnRegisterIsFalse } from "../utils";
 
 export default class PersonWithSignificantControlInMemoryGateway implements IPersonWithSignificantControlGateway {
   personWithSignificantControlId = crypto.randomUUID().toString();
@@ -34,8 +33,6 @@ export default class PersonWithSignificantControlInMemoryGateway implements IPer
     if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }
-
-    resetRegisterDataIfEnteredOnRegisterIsFalse(data);
 
     this.personsWithSignificantControl.push({ data });
 
@@ -72,8 +69,6 @@ export default class PersonWithSignificantControlInMemoryGateway implements IPer
     if (index === -1) {
       throw new Error(`Person with significant control not found: ${personWithSignificantControlId}`);
     }
-
-    resetRegisterDataIfEnteredOnRegisterIsFalse(data);
 
     this.personsWithSignificantControl[index].data = { ...this.personsWithSignificantControl[index].data, ...data };
   }

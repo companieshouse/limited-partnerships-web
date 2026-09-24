@@ -79,14 +79,6 @@ export const resetFormerNamesIfPreviousNameIsFalse = (data: Record<string, any>)
   }
 };
 
-export const resetRegisterDataIfEnteredOnRegisterIsFalse = (data: Record<string, any>) => {
-  if (data?.entered_on_register && data?.entered_on_register === "false") {
-    data.legal_entity_registration_location = "";
-    data.legal_entity_register_name = "";
-    data.registered_company_number = "";
-  }
-};
-
 export const validateFormerNamesNotEmptyIfPreviousNameIsTrue = (data: Record<string, any>) => {
   if (data?.previous_name === "true" && (!data?.former_names || data?.former_names.trim() === "")) {
     const uiErrors = new UIErrors();

@@ -136,30 +136,6 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
       );
     });
 
-    it("should reset the register fields when entered on a register is No", async () => {
-      const personWithSignificantControl = new PersonWithSignificantControlBuilder().isRelevantLegalEntity().build();
-
-      expect(personWithSignificantControl.data?.legal_entity_registration_location).toEqual("United States");
-      expect(personWithSignificantControl.data?.legal_entity_register_name).toEqual("US Register");
-      expect(personWithSignificantControl.data?.registered_company_number).toEqual("12345678");
-
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity,
-          type: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY,
-          ...personWithSignificantControl.data,
-          entered_on_register: "false"
-        });
-
-      expect(res.status).toBe(302);
-
-      const savedData = appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl[0].data;
-      expect(savedData.legal_entity_registration_location).toEqual("");
-      expect(savedData.legal_entity_register_name).toEqual("");
-      expect(savedData.registered_company_number).toEqual("");
-    });
-
     it("should return a validation error when invalid data is entered", async () => {
       const personWithSignificantControl = new PersonWithSignificantControlBuilder().isRelevantLegalEntity().build();
 
