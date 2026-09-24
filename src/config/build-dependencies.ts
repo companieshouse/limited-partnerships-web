@@ -22,7 +22,7 @@ import PersonWithSignificantControlGateway from "../infrastructure/gateway/perso
 import PersonWithSignificantControlInMemoryGateway from "../infrastructure/gateway/personWithSignificantControl/PersonWithSignificantControlInMemoryGateway";
 
 import AddressValidator from "../domain/validator/Address";
-import PersonWithSignificantControlValidator from "../domain/validator/PersonWithSignificantControl";
+import PersonWithSignificantControlValidator from "../domain/validator/PersonWithSignificantControlValidator";
 import LimitedPartnershipValidator from "../domain/validator/LimitedPartnershipValidator";
 import SicCodesValidator from "../domain/validator/SicCodes";
 import PartnerValidator from "../domain/validator/PartnerValidator";

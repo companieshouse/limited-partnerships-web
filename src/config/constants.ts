@@ -185,6 +185,7 @@ export const EMAIL_REGEX =
 export const LEGAL_ENTITY_NAME_FIELD = "legal_entity_name";
 export const LEGAL_FORM_FIELD = "legal_form";
 export const GOVERNING_LAW_FIELD = "governing_law";
+export const ENTERED_ON_REGISTER_FIELD = "entered_on_register";
 export const LEGAL_ENTITY_REGISTER_NAME_FIELD = "legal_entity_register_name";
 export const LEGAL_ENTITY_REGISTRATION_LOCATION_FIELD = "legal_entity_registration_location";
 export const REGISTERED_COMPANY_NUMBER_FIELD = "registered_company_number";

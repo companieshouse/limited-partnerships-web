@@ -5,7 +5,8 @@ import { logger } from "../../utils";
 import { extractAPIErrors, incompletePersonWithSignificantControlErrorList } from "./utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import IPersonWithSignificantControlGateway from "../../domain/IPersonWithSignificantControlGateway";
-import PersonWithSignificantControlValidator from "../../domain/validator/PersonWithSignificantControl";
+import PersonWithSignificantControlValidator from "../../domain/validator/PersonWithSignificantControlValidator";
+
 class PersonWithSignificantControlService {
   i18n: any;
 

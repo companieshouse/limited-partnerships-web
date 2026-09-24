@@ -94,11 +94,11 @@ export default class IndividualPscValidator {
   }
 
   private validateTitle(uiErrors: UIErrors) {
-    if (containsInvalidCharacters(this.title, TITLE_FIELD, uiErrors, this.errorMessages?.titleInvalid)) {
+    if (containsInvalidCharacters(uiErrors, this.errorMessages?.titleInvalid, TITLE_FIELD, this.title)) {
       return;
     }
 
-    if (isFieldValueTooLong(this.title, 50, TITLE_FIELD, uiErrors, this.errorMessages?.titleTooLong)) {
+    if (isFieldValueTooLong(50, uiErrors, this.errorMessages?.titleTooLong, TITLE_FIELD, this.title)) {
       return;
     }
   }
@@ -106,7 +106,7 @@ export default class IndividualPscValidator {
   private validateTitleOther(uiErrors: UIErrors) {
     if (
       this.title === this.titleOtherValue &&
-      isFieldValueMissing(this.title_other, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.otherTitleMissing)
+      isFieldValueMissing(uiErrors, this.errorMessages?.otherTitleMissing, TITLE_OTHER_FIELD, this.title_other)
     ) {
       return;
     }
@@ -116,55 +116,55 @@ export default class IndividualPscValidator {
       return;
     }
 
-    if (containsInvalidCharacters(this.title_other, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.otherTitleInvalid)) {
+    if (containsInvalidCharacters(uiErrors, this.errorMessages?.otherTitleInvalid, TITLE_OTHER_FIELD, this.title_other)) {
       return;
     }
 
-    if (isFieldValueTooLong(this.title_other, 50, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.otherTitleTooLong)) {
+    if (isFieldValueTooLong(50, uiErrors, this.errorMessages?.otherTitleTooLong, TITLE_OTHER_FIELD, this.title_other)) {
       return;
     }
   }
 
   private validateForename(uiErrors: UIErrors) {
-    if (isFieldValueMissing(this.forename, FORENAME_FIELD, uiErrors, this.errorMessages?.firstNameMissing)) {
+    if (isFieldValueMissing(uiErrors, this.errorMessages?.firstNameMissing, FORENAME_FIELD, this.forename)) {
       return;
     }
 
-    if (containsInvalidCharacters(this.forename, FORENAME_FIELD, uiErrors, this.errorMessages?.firstNameInvalid)) {
+    if (containsInvalidCharacters(uiErrors, this.errorMessages?.firstNameInvalid, FORENAME_FIELD, this.forename)) {
       return;
     }
 
-    if (isFieldValueTooLong(this.forename, 50, FORENAME_FIELD, uiErrors, this.errorMessages?.firstNameTooLong)) {
+    if (isFieldValueTooLong(50, uiErrors, this.errorMessages?.firstNameTooLong, FORENAME_FIELD, this.forename)) {
       return;
     }
   }
 
   private validateMiddleNames(uiErrors: UIErrors) {
-    if (containsInvalidCharacters(this.middle_names, MIDDLE_NAMES_FIELD, uiErrors, this.errorMessages?.middleNamesInvalid)) {
+    if (containsInvalidCharacters(uiErrors, this.errorMessages?.middleNamesInvalid, MIDDLE_NAMES_FIELD, this.middle_names)) {
       return;
     }
 
-    if (isFieldValueTooLong(this.middle_names, 50, MIDDLE_NAMES_FIELD, uiErrors, this.errorMessages?.middleNamesTooLong)) {
+    if (isFieldValueTooLong(50, uiErrors, this.errorMessages?.middleNamesTooLong, MIDDLE_NAMES_FIELD, this.middle_names)) {
       return;
     }
   }
 
   private validateSurname(uiErrors: UIErrors) {
-    if (isFieldValueMissing(this.surname, SURNAME_FIELD, uiErrors, this.errorMessages?.lastNameMissing)) {
+    if (isFieldValueMissing(uiErrors, this.errorMessages?.lastNameMissing, SURNAME_FIELD, this.surname)) {
       return;
     }
 
-    if (containsInvalidCharacters(this.surname, SURNAME_FIELD, uiErrors, this.errorMessages?.lastNameInvalid)) {
+    if (containsInvalidCharacters(uiErrors, this.errorMessages?.lastNameInvalid, SURNAME_FIELD, this.surname)) {
       return;
     }
 
-    if (isFieldValueTooLong(this.surname, 160, SURNAME_FIELD, uiErrors, this.errorMessages?.lastNameTooLong)) {
+    if (isFieldValueTooLong(160, uiErrors, this.errorMessages?.lastNameTooLong, SURNAME_FIELD, this.surname)) {
       return;
     }
   }
 
   private validateNationalities(uiErrors: UIErrors) {
-    if (isFieldValueMissing(this.nationality1, NATIONALITY1_FIELD, uiErrors, this.errorMessages?.nationality1Missing)) {
+    if (isFieldValueMissing(uiErrors, this.errorMessages?.nationality1Missing, NATIONALITY1_FIELD, this.nationality1)) {
       return;
     }
 
