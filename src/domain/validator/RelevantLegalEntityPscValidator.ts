@@ -19,7 +19,6 @@ export default class RelevantLegalEntityPscValidator {
     const uiErrors = new UIErrors();
 
     validateField(
-      LEGAL_ENTITY_NAME_FIELD,
       160,
       uiErrors,
       {
@@ -27,11 +26,11 @@ export default class RelevantLegalEntityPscValidator {
         invalidMessage: this.errorMessages.legalEntityNameInvalid,
         tooLongMessage: this.errorMessages.legalEntityNameTooLong
       },
+      LEGAL_ENTITY_NAME_FIELD,
       this.data.legal_entity_name
     );
 
     validateField(
-      LEGAL_FORM_FIELD,
       160,
       uiErrors,
       {
@@ -39,11 +38,11 @@ export default class RelevantLegalEntityPscValidator {
         invalidMessage: this.errorMessages.legalFormInvalid,
         tooLongMessage: this.errorMessages.legalFormTooLong
       },
+      LEGAL_FORM_FIELD,
       this.data.legal_form
     );
 
     validateField(
-      GOVERNING_LAW_FIELD,
       160,
       uiErrors,
       {
@@ -51,6 +50,7 @@ export default class RelevantLegalEntityPscValidator {
         invalidMessage: this.errorMessages.governingLawInvalid,
         tooLongMessage: this.errorMessages.governingLawTooLong
       },
+      GOVERNING_LAW_FIELD,
       this.data.governing_law
     );
 
@@ -63,13 +63,13 @@ export default class RelevantLegalEntityPscValidator {
   }
 
   private validateEnteredOnRegister(uiErrors: UIErrors): void {
-    if (isFieldValueMissing(ENTERED_ON_REGISTER_FIELD, uiErrors, this.errorMessages.enteredOnRegisterMissing, this.data.entered_on_register,)) {
+    if (isFieldValueMissing(uiErrors, this.errorMessages.enteredOnRegisterMissing, ENTERED_ON_REGISTER_FIELD, this.data.entered_on_register)) {
       return;
     }
   }
 
   private validateLegalEntityRegistrationLocation(uiErrors: UIErrors): void {
-    if (this.isEnteredOnRegister() && isFieldValueMissing(LEGAL_ENTITY_REGISTRATION_LOCATION_FIELD, uiErrors, this.errorMessages.legalEntityRegistrationLocationMissing, this.data.legal_entity_registration_location)) {
+    if (this.isEnteredOnRegister() && isFieldValueMissing(uiErrors, this.errorMessages.legalEntityRegistrationLocationMissing, LEGAL_ENTITY_REGISTRATION_LOCATION_FIELD, this.data.legal_entity_registration_location)) {
       return;
     }
   }
@@ -80,7 +80,6 @@ export default class RelevantLegalEntityPscValidator {
     }
 
     validateField(
-      LEGAL_ENTITY_REGISTER_NAME_FIELD,
       160,
       uiErrors,
       {
@@ -88,6 +87,7 @@ export default class RelevantLegalEntityPscValidator {
         invalidMessage: this.errorMessages.legalEntityRegisterNameInvalid,
         tooLongMessage: this.errorMessages.legalEntityRegisterNameTooLong
       },
+      LEGAL_ENTITY_REGISTER_NAME_FIELD,
       this.data.legal_entity_register_name
     );
   }
@@ -98,7 +98,6 @@ export default class RelevantLegalEntityPscValidator {
     }
 
     validateField(
-      REGISTERED_COMPANY_NUMBER_FIELD,
       160,
       uiErrors,
       {
@@ -106,6 +105,7 @@ export default class RelevantLegalEntityPscValidator {
         invalidMessage: this.errorMessages.registeredCompanyNumberInvalid,
         tooLongMessage: this.errorMessages.registeredCompanyNumberTooLong
       },
+      REGISTERED_COMPANY_NUMBER_FIELD,
       this.data.registered_company_number
     );
   }

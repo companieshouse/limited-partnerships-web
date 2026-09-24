@@ -72,7 +72,6 @@ class PartnerLegalEntityValidator {
   private validateLegalEntityPartner(uiErrors: UIErrors) {
     // legal entity name
     validateField(
-      LEGAL_ENTITY_NAME_FIELD,
       160,
       uiErrors,
       {
@@ -80,12 +79,12 @@ class PartnerLegalEntityValidator {
         invalidMessage: this.errorMessages?.legalEntityNameInvalid,
         tooLongMessage: this.errorMessages?.legalEntityNameTooLong
       },
+      LEGAL_ENTITY_NAME_FIELD,
       this.data.legal_entity_name
     );
 
     // legal form
     validateField(
-      LEGAL_FORM_FIELD,
       160,
       uiErrors,
       {
@@ -93,12 +92,12 @@ class PartnerLegalEntityValidator {
         invalidMessage: this.errorMessages?.legalFormInvalid,
         tooLongMessage: this.errorMessages?.legalFormTooLong
       },
+      LEGAL_FORM_FIELD,
       this.data.legal_form,
     );
 
     // governing law
     validateField(
-      GOVERNING_LAW_FIELD,
       160,
       uiErrors,
       {
@@ -106,12 +105,12 @@ class PartnerLegalEntityValidator {
         invalidMessage: this.errorMessages?.governingLawInvalid,
         tooLongMessage: this.errorMessages?.governingLawTooLong
       },
+      GOVERNING_LAW_FIELD,
       this.data.governing_law
     );
 
     // register
     validateField(
-      LEGAL_ENTITY_REGISTER_NAME_FIELD,
       160,
       uiErrors,
       {
@@ -119,6 +118,7 @@ class PartnerLegalEntityValidator {
         invalidMessage: this.errorMessages?.legalEntityRegisterNameInvalid,
         tooLongMessage: this.errorMessages?.legalEntityRegisterNameTooLong
       },
+      LEGAL_ENTITY_REGISTER_NAME_FIELD,
       this.data.legal_entity_register_name,
     );
 
@@ -127,7 +127,6 @@ class PartnerLegalEntityValidator {
 
     // registration number
     validateField(
-      REGISTERED_COMPANY_NUMBER_FIELD,
       160,
       uiErrors,
       {
@@ -135,6 +134,7 @@ class PartnerLegalEntityValidator {
         invalidMessage: this.errorMessages?.registeredCompanyNumberInvalid,
         tooLongMessage: this.errorMessages?.registeredCompanyNumberTooLong
       },
+      REGISTERED_COMPANY_NUMBER_FIELD,
       this.data.registered_company_number
     );
 
@@ -199,7 +199,7 @@ class PartnerLegalEntityValidator {
   }
 
   private validateRegistrationLocation(uiErrors: UIErrors) {
-    if (isFieldValueMissing(LEGAL_ENTITY_REGISTRATION_LOCATION_FIELD, uiErrors, this.errorMessages?.legalEntityCountryRegisteredMissing, this.data.legal_entity_registration_location)) {
+    if (isFieldValueMissing(uiErrors, this.errorMessages?.legalEntityCountryRegisteredMissing, LEGAL_ENTITY_REGISTRATION_LOCATION_FIELD, this.data.legal_entity_registration_location)) {
       return;
     }
   }

@@ -147,35 +147,35 @@ class PartnerPersonValidator {
   }
 
   private validateForename(uiErrors: UIErrors) {
-    if (isFieldValueMissing(FORENAME_FIELD, uiErrors, this.errorMessages?.firstNameMissing, this.data.forename)) {
+    if (isFieldValueMissing(uiErrors, this.errorMessages?.firstNameMissing, FORENAME_FIELD, this.data.forename)) {
       return;
     }
 
-    if (containsInvalidCharacters(FORENAME_FIELD, uiErrors, this.errorMessages?.firstNameInvalid, this.data.forename)) {
+    if (containsInvalidCharacters(uiErrors, this.errorMessages?.firstNameInvalid, FORENAME_FIELD, this.data.forename)) {
       return;
     }
 
-    if (isFieldValueTooLong( 50, FORENAME_FIELD, uiErrors, this.errorMessages?.firstNameTooLong, this.data.forename)) {
+    if (isFieldValueTooLong(50, uiErrors, this.errorMessages?.firstNameTooLong, FORENAME_FIELD, this.data.forename)) {
       return;
     }
   }
 
   private validateSurname(uiErrors: UIErrors) {
-    if (isFieldValueMissing(SURNAME_FIELD, uiErrors, this.errorMessages?.lastNameMissing, this.data.surname)) {
+    if (isFieldValueMissing(uiErrors, this.errorMessages?.lastNameMissing, SURNAME_FIELD, this.data.surname)) {
       return;
     }
 
-    if (containsInvalidCharacters(SURNAME_FIELD, uiErrors, this.errorMessages?.lastNameInvalid, this.data.surname)) {
+    if (containsInvalidCharacters(uiErrors, this.errorMessages?.lastNameInvalid, SURNAME_FIELD, this.data.surname)) {
       return;
     }
 
-    if (isFieldValueTooLong(160, SURNAME_FIELD, uiErrors, this.errorMessages?.lastNameTooLong, this.data.surname)) {
+    if (isFieldValueTooLong(160, uiErrors, this.errorMessages?.lastNameTooLong, SURNAME_FIELD, this.data.surname)) {
       return;
     }
   }
 
   private validatePreviousName(uiErrors: UIErrors) {
-    if (isFieldValueMissing(PREVIOUS_NAME_FIELD, uiErrors, this.errorMessages?.previousNameNotSelected, this.data.previous_name)) {
+    if (isFieldValueMissing(uiErrors, this.errorMessages?.previousNameNotSelected, PREVIOUS_NAME_FIELD, this.data.previous_name)) {
       return;
     }
   }
@@ -185,22 +185,22 @@ class PartnerPersonValidator {
       (typeof this.data?.previous_name === "string" ?
         this.data?.previous_name?.trim() === "true"
         : this.data?.previous_name === true) &&
-      isFieldValueMissing(FORMER_NAMES_FIELD, uiErrors, this.errorMessages?.formerNamesMissing, this.data.former_names)
+      isFieldValueMissing(uiErrors, this.errorMessages?.formerNamesMissing, FORMER_NAMES_FIELD, this.data.former_names)
     ) {
       return;
     }
 
-    if (containsInvalidCharacters(FORMER_NAMES_FIELD, uiErrors, this.errorMessages?.formerNamesInvalid, this.data.former_names)) {
+    if (containsInvalidCharacters(uiErrors, this.errorMessages?.formerNamesInvalid, FORMER_NAMES_FIELD, this.data.former_names)) {
       return;
     }
 
-    if (isFieldValueTooLong(160, FORMER_NAMES_FIELD, uiErrors, this.errorMessages?.formerNamesTooLong, this.data.former_names)) {
+    if (isFieldValueTooLong(160, uiErrors, this.errorMessages?.formerNamesTooLong, FORMER_NAMES_FIELD, this.data.former_names)) {
       return;
     }
   }
 
   private validateNationalities(uiErrors: UIErrors) {
-    if (isFieldValueMissing(NATIONALITY1_FIELD, uiErrors, this.errorMessages?.nationality1Missing, this.data.nationality1)) {
+    if (isFieldValueMissing(uiErrors, this.errorMessages?.nationality1Missing, NATIONALITY1_FIELD, this.data.nationality1)) {
       return;
     }
 
