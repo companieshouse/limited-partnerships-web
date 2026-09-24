@@ -38,8 +38,8 @@ export default class OtherRegistrablePscValidator {
     if (!this.legal_entity_name?.trim()) {
       uiErrors.setWebError(LEGAL_ENTITY_NAME_FIELD, this.errorMessages?.legalEntityNameMissing);
     } else {
-      containsInvalidCharacters(this.legal_entity_name, LEGAL_ENTITY_NAME_FIELD, uiErrors, this.errorMessages?.legalEntityNameInvalid);
-      isFieldValueTooLong(this.legal_entity_name, 160, LEGAL_ENTITY_NAME_FIELD, uiErrors, this.errorMessages?.legalEntityNameTooLong);
+      containsInvalidCharacters(LEGAL_ENTITY_NAME_FIELD, uiErrors, this.errorMessages?.legalEntityNameInvalid, this.legal_entity_name);
+      isFieldValueTooLong(160, LEGAL_ENTITY_NAME_FIELD, uiErrors, this.errorMessages?.legalEntityNameTooLong, this.legal_entity_name);
     }
   }
 
@@ -47,8 +47,8 @@ export default class OtherRegistrablePscValidator {
     if (!this.legal_form?.trim()) {
       uiErrors.setWebError(LEGAL_FORM_FIELD, this.errorMessages?.legalFormMissing);
     } else {
-      containsInvalidCharacters(this.legal_form, LEGAL_FORM_FIELD, uiErrors, this.errorMessages?.legalFormInvalid);
-      isFieldValueTooLong(this.legal_form, 160, LEGAL_FORM_FIELD, uiErrors, this.errorMessages?.legalFormTooLong);
+      containsInvalidCharacters(LEGAL_FORM_FIELD, uiErrors, this.errorMessages?.legalFormInvalid, this.legal_form);
+      isFieldValueTooLong(160, LEGAL_FORM_FIELD, uiErrors, this.errorMessages?.legalFormTooLong, this.legal_form);
     }
   }
 
@@ -56,8 +56,8 @@ export default class OtherRegistrablePscValidator {
     if (!this.governing_law?.trim()) {
       uiErrors.setWebError(GOVERNING_LAW_FIELD, this.errorMessages?.governingLawMissing);
     } else {
-      containsInvalidCharacters(this.governing_law, GOVERNING_LAW_FIELD, uiErrors, this.errorMessages?.governingLawInvalid);
-      isFieldValueTooLong(this.governing_law, 160, GOVERNING_LAW_FIELD, uiErrors, this.errorMessages?.governingLawTooLong);
+      containsInvalidCharacters(GOVERNING_LAW_FIELD, uiErrors, this.errorMessages?.governingLawInvalid, this.governing_law);
+      isFieldValueTooLong(160, GOVERNING_LAW_FIELD, uiErrors, this.errorMessages?.governingLawTooLong, this.governing_law);
     }
   }
 };
