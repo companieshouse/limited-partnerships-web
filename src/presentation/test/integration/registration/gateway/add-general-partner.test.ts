@@ -33,6 +33,7 @@ describe("Add General Partner Legal Entity Page", () => {
         legal_entity_name: "My Company ltd - GP",
         legal_form: "Limited Company",
         governing_law: "Act of law",
+        entered_on_register: true,
         legal_entity_register_name: "US Register",
         legal_entity_registration_location: "United States",
         registered_company_number: "12345678",

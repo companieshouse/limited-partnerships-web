@@ -190,6 +190,8 @@
                 "governingLawInvalid": "WELSH - Governing law must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "governingLawTooLong": "WELSH - Governing law must be 160 characters or less",
 
+                "enteredOnRegisterMissing": "WELSH - Select whether the entity is entered on the register",
+
                 "legalEntityRegisterNameMissing": "WELSH - Enter the name of the register",
                 "legalEntityRegisterNameInvalid": "WELSH - Register must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "legalEntityRegisterNameTooLong": "WELSH - Name of register must be 160 characters or less",

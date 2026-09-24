@@ -189,6 +189,8 @@
                 "governingLawInvalid": "Governing law must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "governingLawTooLong": "Governing law must be 160 characters or less",
 
+                "enteredOnRegisterMissing": "Select whether the entity is entered on the register",
+
                 "legalEntityRegisterNameMissing": "Enter the name of the register",
                 "legalEntityRegisterNameInvalid": "Register must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "legalEntityRegisterNameTooLong": "Name of register must be 160 characters or less",

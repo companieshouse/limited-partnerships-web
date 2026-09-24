@@ -28,6 +28,7 @@ export const runLegalEntityValidationTests = ({
       legal_entity_name: "My Company ltd",
       legal_form: "Limited Company",
       governing_law: "Act of law",
+      entered_on_register: true,
       legal_entity_register_name: "US Register",
       legal_entity_registration_location: "United States",
       registered_company_number: "12345678"
@@ -42,6 +43,30 @@ export const runLegalEntityValidationTests = ({
         ...pageData,
         ...additionalData
       });
+
+      expect(res.status).toBe(200);
+
+      const errorMessages = [
+        errors.errorMessages.partners.addPartner.legalEntityNameMissing,
+        errors.errorMessages.partners.addPartner.legalFormMissing,
+        errors.errorMessages.partners.addPartner.governingLawMissing,
+        errors.errorMessages.partners.addPartner.enteredOnRegisterMissing,
+        errors.errorMessages.partners.addPartner.legalEntityCountryRegisteredMissing
+      ];
+
+      errorMessages.forEach((errorMessage) => {
+        expect(res.text).toContain(toEscapedHtml(errorMessage));
+      });
+    });
+
+    it("should return missing validation errors for register fields if entered on register is true", async () => {
+      const res = await request(app)
+        .post(`${url}?lang=${language}`)
+        .send({
+          ...pageData,
+          ...additionalData,
+          entered_on_register: true
+        });
 
       expect(res.status).toBe(200);
 
