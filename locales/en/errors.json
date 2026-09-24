@@ -227,11 +227,7 @@
         },
 
         "personWithSignificantControl": {
-            "addOtherRegistrablePerson": {
-                "legalEntityNameMissing": "Enter the other registrable person's name",
-                "legalEntityNameInvalid": "Other registrable person's name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
-                "legalEntityNameTooLong": "Other registrable person's name must be 160 characters or less",
-
+            "sharedLegalDetails": {
                 "legalFormMissing": "Enter the legal form or corporate identity",
                 "legalFormInvalid": "Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "legalFormTooLong": "Legal form or corporate identity must be 160 characters or less",
@@ -239,6 +235,28 @@
                 "governingLawMissing": "Enter the governing law",
                 "governingLawInvalid": "Governing law must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "governingLawTooLong": "Governing law must be 160 characters or less"
+            },
+            "addOtherRegistrablePerson": {
+                "legalEntityNameMissing": "Enter the other registrable person's name",
+                "legalEntityNameInvalid": "Other registrable person's name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalEntityNameTooLong": "Other registrable person's name must be 160 characters or less"
+            },
+            "addRelevantLegalEntity": {
+                "legalEntityNameMissing": "Enter the relevant legal entity's name",
+                "legalEntityNameInvalid": "Legal entity's name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalEntityNameTooLong": "Legal entity's name must be 160 characters or less",
+
+                "enteredOnRegisterMissing": "Select yes if the entity is entered on a register",
+                
+                "legalEntityRegistrationLocationMissing": "Select the country the entity is registered in",
+
+                "legalEntityRegisterNameMissing": "Enter the name of the register",
+                "legalEntityRegisterNameInvalid": "Register must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalEntityRegisterNameTooLong": "Name of register must be 160 characters or less",
+
+                "registeredCompanyNumberMissing": "Enter the registration number",
+                "registeredCompanyNumberInvalid": "Registration number must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "registeredCompanyNumberTooLong": "Registration number must be 160 characters or less"
             },
             "addIndividualPerson": {
                 "consentCheckedMissing": "Confirm that this person knows their details are being provided as part of this application",

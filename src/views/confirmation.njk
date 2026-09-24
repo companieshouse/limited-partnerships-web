@@ -12,22 +12,6 @@
   {% set pageTitle = i18n.confirmationPage.postTransition.title %}
 {% endif %}
 
-{% if props.data.generalPartner %}
-  {% set partnerType = i18n.confirmationPage.postTransition.partner.generalPartnerType %}
-  {% if props.data.generalPartner.data.legal_entity_name %}
-    {% set partnerName = props.data.generalPartner.data.legal_entity_name %}
-  {% else %}
-    {% set partnerName = props.data.generalPartner.data.forename ~ ' ' ~ props.data.generalPartner.data.surname %}
-  {% endif %}
-{% elif props.data.limitedPartner %}
-  {% set partnerType = i18n.confirmationPage.postTransition.partner.limitedPartnerType %}
-  {% if props.data.limitedPartner.data.legal_entity_name %}
-    {% set partnerName = props.data.limitedPartner.data.legal_entity_name %}
-  {% else %}
-    {% set partnerName = props.data.limitedPartner.data.forename ~ ' ' ~ props.data.limitedPartner.data.surname %}
-  {% endif %}
-{% endif %}
-
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -44,7 +28,7 @@
 
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
 
-      <p class="govuk-body">{{ i18n.confirmationPage.applicationProcess }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.applicationAcceptedOrRejected }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.applicationProcessTwoDays }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.applicationAcceptedOrRejected }}</p>
       <p class="govuk-body">{{ i18n.confirmationPage.accepted.explain }} <strong>{{ i18n.confirmationPage.accepted.registeredEmailAddress }}</strong> {{ i18n.confirmationPage.accepted.publish }}</p>
       <p class="govuk-body">{{ i18n.confirmationPage.rejected }}</p>
 
@@ -56,9 +40,9 @@
 
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
 
-      <p class="govuk-body">{{ i18n.confirmationPage.transition.applicationProcess }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.applicationAcceptedOrRejected }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.applicationProcessFiveDays }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.applicationAcceptedOrRejected }}</p>
 
-      <p class="govuk-body">{{ i18n.confirmationPage.transition.accepted }} {{ i18n.confirmationPage.transition.rejected }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.transition.accepted }} {{ i18n.confirmationPage.rejectedNoFee }}</p>
 
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.transition.confirmationStatement }}</h2>
 
@@ -66,7 +50,7 @@
 
       <p class="govuk-body">{{ i18n.confirmationPage.transition.searchRegister }} <a href="https://find-and-update.company-information.service.gov.uk/" class="govuk-link show-on-print hide-href-on-print">{{ i18n.confirmationPage.transition.registerName }}</a>.</p>
 
-      <h2 class="govuk-heading-m hide-on-print">{{ i18n.confirmationPage.transition.whatNext }}</h2>
+      <h2 class="govuk-heading-m hide-on-print">{{ i18n.confirmationPage.whatNow }}</h2>
 
       <p class="govuk-body hide-on-print">
         <a href="https://www.gov.uk/" class="govuk-link">{{ i18n.confirmationPage.transition.howFileConfirmationStatement }}</a><br>
@@ -77,28 +61,6 @@
 
       {% include "pages/confirmation/update-confirmation-message.njk" %}
 
-      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.sentEmailTo }} <strong>{{ props.data.userEmail }}</strong>.</p>
-
-      {{ govukInsetText({
-        text: i18n.confirmationPage.postTransition.partner.updateWontShow
-      }) }}
-
-      <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
-
-      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.processFiling }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.postTransition.partner.processFilingConfirmation }}</p>
-
-      {% if props.data.subtype.includes('update') and (props.data.subtype.includes('partner-person') or props.data.subtype.includes('partner-legal-entity')) %}
-        <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.updateFilingAccepted }}</p>
-      {% else %}
-        <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.filingAccepted }}</p>
-      {% endif %}
-
-      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.filingRejected }}</p>
-
-      <h2 class="govuk-heading-m">{{ i18n.confirmationPage.postTransition.partner.confirmationStatementTitle }}</h2>
-
-      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.confirmationStatementBody }}</p>
-
     {% endif %}
 
     {% if journeyTypes.isTransition %}
@@ -108,6 +70,23 @@
     {% elif journeyTypes.isRegistration %}
       <p class="govuk-body hide-on-print govuk-!-static-padding-bottom-4">
         <a href="https://www.smartsurvey.co.uk/s/register-a-lp-conf/" target="_blank" class="govuk-link" data-event-id="survey-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
+      </p>
+    {% elif journeyTypes.isPostTransition %}
+
+      {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-a-lp-reg-office-add-conf" %}
+
+      {% if props.data.subtype.includes('update-partnership-name') %}
+        {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-lp-name-conf/" %}
+      {% elif props.data.subtype.includes('update-partnership-term') %}
+        {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-the-term-of-lp-conf/" %}
+      {% elif props.data.subtype.includes('update-partnership-principal-place-of-business-address') %}
+        {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-a-lp-principal-office-add-conf/" %}
+      {% elif props.data.subtype.includes('update-partnership-redesignate-to-pflp') %}
+        {% set surveyLink = "https://www.smartsurvey.co.uk/s/designate-a-lp-as-priv-fund-lp-conf/"  %}
+      {% endif %}
+
+      <p class="govuk-body hide-on-print govuk-!-static-padding-bottom-4">
+        <a href={{ surveyLink }} target="_blank" class="govuk-link" data-event-id="survey-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
       </p>
     {% endif %}
 

@@ -22,7 +22,7 @@ import { validateDate } from "./DateValidators";
 import { buildDateOfUpdateErrorMessages } from "./dateOfUpdateErrorMessages";
 import { capitalContributionValidation, isCapitalContributionApplicable } from "./capitalContributionValidator";
 import { PartnerType } from "../types";
-import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
+import { isFieldValueMissing, validateField } from "./FieldValidators";
 import { isAddPartnerLegalEntityPage as isAddPartnerLegalEntityPageRegistration } from "../../presentation/controller/registration/PageType";
 import { isAddPartnerLegalEntityPage as isAddPartnerLegalEntityPageTransition } from "../../presentation/controller/transition/PageType";
 
@@ -85,66 +85,77 @@ class PartnerLegalEntityValidator {
 
   private validateLegalEntityPartner(uiErrors: UIErrors) {
     // legal entity name
-    this.validateField(
-      this.data.legal_entity_name,
-      LEGAL_ENTITY_NAME_FIELD,
+    validateField(
       160,
       uiErrors,
-      this.errorMessages?.legalEntityNameMissing,
-      this.errorMessages?.legalEntityNameInvalid,
-      this.errorMessages?.legalEntityNameTooLong
+      {
+        missingMessage: this.errorMessages?.legalEntityNameMissing,
+        invalidMessage: this.errorMessages?.legalEntityNameInvalid,
+        tooLongMessage: this.errorMessages?.legalEntityNameTooLong
+      },
+      LEGAL_ENTITY_NAME_FIELD,
+      this.data.legal_entity_name
     );
 
     // legal form
-    this.validateField(
-      this.data.legal_form,
-      LEGAL_FORM_FIELD,
+    validateField(
       160,
       uiErrors,
-      this.errorMessages?.legalFormMissing,
-      this.errorMessages?.legalFormInvalid,
-      this.errorMessages?.legalFormTooLong
+      {
+        missingMessage: this.errorMessages?.legalFormMissing,
+        invalidMessage: this.errorMessages?.legalFormInvalid,
+        tooLongMessage: this.errorMessages?.legalFormTooLong
+      },
+      LEGAL_FORM_FIELD,
+      this.data.legal_form,
     );
 
     // governing law
-    this.validateField(
-      this.data.governing_law,
-      GOVERNING_LAW_FIELD,
+    validateField(
       160,
       uiErrors,
-      this.errorMessages?.governingLawMissing,
-      this.errorMessages?.governingLawInvalid,
-      this.errorMessages?.governingLawTooLong
+      {
+        missingMessage: this.errorMessages?.governingLawMissing,
+        invalidMessage: this.errorMessages?.governingLawInvalid,
+        tooLongMessage: this.errorMessages?.governingLawTooLong
+      },
+      GOVERNING_LAW_FIELD,
+      this.data.governing_law
     );
+
+    // country registered
+    this.validateRegistrationLocation(uiErrors);
 
     this.handleEnteredOnRegister(uiErrors);
 
     // register
     if (this.data.entered_on_register === true) {
-      this.validateField(
-        this.data.legal_entity_register_name,
-        LEGAL_ENTITY_REGISTER_NAME_FIELD,
+      // legal entity register name
+      validateField(
         160,
         uiErrors,
-        this.errorMessages?.legalEntityRegisterNameMissing,
-        this.errorMessages?.legalEntityRegisterNameInvalid,
-        this.errorMessages?.legalEntityRegisterNameTooLong
+        {
+          missingMessage: this.errorMessages?.legalEntityRegisterNameMissing,
+          invalidMessage: this.errorMessages?.legalEntityRegisterNameInvalid,
+          tooLongMessage: this.errorMessages?.legalEntityRegisterNameTooLong
+        },
+        LEGAL_ENTITY_REGISTER_NAME_FIELD,
+        this.data.legal_entity_register_name
       );
 
       // registration number
-      this.validateField(
-        this.data.registered_company_number,
-        REGISTERED_COMPANY_NUMBER_FIELD,
+      validateField(
         160,
         uiErrors,
-        this.errorMessages?.registeredCompanyNumberMissing,
-        this.errorMessages?.registeredCompanyNumberInvalid,
-        this.errorMessages?.registeredCompanyNumberTooLong
+        {
+          missingMessage: this.errorMessages?.registeredCompanyNumberMissing,
+          invalidMessage: this.errorMessages?.registeredCompanyNumberInvalid,
+          tooLongMessage: this.errorMessages?.registeredCompanyNumberTooLong
+        },
+        REGISTERED_COMPANY_NUMBER_FIELD,
+        this.data.registered_company_number
       );
     }
-
-    // country registered
-    this.validateRegistrationLocation(uiErrors);
 
     // contributions
     if (
@@ -206,37 +217,8 @@ class PartnerLegalEntityValidator {
     );
   }
 
-  private validateField(
-    fieldValue: string | undefined,
-    fieldName: string,
-    maxLength: number,
-    uiErrors: UIErrors,
-    missingMessage: string,
-    invalidMessage: string,
-    tooLongMessage: string
-  ) {
-    if (isFieldValueMissing(fieldValue, fieldName, uiErrors, missingMessage)) {
-      return;
-    }
-
-    if (containsInvalidCharacters(fieldValue, fieldName, uiErrors, invalidMessage)) {
-      return;
-    }
-
-    if (isFieldValueTooLong(fieldValue, maxLength, fieldName, uiErrors, tooLongMessage)) {
-      return;
-    }
-  }
-
   private validateRegistrationLocation(uiErrors: UIErrors) {
-    if (
-      isFieldValueMissing(
-        this.data.legal_entity_registration_location,
-        LEGAL_ENTITY_REGISTRATION_LOCATION_FIELD,
-        uiErrors,
-        this.errorMessages?.legalEntityCountryRegisteredMissing
-      )
-    ) {
+    if (isFieldValueMissing(uiErrors, this.errorMessages?.legalEntityCountryRegisteredMissing, LEGAL_ENTITY_REGISTRATION_LOCATION_FIELD, this.data.legal_entity_registration_location)) {
       return;
     }
   }

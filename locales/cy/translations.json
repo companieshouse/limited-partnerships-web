@@ -97,39 +97,58 @@
         "filingReceived" : "WELSH - We've received your filing to register",
         "sentEmailTo" : "WELSH - We've sent a confirmation email to",
         "happensNext" : "WELSH - What happens next",
-        "applicationProcess" : "WELSH - We'll process this filing within 2 working days, and email",
-        "applicationAcceptedOrRejected" : "WELSH - to let you know if your application has been accepted or rejected.",
+        "applicationProcessTwoDays" : "WELSH - We'll process this filing within 2 working days, and email",
+        "applicationProcessFiveDays" : "WELSH - We'll process this filing within 5 working days, and email",
+        "applicationAcceptedOrRejected" : "WELSH - to let you know if it's been accepted or rejected.",
         "accepted": {
             "explain": "WELSH - If it's accepted we'll register the limited partnership and publish its information on the Companies House public register. We'll send a certificate of registration to",
             "registeredEmailAddress": "WELSH - the partnership's registered email address",
             "publish": "WELSH - and publish a copy of this on the public register."
         },
         "rejected": "WELSH - If it's rejected, we'll explain why and tell you what you can do next. We'll also refund the registration fee.",
+        "rejectedNoFee" : "WELSH - If it's rejected, we'll explain why and tell you what you can do next.",
+        "whatNow" : "WELSH - What do you want to do now?",
         "avis": {
             "message": "WELSH - What did you think of this service?",
             "time": "WELSH - (takes 30 seconds)"
         },
         "transition" : {
             "filingReceived": "WELSH - We've received your filing with new required information for",
-            "applicationProcess" : "WELSH - We'll process this filing within 5 working days, and email",
             "accepted" : "WELSH - If the filing is accepted, we'll publish the new information on the public register (except protected or sensitive information).",
-            "rejected" : "WELSH - If it's rejected, we'll explain why and tell you what you can do next.",
             "confirmationStatement" : "WELSH - Confirmation statement",
             "fileStatement" : "WELSH - All limited partnerships are now required to file an annual confirmation statement.",
             "searchRegister" : "WELSH - After we've accepted the new required information, you can check when the next confirmation statement is due by searching for the partnership on the",
             "registerName" : "WELSH - Companies House register",
-            "whatNext" : "WELSH - What do you want to do now?",
             "howFileConfirmationStatement" : "WELSH - Find out how to file a confirmation statement",
             "startNewTransition" : "WELSH - Provide new required information for a different limited partnership"
         },
         "postTransition": {
             "title": "WELSH - Update submitted",
-            "sentEmailTo" : "WELSH - We have sent a confirmation email to",
             "registeredOfficeAddress": "WELSH - We've received your filing to update the registered office address for",
             "name": "WELSH - We've received your filing to update the name of",
             "term": "WELSH - We've received your filing to update the term of the partnership for",
-            "principalPlaceOfBusinessAddress": "WELSH - We've received your filing to update the principal place of business address for",
-            "partner":{
+            "typeDesignate": "WELSH - We've received your filing to designate",
+            "typePflp": "WELSH - as a private fund limited partnership",
+            "principalOfficeAddress": "WELSH - We've received your filing to update the principal office address for",
+            "updateWontShow": "WELSH - This update will not show on the public register until we accept the filing.",
+            "processFilingConfirmation": "WELSH - to let you know if it's been accepted or rejected.",
+            "accepted": {
+                "registeredOfficeAddress": "WELSH - If it's accepted, we'll publish the new registered office address on the public register.",
+                "principalOfficeAddress": "WELSH - If it's accepted, we'll publish the new principal office address on the public register.",
+                "term": "WELSH - If it's accepted, we'll update the term of the partnership on the public register.",
+                "name": "WELSH - If it's accepted, we'll publish the partnership's name on the public register. We'll send a certificate confirming the change to",
+                "type": "WELSH - If it's accepted, we'll update the partnership type on the public register. We'll send a certificate confirming the designation to",
+                "partner": "WELSH - If it's accepted, we'll update this information on the public register.",
+                "emailAddress": "WELSH - the partnership's registered email address",
+                "publishCopy": "WELSH - and publish a copy of this on the public register"
+            },
+            "namePflpFilingRejected": "WELSH - If it's rejected, we'll explain why and tell you what you can do next. We'll also refund the fee.",
+            "confirmationStatementTitle": "WELSH - If you need to file a confirmation statement",
+            "confirmationStatementBody": "WELSH - As long as all required updates have been submitted, you can file a confirmation statement. You do not need to wait for the updates to be accepted.",
+            "returnPartnershipOverview": "WELSH - Return to the partnership overview",
+            "fileConfirmationStatement": "WELSH - File a confirmation statement",
+            "fileForDifferentPartnership": "WELSH - File for a different limited partnership",
+            "partner": {
                 "addPartner": "WELSH - We've received your filing to add",
                 "removePartner": "WELSH - We've received your filing to remove",
                 "updatePartner": "WELSH - We've received the updated details for",
@@ -137,14 +156,7 @@
                 "limitedPartnerType": "WELSH - as a limited partner of",
                 "updateGeneralPartnerType": "WELSH - who is a general partner of",
                 "updateLimitedPartnerType": "WELSH - who is a limited partner of",
-                "updateWontShow": "WELSH - This update will not show on the public register until we accept the filing.",
-                "processFiling": "WELSH - We'll process this filing withing 5 working days, and email",
-                "processFilingConfirmation": "WELSH - to let you know if it's been accepted or rejected.",
-                "filingAccepted": "WELSH - If it's accepted, we'll update this information on the public register.",
-                "updateFilingAccepted": "WELSH - If it's accepted, we'll publish the new information on the public register.",
-                "filingRejected": "WELSH - If it's rejected, we'll explain why and tell you what to do next.",
-                "confirmationStatementTitle": "WELSH - If you need to file a confirmation statement",
-                "confirmationStatementBody": "WELSH - As long as all required updates have been submitted, you can file a confirmation statement. You do not need to wait for the updates to be accepted."
+                "updateFilingAccepted": "WELSH - If it's accepted, we'll publish the new information on the public register."
             }
         }
     },

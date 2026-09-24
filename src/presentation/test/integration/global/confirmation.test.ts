@@ -60,6 +60,8 @@ describe("Confirmation Page", () => {
 });
 
 const excludedKeysRegistration = [
+  "applicationProcessFiveDays",
+  "whatNow",
   "postTransition",
   "transition"
 ];
@@ -68,7 +70,7 @@ const excludedKeysTransition = [
   "title",
   "filingReceived",
   "sentEmailTo",
-  "applicationProcess",
+  "applicationProcessTwoDays",
   "applicationAcceptedOrRejected",
   "accepted",
   "rejected",

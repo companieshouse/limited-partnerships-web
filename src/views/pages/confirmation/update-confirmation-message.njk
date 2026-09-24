@@ -1,7 +1,25 @@
+{% if props.data.generalPartner %}
+  {% set partnerType = i18n.confirmationPage.postTransition.partner.generalPartnerType %}
+  {% if props.data.generalPartner.data.legal_entity_name %}
+    {% set partnerName = props.data.generalPartner.data.legal_entity_name %}
+  {% else %}
+    {% set partnerName = props.data.generalPartner.data.forename ~ ' ' ~ props.data.generalPartner.data.surname %}
+  {% endif %}
+{% elif props.data.limitedPartner %}
+  {% set partnerType = i18n.confirmationPage.postTransition.partner.limitedPartnerType %}
+  {% if props.data.limitedPartner.data.legal_entity_name %}
+    {% set partnerName = props.data.limitedPartner.data.legal_entity_name %}
+  {% else %}
+    {% set partnerName = props.data.limitedPartner.data.forename ~ ' ' ~ props.data.limitedPartner.data.surname %}
+  {% endif %}
+{% endif %}
+
+{% set acceptedMessage = i18n.confirmationPage.postTransition.accepted.partner %}
+
 {% if partnerName %}
   {% set message = i18n.confirmationPage.postTransition.partner.addPartner %}
   {% if props.data.subtype === "limited-partnership#remove-general-partner-person"
-      or props.data.subtype === "limited-partnership#remove-general-partner-legal-entity" 
+      or props.data.subtype === "limited-partnership#remove-general-partner-legal-entity"
       or props.data.subtype === "limited-partnership#remove-limited-partner-person"
       or props.data.subtype === "limited-partnership#remove-limited-partner-legal-entity" %}
     {% set message = i18n.confirmationPage.postTransition.partner.removePartner  %}
@@ -10,23 +28,72 @@
     {% set message = i18n.confirmationPage.postTransition.partner.updatePartner %}
     {% set partnerType = i18n.confirmationPage.postTransition.partner.updateGeneralPartnerType %}
     {% set partnerName = partnerName + "," %}
-  {% elif props.data.subtype === "limited-partnership#update-limited-partner-legal-entity" 
+  {% elif props.data.subtype === "limited-partnership#update-limited-partner-legal-entity"
       or props.data.subtype === "limited-partnership#update-limited-partner-person" %}
     {% set message = i18n.confirmationPage.postTransition.partner.updatePartner %}
     {% set partnerType = i18n.confirmationPage.postTransition.partner.updateLimitedPartnerType %}
     {% set partnerName = partnerName + ","%}
-  {% endif %} 
+  {% endif %}
   <p class="govuk-body">{{ message }} {{ partnerName }} {{ partnerType }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>
 {% else %}
   {% set message = i18n.confirmationPage.postTransition.registeredOfficeAddress %}
-  
-  {% if props.data.subtype === "limited-partnership#update-partnership-name" %}
+  {% set acceptedMessage = i18n.confirmationPage.postTransition.accepted.registeredOfficeAddress %}
+
+  {% if props.data.subtype.includes('update-partnership-name') %}
     {% set message = i18n.confirmationPage.postTransition.name %}
-  {% elif props.data.subtype === "limited-partnership#update-partnership-term" %}
+    {% set acceptedMessage = i18n.confirmationPage.postTransition.accepted.name %}
+  {% elif props.data.subtype.includes('update-partnership-term') %}
     {% set message = i18n.confirmationPage.postTransition.term %}
-  {% elif props.data.subtype === "limited-partnership#update-partnership-principal-place-of-business-address" %}
-    {% set message = i18n.confirmationPage.postTransition.principalPlaceOfBusinessAddress %}
+    {% set acceptedMessage = i18n.confirmationPage.postTransition.accepted.term %}
+  {% elif props.data.subtype.includes('update-partnership-principal-place-of-business-address') %}
+    {% set message = i18n.confirmationPage.postTransition.principalOfficeAddress %}
+    {% set acceptedMessage = i18n.confirmationPage.postTransition.accepted.principalOfficeAddress %}
+  {% elif props.data.subtype.includes('update-partnership-redesignate-to-pflp') %}
+    {% set message = i18n.confirmationPage.postTransition.typeDesignate %}
+    {% set acceptedMessage = i18n.confirmationPage.postTransition.accepted.type %}
   {% endif %}
 
-  <p class="govuk-body">{{ message }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>
+  {% if props.data.subtype.includes('update-partnership-redesignate-to-pflp') %}
+    <p class="govuk-body">{{ message }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}) {{ i18n.confirmationPage.postTransition.typePflp }}.</p>
+  {% else %}
+    <p class="govuk-body">{{ message }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>
+  {% endif %}
 {% endif %}
+
+<p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.userEmail }}</strong>.</p>
+
+{{ govukInsetText({
+  text: i18n.confirmationPage.postTransition.updateWontShow
+}) }}
+
+<h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
+
+<p class="govuk-body">{{ i18n.confirmationPage.applicationProcessFiveDays }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.postTransition.processFilingConfirmation }}</p>
+
+{% if props.data.subtype.includes('update') and (props.data.subtype.includes('partner-person') or props.data.subtype.includes('partner-legal-entity')) %}
+  <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.updateFilingAccepted }}</p>
+{% elif props.data.subtype.includes('update-partnership-redesignate-to-pflp') %}
+  <p class="govuk-body">{{ i18n.confirmationPage.postTransition.accepted.type }} <strong>{{ i18n.confirmationPage.postTransition.accepted.emailAddress }}</strong> {{ i18n.confirmationPage.postTransition.accepted.publishCopy }}</p>
+{% elif props.data.subtype.includes('update-partnership-name') %}
+  <p class="govuk-body">{{ i18n.confirmationPage.postTransition.accepted.name }} <strong>{{ i18n.confirmationPage.postTransition.accepted.emailAddress }}</strong> {{ i18n.confirmationPage.postTransition.accepted.publishCopy }}</p>
+{% else %}
+  <p class="govuk-body">{{ acceptedMessage }}</p>
+{% endif %}
+
+{% if props.data.subtype.includes('update-partnership-redesignate-to-pflp') or props.data.subtype.includes('update-partnership-name') %}
+  <p class="govuk-body">{{ i18n.confirmationPage.postTransition.namePflpFilingRejected }}</p>
+{% else %}
+  <p class="govuk-body">{{ i18n.confirmationPage.rejectedNoFee }}</p>
+{% endif %}
+
+<h2 class="govuk-heading-m">{{ i18n.confirmationPage.postTransition.confirmationStatementTitle }}</h2>
+
+<p class="govuk-body">{{ i18n.confirmationPage.postTransition.confirmationStatementBody }}</p>
+
+<h2 class="govuk-heading-m hide-on-print">{{ i18n.confirmationPage.whatNow }}</h2>
+
+<p class="govuk-body hide-on-print">
+  <a href="https://find-and-update.company-information.service.gov.uk/company/{{ props.data.limitedPartnership.data.partnership_number }}" class="govuk-link">{{ i18n.confirmationPage.postTransition.returnPartnershipOverview }}</a><br>
+  <a href="https://find-and-update.company-information.service.gov.uk/TO_DO_SET_CORRECT_URL" class="govuk-link">{{ i18n.confirmationPage.postTransition.fileConfirmationStatement }}</a><br>
+  <a href="https://find-and-update.company-information.service.gov.uk/" class="govuk-link">{{ i18n.confirmationPage.postTransition.fileForDifferentPartnership }}</a>
+</p>
