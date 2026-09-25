@@ -15,9 +15,10 @@ export const generalPartnerLegalEntity = {
   legal_entity_name: "My Company ltd - GP",
   legal_form: "Limited Company",
   governing_law: "Act of law",
+  entered_on_register: true,
   legal_entity_register_name: "US Register",
   legal_entity_registration_location: "United States",
-  registered_company_number: "12345678",
+  registered_company_number: "12345678"
 };
 
 class GeneralPartnerBuilder extends AbstractPartnerBuilder {

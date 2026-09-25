@@ -161,6 +161,7 @@ describe("Update Limited Partner Legal Entity Page", () => {
         legal_entity_name: "MY LP",
         legal_form: "form",
         governing_law: "British",
+        entered_on_register: "true",
         legal_entity_register_name: "Irish",
         legal_entity_registration_location: "England",
         registered_company_number: "12345678"
@@ -198,6 +199,7 @@ describe("Update Limited Partner Legal Entity Page", () => {
         legal_entity_name: "MY LP",
         legal_form: "form",
         governing_law: "British",
+        entered_on_register: "true",
         legal_entity_register_name: "Irish",
         legal_entity_registration_location: "Iceland",
         registered_company_number: "12345678"
@@ -223,6 +225,7 @@ describe("Update Limited Partner Legal Entity Page", () => {
       legal_entity_name: "MY LP",
       legal_form: "form",
       governing_law: "British",
+      entered_on_register: "true",
       legal_entity_register_name: "Irish",
       legal_entity_registration_location: "England",
       registered_company_number: "12345678"
@@ -243,8 +246,7 @@ describe("Update Limited Partner Legal Entity Page", () => {
         errors.errorMessages.partners.addPartner.legalEntityNameMissing,
         errors.errorMessages.partners.addPartner.legalFormMissing,
         errors.errorMessages.partners.addPartner.governingLawMissing,
-        errors.errorMessages.partners.addPartner.legalEntityRegisterNameMissing,
-        errors.errorMessages.partners.addPartner.registeredCompanyNumberMissing,
+        errors.errorMessages.partners.addPartner.enteredOnRegisterMissing,
         errors.errorMessages.partners.addPartner.legalEntityCountryRegisteredMissing
       ];
 
