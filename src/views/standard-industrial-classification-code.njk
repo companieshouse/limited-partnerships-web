@@ -32,10 +32,6 @@
 
       <h1 class="govuk-heading-xl">{{ i18n.sicCodes.title }}</h1>
 
-      <form method="POST">
-        <input type="hidden" name="pageType" value={{ props.pageType }}>
-        {% include "includes/csrf_token.njk" %}
-
         {% if props.data.sicCodes.length > 0 %}
           <div class="govuk-summary-list" role="list">
             <dl class="govuk-summary-list govuk-!-margin-bottom-0">
@@ -44,25 +40,32 @@
                     <dt class="govuk-summary-list__key">{{ sic.code }}</dt>
                     <dd class="govuk-summary-list__value">{{ sic.description }}</dd>
                     <dd class="govuk-summary-list__actions">
-                      {{ govukButton({
-                        text: i18n.sicCodes.removeButton,
-                        name: "action_remove",
-                        value: sic.code,
-                        classes: "govuk-link govuk-!-margin-0", 
-                        attributes: {
+                      <form method="POST">
+                        <input type="hidden" name="pageType" value={{ props.pageType }}>
+                        {% include "includes/csrf_token.njk" %}
+
+                        {{ govukButton({
                           id: "remove-sic-code-button",
-                          class: "govuk-link",
-                          type: "submit",
-                          "data-event-id": "remove-sic-code-button"
-                        }
-                      }) }}
+                          text: i18n.sicCodes.removeButton,
+                          name: "action_remove",
+                          value: sic.code,
+                          classes: "govuk-link govuk-!-margin-0", 
+                          attributes: {
+                            "data-event-id": "remove-sic-code-button"
+                          }
+                        }) }}
+                      </form>
                     </dd>
                   </div>
               {% endfor %}
             <dl>
           </div>
         {% endif %}
-            
+
+      <form method="POST">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+
         {% if props.data.isShowingAddSection %}
           <div class="govuk-inset-text">
             <div class="govuk-form-group govuk-!-margin-bottom-6">
@@ -106,13 +109,12 @@
             </div>
 
             {{ govukButton({
+              id: "add-sic-code-button",
               text: i18n.sicCodes.addButton,
               name: "action_add",
               value: "true",
               classes: "govuk-button--secondary", 
               attributes: {
-                id: "add-sic-code-button",
-                type: "submit",
                 "data-event-id": "add-sic-code-button"
               }
             }) }}
