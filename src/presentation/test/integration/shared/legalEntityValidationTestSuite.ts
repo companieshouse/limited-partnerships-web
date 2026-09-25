@@ -28,7 +28,7 @@ export const runLegalEntityValidationTests = ({
       legal_entity_name: "My Company ltd",
       legal_form: "Limited Company",
       governing_law: "Act of law",
-      entered_on_register: true,
+      entered_on_register: "true",
       legal_entity_register_name: "US Register",
       legal_entity_registration_location: "United States",
       registered_company_number: "12345678"
@@ -57,6 +57,9 @@ export const runLegalEntityValidationTests = ({
       errorMessages.forEach((errorMessage) => {
         expect(res.text).toContain(toEscapedHtml(errorMessage));
       });
+
+      expect(res.text).not.toContain(toEscapedHtml(errors.errorMessages.partners.addPartner.legalEntityRegisterNameMissing));
+      expect(res.text).not.toContain(toEscapedHtml(errors.errorMessages.partners.addPartner.registeredCompanyNumberMissing));
     });
 
     it("should return missing validation errors for register fields if entered on register is true", async () => {
@@ -65,7 +68,7 @@ export const runLegalEntityValidationTests = ({
         .send({
           ...pageData,
           ...additionalData,
-          entered_on_register: true
+          entered_on_register: "true"
         });
 
       expect(res.status).toBe(200);
@@ -82,6 +85,21 @@ export const runLegalEntityValidationTests = ({
       errorMessages.forEach((errorMessage) => {
         expect(res.text).toContain(toEscapedHtml(errorMessage));
       });
+    });
+
+    it("should not return missing validation errors for register fields if entered on register is false", async () => {
+      const res = await request(app)
+        .post(`${url}?lang=${language}`)
+        .send({
+          ...pageData,
+          ...additionalData,
+          entered_on_register: "false"
+        });
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).not.toContain(toEscapedHtml(errors.errorMessages.partners.addPartner.legalEntityRegisterNameMissing));
+      expect(res.text).not.toContain(toEscapedHtml(errors.errorMessages.partners.addPartner.registeredCompanyNumberMissing));
     });
 
     it.each([

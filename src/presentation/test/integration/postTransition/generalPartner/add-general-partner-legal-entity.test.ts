@@ -87,18 +87,21 @@ describe("Post Add General Partner Legal Entity - validation", () => {
     ["English", "en", enErrors],
     ["Welsh", "cy", cyErrors]
   ])("should require confirmation that the general partner is not disqualified in %s", async (_language, language, errors) => {
-    const res = await request(app).post(`${getUrl(config.url)}?lang=${language}`).send({
-      ...config.pageRouting.get(config.pageType.addGeneralPartnerLegalEntity as PageType),
-      legal_entity_name: "My Company ltd - GP",
-      legal_form: "Limited Company",
-      governing_law: "Act of law",
-      legal_entity_register_name: "US Register",
-      legal_entity_registration_location: "United States",
-      registered_company_number: "12345678",
-      "date_effective_from-day": "22",
-      "date_effective_from-month": "10",
-      "date_effective_from-year": "2024"
-    });
+    const res = await request(app)
+      .post(`${getUrl(config.url)}?lang=${language}`)
+      .send({
+        ...config.pageRouting.get(config.pageType.addGeneralPartnerLegalEntity as PageType),
+        legal_entity_name: "My Company ltd - GP",
+        legal_form: "Limited Company",
+        governing_law: "Act of law",
+        entered_on_register: "true",
+        legal_entity_register_name: "US Register",
+        legal_entity_registration_location: "United States",
+        registered_company_number: "12345678",
+        "date_effective_from-day": "22",
+        "date_effective_from-month": "10",
+        "date_effective_from-year": "2024"
+      });
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
