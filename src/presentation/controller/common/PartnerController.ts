@@ -765,7 +765,7 @@ abstract class PartnerController extends AbstractController {
     requestBody: any,
     partnerFieldName: "limitedPartner" | "generalPartner"
   ) {
-    if (isCeaseDatePage(pageType)) {
+    if (isCeaseDatePage(pageType) || isWhenDidChangeUpdatePage(pageType)) {
       return {
         data: {
           limitedPartnership,
