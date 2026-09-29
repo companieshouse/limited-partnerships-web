@@ -709,7 +709,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
     companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+    dependencies.generalPartnerPostTransitionController.sendDateOfUpdatePageData()
   );
 
   router.get(
@@ -775,7 +775,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
     companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+    dependencies.generalPartnerPostTransitionController.sendDateOfUpdatePageData()
   );
 
   router.get(
@@ -841,7 +841,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
     companyAuthentication,
-    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
+    dependencies.limitedPartnerPostTransitionController.sendDateOfUpdatePageData()
   );
 
   router.get(
@@ -907,7 +907,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
     companyAuthentication,
-    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
+    dependencies.limitedPartnerPostTransitionController.sendDateOfUpdatePageData()
   );
 
   router.get(

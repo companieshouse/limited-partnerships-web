@@ -321,7 +321,12 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
         });
 
         expect(res.status).toBe(200);
+
         expect(res.text).toContain(toEscapedHtml(getExpectedError));
+
+        expect(res.text).toContain(day);
+        expect(res.text).toContain(month);
+        expect(res.text).toContain(year);
       });
     });
   });
