@@ -461,31 +461,7 @@ class PostTransitionPartnerController extends PartnerController {
           pageKey: partner
         };
 
-        let errors: UIErrors | undefined;
-        let fieldToReset = {};
-
-        if (isPrincipalOfficeAddressYesNoPage(pageType)) {
-          errors = this.validateAddressYesNoPage(
-            request.body.update_principal_office_address_required,
-            "update_principal_office_address_required",
-            response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress
-          );
-          fieldToReset = { update_principal_office_address_required: null };
-        } else if (isUsualResidentialAddressYesNoPage(pageType)) {
-          errors = this.validateAddressYesNoPage(
-            request.body.update_usual_residential_address_required,
-            "update_usual_residential_address_required",
-            response.locals.i18n.errorMessages.address.addressYesNoRequired.usualResidentialAddress
-          );
-          fieldToReset = { update_usual_residential_address_required: null };
-        } else if (pageType === PostTransitionPageType.updateCorrespondenceAddressYesNo) {
-          errors = this.validateAddressYesNoPage(
-            request.body.update_service_address_required,
-            "update_service_address_required",
-            response.locals.i18n.errorMessages.address.addressYesNoRequired.correspondenceAddress
-          );
-          fieldToReset = { update_service_address_required: null };
-        }
+        const { errors, fieldToReset }: { errors?: UIErrors; fieldToReset?: Record<string, any>; } = this.validateAddress(pageType, request, response);
 
         if (errors?.hasErrors()) {
           const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
@@ -520,6 +496,87 @@ class PostTransitionPartnerController extends PartnerController {
             partner
           );
 
+          response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
+
+          return;
+        }
+
+        await super.conditionalPatchPartner(pageRouting, request, urls);
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private validateAddress(pageType: any, request: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, response: Response<any, Record<string, any>>) {
+    let errors: UIErrors | undefined;
+    let fieldToReset = {};
+
+    if (isPrincipalOfficeAddressYesNoPage(pageType)) {
+      errors = this.validateAddressYesNoPage(
+        response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress,
+        "update_principal_office_address_required",
+        request.body.update_principal_office_address_required
+      );
+      fieldToReset = { update_principal_office_address_required: null };
+    } else if (isUsualResidentialAddressYesNoPage(pageType)) {
+      errors = this.validateAddressYesNoPage(
+        response.locals.i18n.errorMessages.address.addressYesNoRequired.usualResidentialAddress,
+        "update_usual_residential_address_required",
+        request.body.update_usual_residential_address_required
+      );
+      fieldToReset = { update_usual_residential_address_required: null };
+    } else if (pageType === PostTransitionPageType.updateCorrespondenceAddressYesNo) {
+      errors = this.validateAddressYesNoPage(
+        response.locals.i18n.errorMessages.address.addressYesNoRequired.correspondenceAddress,
+        "update_service_address_required",
+        request.body.update_service_address_required
+      );
+      fieldToReset = { update_service_address_required: null };
+    }
+
+    return { errors, fieldToReset };
+  }
+
+  sendDateOfUpdatePageData(partner: PartnerType) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const registration_date = await this.companyService?.getCompanyIncorporationDate(tokens, ids.companyId);
+
+        const data = {
+          ...request.body,
+          partnerType: partner,
+          partnerEntityType: pageRouting?.data?.partnerEntityType,
+          journeyTypes: response.locals.journeyTypes,
+          registration_date,
+          pageKey: partner
+        };
+
+        const result = await super.sendData(partner, tokens, ids, data);
+
+        if (result?.errors) {
+          resetFormerNamesIfPreviousNameIsFalse(request.body);
+
+          const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
+
+          const { data: renderData, url } = this.buildPartnerErrorRenderData(
+            pageType,
+            pageRouting,
+            limitedPartnership,
+            partnerEntity,
+            request.body,
+            partner
+          );
+
           if (result?.errors.errors["date_of_update"]) {
             return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, renderData, result.errors));
           }
@@ -528,8 +585,6 @@ class PostTransitionPartnerController extends PartnerController {
 
           return;
         }
-
-        await super.conditionalPatchPartner(pageRouting, request, urls);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -581,7 +636,7 @@ class PostTransitionPartnerController extends PartnerController {
     };
   }
 
-  private validateAddressYesNoPage(selectedValue, fieldName: string, errorMessage: string) {
+  private validateAddressYesNoPage(errorMessage: string, fieldName: string, selectedValue?: string) {
     if (selectedValue === undefined || selectedValue === null) {
       return new UIErrors().setWebError(fieldName, errorMessage);
     }

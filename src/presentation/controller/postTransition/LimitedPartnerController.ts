@@ -81,6 +81,10 @@ class LimitedPartnerPostTransitionController extends PartnerController {
     return this.postTransitionPartnerController.getDateOfUpdate(PartnerType.limitedPartner);
   }
 
+  sendDateOfUpdatePageData() {
+    return this.postTransitionPartnerController.sendDateOfUpdatePageData(PartnerType.limitedPartner);
+  }
+
   getStopScreen() {
     return this.postTransitionPartnerController.getStopScreen();
   }
