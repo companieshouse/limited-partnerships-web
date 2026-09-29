@@ -59,7 +59,7 @@ class LimitedPartnerPostTransitionController extends PartnerController {
   }
 
   sendPageData() {
-    return super.sendPageData(PartnerType.limitedPartner, {
+    return this.postTransitionPartnerController.sendPageData(PartnerType.limitedPartner, {
       confirmPartnerUsualResidentialAddressUrl: CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
       confirmPartnerPrincipalOfficeAddressUrl: CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });

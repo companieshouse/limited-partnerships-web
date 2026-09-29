@@ -608,14 +608,27 @@ class PostTransitionPartnerController extends PartnerController {
     }
 
     if (this.companyService) {
-      const registration_date = await this.companyService.getCompanyIncorporationDate(tokens, ids.companyId);
-      limitedPartnership = {
-        ...limitedPartnership,
-        data: {
-          ...limitedPartnership.data,
-          registration_date
-        }
-      };
+      if (!limitedPartnership.data) {
+        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
+
+        limitedPartnership = {
+          ...result.limitedPartnership,
+          data: {
+            ...result.limitedPartnership.data
+          }
+        };
+      } else {
+        const registration_date = await this.companyService.getCompanyIncorporationDate(tokens, ids.companyId);
+
+        limitedPartnership = {
+          ...limitedPartnership,
+          data: {
+            ...limitedPartnership.data,
+            registration_date
+          }
+        };
+      }
+
     }
 
     if (partner === PartnerType.generalPartner) {
