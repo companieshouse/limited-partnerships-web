@@ -546,44 +546,29 @@ class PostTransitionPartnerController extends PartnerController {
         this.generalPartnerService.setI18n(response.locals.i18n);
         this.limitedPartnerService.setI18n(response.locals.i18n);
 
-        const { tokens, ids } = super.extract(request);
-        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+        const { tokens, ids, pageType } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
         const registration_date = await this.companyService?.getCompanyIncorporationDate(tokens, ids.companyId);
 
-        const data = {
+        const result = await super.sendData(partner, tokens, ids, {
           ...request.body,
           partnerType: partner,
           partnerEntityType: pageRouting?.data?.partnerEntityType,
           journeyTypes: response.locals.journeyTypes,
           registration_date,
           pageKey: partner
-        };
-
-        const result = await super.sendData(partner, tokens, ids, data);
+        });
 
         if (result?.errors) {
-          resetFormerNamesIfPreviousNameIsFalse(request.body);
+          const { partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
 
-          const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
-
-          const { data: renderData, url } = this.buildPartnerErrorRenderData(
-            pageType,
-            pageRouting,
-            limitedPartnership,
+          const data = {
             partnerEntity,
-            request.body,
-            partner
-          );
+            ...request.body
+          };
 
-          if (result?.errors.errors["date_of_update"]) {
-            return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, renderData, result.errors));
-          }
-
-          response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
-
-          return;
+          return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, data, result.errors));
         }
 
         response.redirect(pageRouting.nextUrl);
