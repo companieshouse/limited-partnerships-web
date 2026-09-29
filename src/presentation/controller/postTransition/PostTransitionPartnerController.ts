@@ -515,26 +515,35 @@ class PostTransitionPartnerController extends PartnerController {
     let fieldToReset = {};
 
     if (isPrincipalOfficeAddressYesNoPage(pageType)) {
+      const fieldName = "update_principal_office_address_required";
+
       errors = this.validateAddressYesNoPage(
         response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress,
-        "update_principal_office_address_required",
-        request.body.update_principal_office_address_required
+        fieldName,
+        request.body[fieldName]
       );
-      fieldToReset = { update_principal_office_address_required: null };
+
+      fieldToReset = { [fieldName]: null };
     } else if (isUsualResidentialAddressYesNoPage(pageType)) {
+      const fieldName = "update_usual_residential_address_required";
+
       errors = this.validateAddressYesNoPage(
         response.locals.i18n.errorMessages.address.addressYesNoRequired.usualResidentialAddress,
-        "update_usual_residential_address_required",
-        request.body.update_usual_residential_address_required
+        fieldName,
+        request.body[fieldName]
       );
-      fieldToReset = { update_usual_residential_address_required: null };
+
+      fieldToReset = { [fieldName]: null };
     } else if (pageType === PostTransitionPageType.updateCorrespondenceAddressYesNo) {
+      const fieldName = "update_service_address_required";
+
       errors = this.validateAddressYesNoPage(
         response.locals.i18n.errorMessages.address.addressYesNoRequired.correspondenceAddress,
-        "update_service_address_required",
-        request.body.update_service_address_required
+        fieldName,
+        request.body[fieldName]
       );
-      fieldToReset = { update_service_address_required: null };
+
+      fieldToReset = { [fieldName]: null };
     }
 
     return { errors, fieldToReset };
