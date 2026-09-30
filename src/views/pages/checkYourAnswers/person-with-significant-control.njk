@@ -6,6 +6,12 @@
   {% set country = i18n.countries[macros.makeCamelCase(item.data.legal_entity_registration_location)] %}
 {% endif %}
 
+{% if isRle and item.data.legal_entity_register_name %}
+  {% set registerNameText = item.data.legal_entity_register_name %}
+{% else %}
+  {% set registerNameText = i18n.checkYourAnswersPage.partners.legalEntity.notOnRegister %}
+{% endif %}
+
 {% if isIp %}
   {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) %}
   {% if item.data.nationality2 %}
@@ -86,7 +92,7 @@
         text: i18n.checkYourAnswersPage.partners.legalEntity.register
       },
       value: {
-        text: item.data.legal_entity_register_name
+        text: registerNameText
       }
     } if isRle,
     {
@@ -96,7 +102,7 @@
       value: {
         text: country
       }
-    } if isRle,
+    } if isRle and item.data.legal_entity_register_name,
     {
       key: {
         text: i18n.checkYourAnswersPage.partners.legalEntity.registrationNumber
@@ -104,7 +110,7 @@
       value: {
         text: item.data.registered_company_number
       }
-    } if isRle,
+    } if isRle and item.data.legal_entity_register_name,
     {
       key: {
         text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress

@@ -71,7 +71,8 @@
                 "register": "Register",
                 "countryRegisteredIn": "Country registered in",
                 "registrationNumber": "Registration number",
-                "principalOfficeAddress": "Principal office address"
+                "principalOfficeAddress": "Principal office address",
+                "notOnRegister": "Not entered on a register"
             }
         },
          "update": {

@@ -71,7 +71,8 @@
                 "register": "WELSH - Register",
                 "countryRegisteredIn": "WELSH - Country registered in",
                 "registrationNumber": "WELSH - Registration number",
-                "principalOfficeAddress": "WELSH - Principal office address"
+                "principalOfficeAddress": "WELSH - Principal office address",
+                "notOnRegister": "WELSH - Not entered on a register"
             }
         },
         "update": {
