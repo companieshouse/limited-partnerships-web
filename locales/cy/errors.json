@@ -169,7 +169,7 @@
             "dayAndYearMissing": "WELSH - Date effective from must include a day and a year",
             "invalidChars": "WELSH - Date effective from must only include numbers",
             "invalid": "WELSH - Date effective from must be a real date",
-            "notInPast": "WELSH - Date effective from must be in the past",
+            "notInPastOrToday": "WELSH - Date effective from must be today or in the past",
             "dayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
             "monthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
             "yearInvalidLength": "WELSH - Year must be 4 numbers",
@@ -319,7 +319,7 @@
         },
 
         "dateOfUpdate": {
-            "notInPast": "WELSH - Date the {change-type} changed must be today or in the past",
+            "notInPastOrToday": "WELSH - Date the {change-type} changed must be today or in the past",
             "beforeRegistrationDate": "WELSH - Date the {change-type} changed must be after the partnership's registration date",
             "missing": "WELSH - Enter the date the {change-type} changed",
             "dayMissing": "WELSH - Date the {change-type} changed must include a day",

@@ -224,6 +224,23 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateEffectiveFrom.beforeRegistrationDate));
     });
 
+    it("should return a validation error when date effective from is in the future", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          ...PostTransitionRouting.get(PostTransitionPageType.addLimitedPartnerPerson),
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          "date_effective_from-day": "22",
+          "date_effective_from-month": "10",
+          "date_effective_from-year": "2030"
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateEffectiveFrom.notInPastOrToday));
+    });
+
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
       const apiErrors: ApiErrors = {
         errors: { forename: "limited partner name is invalid" }

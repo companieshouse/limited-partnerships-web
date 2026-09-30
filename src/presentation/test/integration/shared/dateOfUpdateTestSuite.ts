@@ -172,7 +172,7 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
           day: "10",
           month: "01",
           year: "2030",
-          getExpectedError: getExpectedErrorMessage(enTranslationText.errorMessages.dateOfUpdate.notInPast, dateFieldType)
+          getExpectedError: getExpectedErrorMessage(enTranslationText.errorMessages.dateOfUpdate.notInPastOrToday, dateFieldType)
         },
         {
           description: "all date fields are missing",

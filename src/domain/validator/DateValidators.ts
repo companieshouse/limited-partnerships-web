@@ -14,6 +14,7 @@ export enum DateErrorMessages {
   invalidChars = "invalidChars",
   invalid = "invalid",
   notInPast = "notInPast",
+  notInPastOrToday = "notInPastOrToday",
   beforeRegistrationDate = "beforeRegistrationDate"
 }
 
@@ -169,7 +170,7 @@ const inPast: DateRule = (parts) => {
 const inPastOrToday: DateRule = (parts) => {
   const comparison = compareWithToday(parts);
 
-  return comparison !== null && comparison <= 0 ? null : DateErrorMessages.notInPast;
+  return comparison !== null && comparison <= 0 ? null : DateErrorMessages.notInPastOrToday;
 };
 
 const notBeforeRegistrationDate =
