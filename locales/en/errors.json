@@ -292,8 +292,8 @@
             },
             "addNatureOfControl": {
                 "individual": {
-                    "shareOfAssetsMissing": "Tell us the share of assets or select 'Does not apply'",
-                    "votingRightsMissing": "Tell us the ownership of voting rights or select 'Does not apply'",
+                    "shareOfAssetsMissing": "Tell us the share of assets or select 'does not apply'",
+                    "votingRightsMissing": "Tell us the ownership of voting rights or select 'does not apply'",
                     "significantInfluence": "You can only select 'significant influence or control' if the other natures of control do not apply",
                     "youMustSelectAtLeastOne": {
                         "individual": "Tell us the individual's nature of control. You must select at least one option that applies.",
@@ -302,13 +302,13 @@
                     }
                 },
                 "firm": {
-                    "shareOfAssetsMissing": "Tell us the share of assets or select 'Does not apply'",
-                    "votingRightsMissing": "Tell us the ownership of voting rights or select 'Does not apply'",
+                    "shareOfAssetsMissing": "Tell us the share of assets or select 'does not apply'",
+                    "votingRightsMissing": "Tell us the ownership of voting rights or select 'does not apply'",
                     "youMustSelectAtLeastOne": "Tell us the firm's nature of control. You must select at least one option that applies. "
                 },
                 "trust": {
-                    "shareOfAssetsMissing": "Tell us the share of assets or select 'Does not apply'",
-                    "votingRightsMissing": "Tell us the ownership of voting rights or select 'Does not apply'",
+                    "shareOfAssetsMissing": "Tell us the share of assets or select 'does not apply'",
+                    "votingRightsMissing": "Tell us the ownership of voting rights or select 'does not apply'",
                     "youMustSelectAtLeastOne": "Tell us the trust's nature of control. You must select at least one option that applies. "
                 }
             },

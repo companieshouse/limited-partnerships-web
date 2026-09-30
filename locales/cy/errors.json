@@ -293,8 +293,8 @@
             },
             "addNatureOfControl": {
                 "individual": {
-                    "shareOfAssetsMissing": "WELSH - Tell us the share of assets or select 'Does not apply'",
-                    "votingRightsMissing": "WELSH - Tell us the ownership of voting rights or select 'Does not apply'",
+                    "shareOfAssetsMissing": "WELSH - Tell us the share of assets or select 'does not apply'",
+                    "votingRightsMissing": "WELSH - Tell us the ownership of voting rights or select 'does not apply'",
                     "significantInfluence": "WELSH - You can only select 'significant influence or control' if the other natures of control do not apply",
                     "youMustSelectAtLeastOne": {
                         "individual": "WELSH - Tell us the individual's nature of control. You must select at least one option that applies.",
@@ -303,13 +303,13 @@
                     }
                 },
                 "firm": {
-                    "shareOfAssetsMissing": "WELSH - Tell us the share of assets or select 'Does not apply'",
-                    "votingRightsMissing": "WELSH - Tell us the ownership of voting rights or select 'Does not apply'",
+                    "shareOfAssetsMissing": "WELSH - Tell us the share of assets or select 'does not apply'",
+                    "votingRightsMissing": "WELSH - Tell us the ownership of voting rights or select 'does not apply'",
                     "youMustSelectAtLeastOne": "WELSH - Tell us the firm's nature of control. You must select at least one option that applies. "
                 },
                 "trust": {
-                    "shareOfAssetsMissing": "WELSH - Tell us the share of assets or select 'Does not apply'",
-                    "votingRightsMissing": "WELSH - Tell us the ownership of voting rights or select 'Does not apply'",
+                    "shareOfAssetsMissing": "WELSH - Tell us the share of assets or select 'does not apply'",
+                    "votingRightsMissing": "WELSH - Tell us the ownership of voting rights or select 'does not apply'",
                     "youMustSelectAtLeastOne": "WELSH - Tell us the trust's nature of control. You must select at least one option that applies. "
                 }
             },
