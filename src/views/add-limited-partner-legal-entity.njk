@@ -5,17 +5,17 @@
 {% set publicRegisterInformationLine1 = i18n.partner.addOrUpdatePartnerLegalEntityPage.publicRegisterLine1 %}
 {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 
-{% if props.data.limitedPartner.data.date_effective_from  %}
+{% if props.data.limitedPartner.data["date_effective_from-year"] %}
+  {# And this covers the scenario when date validation fails and the page reloads #}
+  {% set date_effective_from_year = props.data.limitedPartner.data["date_effective_from-year"] %}
+  {% set date_effective_from_month = props.data.limitedPartner.data["date_effective_from-month"] %}
+  {% set date_effective_from_day = props.data.limitedPartner.data["date_effective_from-day"] %}
+{% elif props.data.limitedPartner.data.date_effective_from  %}
   {# This is for when saved data is pre-populated on the page #}
   {% set date_effective_from = props.data.limitedPartner.data.date_effective_from %}
   {% set date_effective_from_year = date_effective_from[0] + date_effective_from[1] + date_effective_from[2] + date_effective_from[3] %}
   {% set date_effective_from_month = date_effective_from[5] + date_effective_from[6] %}
   {% set date_effective_from_day = date_effective_from[8] + date_effective_from[9] %}
-{% elif props.data.limitedPartner.data["date_effective_from-year"] %}
-  {# And this covers the scenario when date validation fails and the page reloads #}
-  {% set date_effective_from_year = props.data.limitedPartner.data["date_effective_from-year"] %}
-  {% set date_effective_from_month = props.data.limitedPartner.data["date_effective_from-month"] %}
-  {% set date_effective_from_day = props.data.limitedPartner.data["date_effective_from-day"] %}
 {% endif %}
 
 {% set partnerKind = "limitedPartner" %}

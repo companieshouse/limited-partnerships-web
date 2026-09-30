@@ -4,30 +4,30 @@
 {% set publicRegisterInformationLine1 = i18n.partner.addPartnerPersonPage.publicRegisterLine1 %}
 {% set publicRegisterInformationLine2 = i18n.partner.addPartnerPersonPage.publicRegisterLine2 %}
 
-{% if props.data.generalPartner.data.date_of_birth  %}
+{% if props.data.generalPartner.data["date_of_birth-year"]  or props.data.generalPartner.data["date_of_birth-month"]  or props.data.generalPartner.data["date_of_birth-day"] %}
+  {# And this covers the scenario when date validation fails and the page reloads #}
+  {% set date_of_birth_year = props.data.generalPartner.data["date_of_birth-year"] %}
+  {% set date_of_birth_month = props.data.generalPartner.data["date_of_birth-month"] %}
+  {% set date_of_birth_day = props.data.generalPartner.data["date_of_birth-day"] %}
+{% elif props.data.generalPartner.data.date_of_birth  %}
   {# This is for when saved data is pre-populated on the page #}
   {% set date_of_birth = props.data.generalPartner.data.date_of_birth %}
   {% set date_of_birth_year = date_of_birth[0] + date_of_birth[1] + date_of_birth[2] + date_of_birth[3] %}
   {% set date_of_birth_month = date_of_birth[5] + date_of_birth[6] %}
   {% set date_of_birth_day = date_of_birth[8] + date_of_birth[9] %}
-{% elif props.data.generalPartner.data["date_of_birth-year"]  or props.data.generalPartner.data["date_of_birth-month"]  or props.data.generalPartner.data["date_of_birth-day"] %}
-  {# And this covers the scenario when date validation fails and the page reloads #}
-  {% set date_of_birth_year = props.data.generalPartner.data["date_of_birth-year"] %}
-  {% set date_of_birth_month = props.data.generalPartner.data["date_of_birth-month"] %}
-  {% set date_of_birth_day = props.data.generalPartner.data["date_of_birth-day"] %}
 {% endif %}
 
-{% if props.data.generalPartner.data.date_effective_from  %}
+{% if props.data.generalPartner.data["date_effective_from-year"]  or props.data.generalPartner.data["date_effective_from-month"]  or props.data.generalPartner.data["date_effective_from-day"] %}
+  {# And this covers the scenario when date validation fails and the page reloads #}
+  {% set date_effective_from_year = props.data.generalPartner.data["date_effective_from-year"] %}
+  {% set date_effective_from_month = props.data.generalPartner.data["date_effective_from-month"] %}
+  {% set date_effective_from_day = props.data.generalPartner.data["date_effective_from-day"] %}
+{% elif props.data.generalPartner.data.date_effective_from  %}
   {# This is for when saved data is pre-populated on the page #}
   {% set date_effective_from = props.data.generalPartner.data.date_effective_from %}
   {% set date_effective_from_year = date_effective_from[0] + date_effective_from[1] + date_effective_from[2] + date_effective_from[3] %}
   {% set date_effective_from_month = date_effective_from[5] + date_effective_from[6] %}
   {% set date_effective_from_day = date_effective_from[8] + date_effective_from[9] %}
-{% elif props.data.generalPartner.data["date_effective_from-year"]  or props.data.generalPartner.data["date_effective_from-month"]  or props.data.generalPartner.data["date_effective_from-day"] %}
-  {# And this covers the scenario when date validation fails and the page reloads #}
-  {% set date_effective_from_year = props.data.generalPartner.data["date_effective_from-year"] %}
-  {% set date_effective_from_month = props.data.generalPartner.data["date_effective_from-month"] %}
-  {% set date_effective_from_day = props.data.generalPartner.data["date_effective_from-day"] %}
 {% endif %}
 
 {% if props.data.generalPartner.data.previous_name is defined %}
