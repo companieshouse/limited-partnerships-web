@@ -71,23 +71,6 @@
       <p class="govuk-body hide-on-print govuk-!-static-padding-bottom-4">
         <a href="https://www.smartsurvey.co.uk/s/register-a-lp-conf/" target="_blank" class="govuk-link" data-event-id="survey-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
       </p>
-    {% elif journeyTypes.isPostTransition %}
-
-      {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-a-lp-reg-office-add-conf" %}
-
-      {% if props.data.subtype.includes('update-partnership-name') %}
-        {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-lp-name-conf/" %}
-      {% elif props.data.subtype.includes('update-partnership-term') %}
-        {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-the-term-of-lp-conf/" %}
-      {% elif props.data.subtype.includes('update-partnership-principal-place-of-business-address') %}
-        {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-a-lp-principal-office-add-conf/" %}
-      {% elif props.data.subtype.includes('update-partnership-redesignate-to-pflp') %}
-        {% set surveyLink = "https://www.smartsurvey.co.uk/s/designate-a-lp-as-priv-fund-lp-conf/"  %}
-      {% endif %}
-
-      <p class="govuk-body hide-on-print govuk-!-static-padding-bottom-4">
-        <a href={{ surveyLink }} target="_blank" class="govuk-link" data-event-id="survey-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
-      </p>
     {% endif %}
 
     <p class="govuk-body govuk-!-font-size-20 check-your-answers-javascript-disabled-text-style">{{ i18n.print.buttonTextNoJs }}</p>

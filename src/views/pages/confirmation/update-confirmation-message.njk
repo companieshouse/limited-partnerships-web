@@ -97,3 +97,35 @@
   <a href="https://find-and-update.company-information.service.gov.uk/TO_DO_SET_CORRECT_URL" class="govuk-link">{{ i18n.confirmationPage.postTransition.fileConfirmationStatement }}</a><br>
   <a href="https://find-and-update.company-information.service.gov.uk/" class="govuk-link">{{ i18n.confirmationPage.postTransition.fileForDifferentPartnership }}</a>
 </p>
+
+{% if partnerName %}
+  {% if props.data.subtype.includes('add-general-partner') %}
+    {% set surveyLink = "https://www.smartsurvey.co.uk/s/add-a-general-partner-conf/" %}
+  {% elif props.data.subtype.includes('add-limited-partner') %}
+    {% set surveyLink = "https://www.smartsurvey.co.uk/s/add-a-limited-partner-conf/" %}
+  {% elif props.data.subtype.includes('update-general-partner') %}
+    {% set surveyLink = "https://www.smartsurvey.co.uk/s/updt-gen-partners-dtls-conf/" %}
+  {% elif props.data.subtype.includes('update-limited-partner') %}
+    {% set surveyLink = "https://www.smartsurvey.co.uk/s/updt-ltd-partners-dtls-conf/ "  %}
+  {% elif props.data.subtype.includes('remove-general-partner') %}
+    {% set surveyLink = "https://www.smartsurvey.co.uk/s/remove-a-general-partner-conf/ "  %}
+  {% elif props.data.subtype.includes('remove-limited-partner') %}
+    {% set surveyLink = "https://www.smartsurvey.co.uk/s/remove-a-limited-partner-conf/ "  %}
+  {% endif %}
+{% else %}
+  {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-a-lp-reg-office-add-conf" %}
+
+  {% if props.data.subtype.includes('update-partnership-name') %}
+    {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-lp-name-conf/" %}
+  {% elif props.data.subtype.includes('update-partnership-term') %}
+    {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-the-term-of-lp-conf/" %}
+  {% elif props.data.subtype.includes('update-partnership-principal-place-of-business-address') %}
+    {% set surveyLink = "https://www.smartsurvey.co.uk/s/update-a-lp-principal-office-add-conf/" %}
+  {% elif props.data.subtype.includes('update-partnership-redesignate-to-pflp') %}
+    {% set surveyLink = "https://www.smartsurvey.co.uk/s/designate-a-lp-as-priv-fund-lp-conf/"  %}
+  {% endif %}
+{% endif %}
+
+<p class="govuk-body hide-on-print govuk-!-static-padding-bottom-4">
+  <a href={{ surveyLink }} target="_blank" class="govuk-link" data-event-id="survey-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
+</p>
