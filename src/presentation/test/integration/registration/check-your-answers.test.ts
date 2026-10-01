@@ -531,7 +531,7 @@ describe("Check Your Answers Page", () => {
         const res = await request(app).get(URL + `?lang=${lang}`);
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(translationText.checkYourAnswersPage.partners.legalEntity.notOnRegister);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.notOnRegister);
         expect(res.text).not.toContain(translationText.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn);
         expect(res.text).not.toContain(translationText.checkYourAnswersPage.partners.legalEntity.registrationNumber);
       }

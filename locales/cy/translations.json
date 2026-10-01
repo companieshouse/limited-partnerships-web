@@ -71,8 +71,7 @@
                 "register": "WELSH - Register",
                 "countryRegisteredIn": "WELSH - Country registered in",
                 "registrationNumber": "WELSH - Registration number",
-                "principalOfficeAddress": "WELSH - Principal office address",
-                "notOnRegister": "WELSH - Not entered on a register"
+                "principalOfficeAddress": "WELSH - Principal office address"
             }
         },
         "update": {
@@ -88,7 +87,8 @@
             "headingPscStatement": "WELSH - PSC statement",
             "noPscStatement": "WELSH - There is no person identified as a person with significant control (either a registrable person or RLE) in relation to the limited partnership.",
             "changeRemoveOrAdd": "WELSH - Change, remove or add people with significant control (PSCs)",
-            "personTitle": "WELSH - Title"
+            "personTitle": "WELSH - Title",
+            "notOnRegister": "WELSH - Not entered on a register"
         }
     },
 
