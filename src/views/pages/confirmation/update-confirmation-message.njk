@@ -89,7 +89,13 @@
   <a href="https://find-and-update.company-information.service.gov.uk/" class="govuk-link">{{ i18n.confirmationPage.postTransition.fileForDifferentPartnership }}</a>
 </p>
 
-{% set partnerSurveyLinks = {
+{% set surveyLinks = {
+  "update-partnership-name": "https://www.smartsurvey.co.uk/s/update-lp-name-conf/",
+  "update-partnership-term": "https://www.smartsurvey.co.uk/s/update-the-term-of-lp-conf/",
+  "update-partnership-registered-office-address": "https://www.smartsurvey.co.uk/s/update-a-lp-reg-office-add-conf/",
+  "update-partnership-principal-place-of-business-address": "https://www.smartsurvey.co.uk/s/update-a-lp-principal-office-add-conf/",
+  "update-partnership-redesignate-to-pflp": "https://www.smartsurvey.co.uk/s/designate-a-lp-as-priv-fund-lp-conf/",
+
   "add-general-partner": "https://www.smartsurvey.co.uk/s/add-a-general-partner-conf/",
   "add-limited-partner": "https://www.smartsurvey.co.uk/s/add-a-limited-partner-conf/",
   "update-general-partner": "https://www.smartsurvey.co.uk/s/updt-gen-partners-dtls-conf/",
@@ -98,17 +104,9 @@
   "remove-limited-partner": "https://www.smartsurvey.co.uk/s/remove-a-limited-partner-conf/"
 } %}
 
-{% set partnershipSurveyLinks = {
-  "update-partnership-name": "https://www.smartsurvey.co.uk/s/update-lp-name-conf/",
-  "update-partnership-term": "https://www.smartsurvey.co.uk/s/update-the-term-of-lp-conf/",
-  "update-partnership-registered-office-address": "https://www.smartsurvey.co.uk/s/update-a-lp-reg-office-add-conf/",
-  "update-partnership-principal-place-of-business-address": "https://www.smartsurvey.co.uk/s/update-a-lp-principal-office-add-conf/",
-  "update-partnership-redesignate-to-pflp": "https://www.smartsurvey.co.uk/s/designate-a-lp-as-priv-fund-lp-conf/"
-} %}
-
 {% set surveyLink = "" %}
 
-{% for key, link in (partnerSurveyLinks if partnerName else partnershipSurveyLinks) %}
+{% for key, link in surveyLinks %}
   {% if props.data.subtype.includes(key) %}
     {% set surveyLink = link %}
   {% endif %}
