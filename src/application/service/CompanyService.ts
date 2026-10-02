@@ -158,6 +158,10 @@ class CompanyService {
     const name = companyAppointment?.name ?? "";
     const legalForm = companyAppointment?.identification?.legalForm ?? "";
     const governingLaw = companyAppointment?.identification?.legalAuthority ?? "";
+    const enteredOnRegister =
+      companyAppointment?.identification?.placeRegistered && companyAppointment?.identification?.registrationNumber ?
+        true
+        : false;
     const legalEntityRegistrationName = companyAppointment?.identification?.placeRegistered ?? "";
     const legalEntityRegistrationLocation = this.toTitleCase(companyAppointment?.identification?.registerLocation ?? "");
     const registeredCompanyNumber = companyAppointment?.identification?.registrationNumber ?? "";
@@ -180,6 +184,7 @@ class CompanyService {
         legal_entity_name: name,
         legal_form: legalForm ?? "",
         governing_law: governingLaw ?? "",
+        entered_on_register: enteredOnRegister,
         legal_entity_register_name: legalEntityRegistrationName ?? "",
         legal_entity_registration_location: legalEntityRegistrationLocation ?? "",
         registered_company_number: registeredCompanyNumber ?? "",
