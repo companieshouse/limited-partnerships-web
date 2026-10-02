@@ -33,17 +33,6 @@ export const personWithSignificantControlRelevantLegalEntity = {
   type: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY
 };
 
-export const personWithSignificantControlRleNotOnRegister = {
-  legal_entity_name: "My Company ltd - RLE",
-  legal_form: "Limited Company",
-  governing_law: "Act of law",
-  legal_entity_register_name: null,
-  legal_entity_registration_location: null,
-  registered_company_number: null,
-  entered_on_register: 'false',
-  type: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY
-};
-
 export const personWithSignificantControlOtherRegistrablePerson = {
   legal_entity_name: "My Company ltd - ORP",
   legal_form: "Limited Company",
@@ -153,14 +142,6 @@ class PersonWithSignificantControlBuilder {
     this.data = {
       ...this.data,
       ...personWithSignificantControlRelevantLegalEntity
-    };
-    return this;
-  }
-
-  isRelevantLegalEntityNotOnRegister() {
-    this.data = {
-      ...this.data,
-      ...personWithSignificantControlRleNotOnRegister
     };
     return this;
   }

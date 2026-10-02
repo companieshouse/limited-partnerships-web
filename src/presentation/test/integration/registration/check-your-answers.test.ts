@@ -525,7 +525,9 @@ describe("Check Your Answers Page", () => {
       async (_description: string, lang: string, translationText: Record<string, any>) => {
         setLocalesEnabled(true);
 
-        const rle = new PersonWithSignificantControlBuilder().isRelevantLegalEntityNotOnRegister().build();
+        const rle = new PersonWithSignificantControlBuilder().isRelevantLegalEntity()
+          .withEnteredOnRegister(false)
+          .build();
         appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([rle]);
 
         const res = await request(app).get(URL + `?lang=${lang}`);
