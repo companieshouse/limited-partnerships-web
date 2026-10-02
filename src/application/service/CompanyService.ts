@@ -159,7 +159,7 @@ class CompanyService {
     const legalForm = companyAppointment?.identification?.legalForm ?? "";
     const governingLaw = companyAppointment?.identification?.legalAuthority ?? "";
     const enteredOnRegister = Boolean(
-      companyAppointment?.identification?.placeRegistered && companyAppointment?.identification?.registrationNumber
+      companyAppointment?.identification?.placeRegistered || companyAppointment?.identification?.registrationNumber
     );
     const legalEntityRegistrationName = companyAppointment?.identification?.placeRegistered ?? "";
     const legalEntityRegistrationLocation = this.toTitleCase(companyAppointment?.identification?.registerLocation ?? "");
