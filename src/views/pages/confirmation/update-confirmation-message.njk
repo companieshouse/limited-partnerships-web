@@ -48,7 +48,7 @@
     {% set redesignateMessage = i18n.confirmationPage.postTransition.typePflp %}
   {% endif %}
 
-  <p class="govuk-body">{{ message }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}){{ redesignateMessage }}.</p>
+  <p class="govuk-body">{{ message }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}) {{ redesignateMessage }}.</p>
 {% endif %}
 
 <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.userEmail }}</strong>.</p>
