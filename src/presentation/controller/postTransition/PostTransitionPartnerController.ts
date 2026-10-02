@@ -423,7 +423,8 @@ class PostTransitionPartnerController extends PartnerController {
 
       appointment_id: ids.appointmentId,
       kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind,
-      partnerEntityType: pageRouting?.data?.partnerEntityType
+      partnerEntityType: pageRouting?.data?.partnerEntityType,
+      partnerType: pageRouting?.data?.partnerType
     };
 
     if (partner === PartnerType.generalPartner) {

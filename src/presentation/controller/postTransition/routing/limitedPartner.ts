@@ -119,6 +119,7 @@ const postTransitionRoutingUpdateLimitedPartnerPerson = {
   pageType: PostTransitionPageType.updateLimitedPartnerPerson,
   data: {
     serviceName: "updateLimitedPartnerPerson",
+    partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.person
   }
 };

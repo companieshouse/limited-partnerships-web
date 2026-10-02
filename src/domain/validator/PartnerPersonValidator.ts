@@ -139,7 +139,11 @@ class PartnerPersonValidator {
       );
     }
 
-    if (!this.data.journeyTypes?.isTransition && this.data.partnerType === PartnerType.generalPartner) {
+    if (
+      !this.data.journeyTypes?.isTransition &&
+      this.data.partnerType === PartnerType.generalPartner &&
+      !isUpdatePartnerPage(this.data.pageType)
+    ) {
       this.validateDisqualificationStatement(uiErrors);
     }
 
