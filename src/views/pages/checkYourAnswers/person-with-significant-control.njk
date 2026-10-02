@@ -1,13 +1,13 @@
 {% set isRle = item.data.type === "RELEVANT_LEGAL_ENTITY" %}
 {% set isOrp = item.data.type === "OTHER_REGISTRABLE_PERSON" %}
 {% set isIp = item.data.type === "INDIVIDUAL_PERSON" %}
-{% set rleOnRegister = isRle and (item.data.entered_on_register == "true" or item.data.entered_on_register == true) %}
+{% set isRleOnRegister = isRle and (item.data.entered_on_register == "true" or item.data.entered_on_register == true) %}
 
 {% if isRle and item.data.legal_entity_registration_location %}
   {% set country = i18n.countries[macros.makeCamelCase(item.data.legal_entity_registration_location)] %}
 {% endif %}
 
-{% if isRle and rleOnRegister %}
+{% if isRleOnRegister %}
   {% set registerNameText = item.data.legal_entity_register_name %}
 {% else %}
   {% set registerNameText = i18n.checkYourAnswersPage.psc.notOnRegister %}
@@ -103,7 +103,7 @@
       value: {
         text: country
       }
-    } if isRle and rleOnRegister,
+    } if isRleOnRegister,
     {
       key: {
         text: i18n.checkYourAnswersPage.partners.legalEntity.registrationNumber
@@ -111,7 +111,7 @@
       value: {
         text: item.data.registered_company_number
       }
-    } if isRle and rleOnRegister,
+    } if isRleOnRegister,
     {
       key: {
         text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress
