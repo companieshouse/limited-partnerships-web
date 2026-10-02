@@ -18,26 +18,20 @@
 
 {% if partnerName %}
   {% set message = i18n.confirmationPage.postTransition.partner.addPartner %}
-  {% if props.data.subtype === "limited-partnership#remove-general-partner-person"
-      or props.data.subtype === "limited-partnership#remove-general-partner-legal-entity"
-      or props.data.subtype === "limited-partnership#remove-limited-partner-person"
-      or props.data.subtype === "limited-partnership#remove-limited-partner-legal-entity" %}
-    {% set message = i18n.confirmationPage.postTransition.partner.removePartner  %}
-  {% elif props.data.subtype === "limited-partnership#update-general-partner-person"
-      or props.data.subtype === "limited-partnership#update-general-partner-legal-entity" %}
+
+  {% if props.data.subtype.includes("update-") %}
     {% set message = i18n.confirmationPage.postTransition.partner.updatePartner %}
-    {% set partnerType = i18n.confirmationPage.postTransition.partner.updateGeneralPartnerType %}
     {% set partnerName = partnerName + "," %}
-  {% elif props.data.subtype === "limited-partnership#update-limited-partner-legal-entity"
-      or props.data.subtype === "limited-partnership#update-limited-partner-person" %}
-    {% set message = i18n.confirmationPage.postTransition.partner.updatePartner %}
-    {% set partnerType = i18n.confirmationPage.postTransition.partner.updateLimitedPartnerType %}
-    {% set partnerName = partnerName + ","%}
+    {% set partnerType = i18n.confirmationPage.postTransition.partner.updateGeneralPartnerType if props.data.generalPartner else i18n.confirmationPage.postTransition.partner.updateLimitedPartnerType %}
+  {% elif props.data.subtype.includes("remove-") %}
+    {% set message = i18n.confirmationPage.postTransition.partner.removePartner %}
   {% endif %}
+
   <p class="govuk-body">{{ message }} {{ partnerName }} {{ partnerType }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>
 {% else %}
   {% set message = i18n.confirmationPage.postTransition.registeredOfficeAddress %}
   {% set acceptedMessage = i18n.confirmationPage.postTransition.accepted.registeredOfficeAddress %}
+  {% set redesignateMessage = "" %}
 
   {% if props.data.subtype.includes('update-partnership-name') %}
     {% set message = i18n.confirmationPage.postTransition.name %}
@@ -51,13 +45,10 @@
   {% elif props.data.subtype.includes('update-partnership-redesignate-to-pflp') %}
     {% set message = i18n.confirmationPage.postTransition.typeDesignate %}
     {% set acceptedMessage = i18n.confirmationPage.postTransition.accepted.type %}
+    {% set redesignateMessage = i18n.confirmationPage.postTransition.typePflp %}
   {% endif %}
 
-  {% if props.data.subtype.includes('update-partnership-redesignate-to-pflp') %}
-    <p class="govuk-body">{{ message }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}) {{ i18n.confirmationPage.postTransition.typePflp }}.</p>
-  {% else %}
-    <p class="govuk-body">{{ message }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>
-  {% endif %}
+  <p class="govuk-body">{{ message }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}) {{ redesignateMessage }}.</p>
 {% endif %}
 
 <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.userEmail }}</strong>.</p>
@@ -96,4 +87,31 @@
   <a href="https://find-and-update.company-information.service.gov.uk/company/{{ props.data.limitedPartnership.data.partnership_number }}" class="govuk-link">{{ i18n.confirmationPage.postTransition.returnPartnershipOverview }}</a><br>
   <a href="https://find-and-update.company-information.service.gov.uk/TO_DO_SET_CORRECT_URL" class="govuk-link">{{ i18n.confirmationPage.postTransition.fileConfirmationStatement }}</a><br>
   <a href="https://find-and-update.company-information.service.gov.uk/" class="govuk-link">{{ i18n.confirmationPage.postTransition.fileForDifferentPartnership }}</a>
+</p>
+
+{% set surveyLinks = {
+  "update-partnership-name": "https://www.smartsurvey.co.uk/s/update-lp-name-conf/",
+  "update-partnership-term": "https://www.smartsurvey.co.uk/s/update-the-term-of-lp-conf/",
+  "update-partnership-registered-office-address": "https://www.smartsurvey.co.uk/s/update-a-lp-reg-office-add-conf/",
+  "update-partnership-principal-place-of-business-address": "https://www.smartsurvey.co.uk/s/update-a-lp-principal-office-add-conf/",
+  "update-partnership-redesignate-to-pflp": "https://www.smartsurvey.co.uk/s/designate-a-lp-as-priv-fund-lp-conf/",
+
+  "add-general-partner": "https://www.smartsurvey.co.uk/s/add-a-general-partner-conf/",
+  "add-limited-partner": "https://www.smartsurvey.co.uk/s/add-a-limited-partner-conf/",
+  "update-general-partner": "https://www.smartsurvey.co.uk/s/updt-gen-partners-dtls-conf/",
+  "update-limited-partner": "https://www.smartsurvey.co.uk/s/updt-ltd-partners-dtls-conf/",
+  "remove-general-partner": "https://www.smartsurvey.co.uk/s/remove-a-general-partner-conf/",
+  "remove-limited-partner": "https://www.smartsurvey.co.uk/s/remove-a-limited-partner-conf/"
+} %}
+
+{% set surveyLink = "" %}
+
+{% for key, link in surveyLinks %}
+  {% if props.data.subtype.includes(key) %}
+    {% set surveyLink = link %}
+  {% endif %}
+{% endfor %}
+
+<p class="govuk-body hide-on-print govuk-!-static-padding-bottom-4">
+  <a href={{ surveyLink }} target="_blank" class="govuk-link" data-event-id="survey-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
 </p>

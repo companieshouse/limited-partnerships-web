@@ -1,4 +1,5 @@
 import request from "supertest";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
 import app from "../app";
 
@@ -18,10 +19,14 @@ import TransactionBuilder from "../../../../presentation/test/builder/Transactio
 import LimitedPartnershipBuilder from "../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
+
 describe("Confirmation Page", () => {
   const URL = getUrl(CONFIRMATION_POST_TRANSITION_URL).replace(JOURNEY_TYPE_PARAM, Journey.postTransition);
 
-  let companyProfile;
+  let companyProfile: {
+    _id: string;
+    data: Partial<CompanyProfile>;
+  };
 
   beforeEach(() => {
     setLocalesEnabled(true);
@@ -44,41 +49,47 @@ describe("Confirmation Page", () => {
             enTranslationText.serviceName.addGeneralPartner,
             PartnerKind.ADD_GENERAL_PARTNER_PERSON,
             enTranslationText.confirmationPage.postTransition.partner.addPartner,
+            "https://www.smartsurvey.co.uk/s/add-a-general-partner-conf/",
             "en"
           ],
           [
             cyTranslationText.serviceName.addGeneralPartner,
             PartnerKind.ADD_GENERAL_PARTNER_PERSON,
             cyTranslationText.confirmationPage.postTransition.partner.addPartner,
+            "https://www.smartsurvey.co.uk/s/add-a-general-partner-conf/",
             "cy"
           ],
           [
             enTranslationText.serviceName.removeGeneralPartnerPerson,
             PartnerKind.REMOVE_GENERAL_PARTNER_PERSON,
             enTranslationText.confirmationPage.postTransition.partner.removePartner,
+            "https://www.smartsurvey.co.uk/s/remove-a-general-partner-conf/",
             "en"
           ],
           [
             cyTranslationText.serviceName.removeGeneralPartnerPerson,
             PartnerKind.REMOVE_GENERAL_PARTNER_PERSON,
             cyTranslationText.confirmationPage.postTransition.partner.removePartner,
+            "https://www.smartsurvey.co.uk/s/remove-a-general-partner-conf/",
             "cy"
           ],
           [
             enTranslationText.serviceName.updateGeneralPartnerPerson,
             PartnerKind.UPDATE_GENERAL_PARTNER_PERSON,
             enTranslationText.confirmationPage.postTransition.partner.updatePartner,
+            "https://www.smartsurvey.co.uk/s/updt-gen-partners-dtls-conf/",
             "en"
           ],
           [
             cyTranslationText.serviceName.updateGeneralPartnerPerson,
             PartnerKind.UPDATE_GENERAL_PARTNER_PERSON,
             cyTranslationText.confirmationPage.postTransition.partner.updatePartner,
+            "https://www.smartsurvey.co.uk/s/updt-gen-partners-dtls-conf/",
             "cy"
           ]
         ])(
           "should load confirmation page - general partner (person) - %s",
-          async (serviceName, partnerKind, partnerText, lang) => {
+          async (serviceName: string, partnerKind: string, partnerText: string, surveyLink: string, lang: string) => {
             const translation = lang === "en" ? enTranslationText.confirmationPage : cyTranslationText.confirmationPage;
 
             const generalPartner = new GeneralPartnerBuilder()
@@ -90,9 +101,7 @@ describe("Confirmation Page", () => {
             const transaction = new TransactionBuilder().withKind(partnerKind).build();
             appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-            const res = await request(app)
-              .get(`${URL}?lang=${lang}`)
-              .set("Referrer", GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
+            const res = await request(app).get(`${URL}?lang=${lang}`).set("Referrer", GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
             expect(res.status).toBe(200);
 
@@ -108,11 +117,29 @@ describe("Confirmation Page", () => {
             let excludedTranslations = ["limitedPartnerType", "updateLimitedPartnerType"];
 
             if (partnerKind === PartnerKind.ADD_GENERAL_PARTNER_PERSON) {
-              excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner", "updateFilingAccepted", "updateGeneralPartnerType"];
+              excludedTranslations = [
+                ...excludedTranslations,
+                "removePartner",
+                "updatePartner",
+                "updateFilingAccepted",
+                "updateGeneralPartnerType"
+              ];
             } else if (partnerKind === PartnerKind.REMOVE_GENERAL_PARTNER_PERSON) {
-              excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner", "updateFilingAccepted", "updateGeneralPartnerType"];
+              excludedTranslations = [
+                ...excludedTranslations,
+                "addPartner",
+                "updatePartner",
+                "updateFilingAccepted",
+                "updateGeneralPartnerType"
+              ];
             } else if (partnerKind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
-              excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "generalPartnerType", "filingAccepted"];
+              excludedTranslations = [
+                ...excludedTranslations,
+                "addPartner",
+                "removePartner",
+                "generalPartnerType",
+                "filingAccepted"
+              ];
             }
 
             testTranslations(res.text, translation.postTransition.partner, excludedTranslations);
@@ -123,6 +150,8 @@ describe("Confirmation Page", () => {
             expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
 
             expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+
+            expect(res.text).toContain(surveyLink);
           }
         );
       });
@@ -133,41 +162,47 @@ describe("Confirmation Page", () => {
             enTranslationText.serviceName.addGeneralPartner,
             PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY,
             enTranslationText.confirmationPage.postTransition.partner.addPartner,
+            "https://www.smartsurvey.co.uk/s/add-a-general-partner-conf/",
             "en"
           ],
           [
             cyTranslationText.serviceName.addGeneralPartner,
             PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY,
             cyTranslationText.confirmationPage.postTransition.partner.addPartner,
+            "https://www.smartsurvey.co.uk/s/add-a-general-partner-conf/",
             "cy"
           ],
           [
             enTranslationText.serviceName.removeGeneralPartnerEntity,
             PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
             enTranslationText.confirmationPage.postTransition.partner.removePartner,
+            "https://www.smartsurvey.co.uk/s/remove-a-general-partner-conf/",
             "en"
           ],
           [
             cyTranslationText.serviceName.removeGeneralPartnerEntity,
             PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
             cyTranslationText.confirmationPage.postTransition.partner.removePartner,
+            "https://www.smartsurvey.co.uk/s/remove-a-general-partner-conf/",
             "cy"
           ],
           [
             enTranslationText.serviceName.updateGeneralPartnerLegalEntity,
             PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
             enTranslationText.confirmationPage.postTransition.partner.updatePartner,
+            "https://www.smartsurvey.co.uk/s/updt-gen-partners-dtls-conf/",
             "en"
           ],
           [
             cyTranslationText.serviceName.updateGeneralPartnerLegalEntity,
             PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
             cyTranslationText.confirmationPage.postTransition.partner.updatePartner,
+            "https://www.smartsurvey.co.uk/s/updt-gen-partners-dtls-conf/",
             "cy"
           ]
         ])(
           "should load confirmation page - general partner (legal entity) - %s",
-          async (serviceName, partnerKind, partnerText, lang) => {
+          async (serviceName: string, partnerKind: string, partnerText: string, surveyLink: string, lang: string) => {
             const translation = lang === "en" ? enTranslationText.confirmationPage : cyTranslationText.confirmationPage;
 
             const generalPartner = new GeneralPartnerBuilder()
@@ -179,9 +214,7 @@ describe("Confirmation Page", () => {
             const transaction = new TransactionBuilder().withKind(partnerKind).build();
             appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-            const res = await request(app)
-              .get(`${URL}?lang=${lang}`)
-              .set("Referrer", GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
+            const res = await request(app).get(`${URL}?lang=${lang}`).set("Referrer", GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
             expect(res.status).toBe(200);
 
@@ -196,11 +229,29 @@ describe("Confirmation Page", () => {
             let excludedTranslations = ["limitedPartnerType", "updateLimitedPartnerType"];
 
             if (partnerKind === PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY) {
-              excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner", "updateFilingAccepted", "updateGeneralPartnerType"];
+              excludedTranslations = [
+                ...excludedTranslations,
+                "removePartner",
+                "updatePartner",
+                "updateFilingAccepted",
+                "updateGeneralPartnerType"
+              ];
             } else if (partnerKind === PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY) {
-              excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner", "updateFilingAccepted", "updateGeneralPartnerType"];
+              excludedTranslations = [
+                ...excludedTranslations,
+                "addPartner",
+                "updatePartner",
+                "updateFilingAccepted",
+                "updateGeneralPartnerType"
+              ];
             } else if (partnerKind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY) {
-              excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "generalPartnerType", "filingAccepted"];
+              excludedTranslations = [
+                ...excludedTranslations,
+                "addPartner",
+                "removePartner",
+                "generalPartnerType",
+                "filingAccepted"
+              ];
             }
 
             testTranslations(res.text, translation.postTransition.partner, excludedTranslations);
@@ -211,6 +262,8 @@ describe("Confirmation Page", () => {
             expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
 
             expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+
+            expect(res.text).toContain(surveyLink);
           }
         );
       });
@@ -224,41 +277,47 @@ describe("Confirmation Page", () => {
           enTranslationText.serviceName.addLimitedPartner,
           PartnerKind.ADD_LIMITED_PARTNER_PERSON,
           enTranslationText.confirmationPage.postTransition.partner.addPartner,
+          "https://www.smartsurvey.co.uk/s/add-a-limited-partner-conf/",
           "en"
         ],
         [
           cyTranslationText.serviceName.addLimitedPartner,
           PartnerKind.ADD_LIMITED_PARTNER_PERSON,
           cyTranslationText.confirmationPage.postTransition.partner.addPartner,
+          "https://www.smartsurvey.co.uk/s/add-a-limited-partner-conf/",
           "cy"
         ],
         [
           enTranslationText.serviceName.removeLimitedPartnerPerson,
           PartnerKind.REMOVE_LIMITED_PARTNER_PERSON,
           enTranslationText.confirmationPage.postTransition.partner.removePartner,
+          "https://www.smartsurvey.co.uk/s/remove-a-limited-partner-conf/",
           "en"
         ],
         [
           cyTranslationText.serviceName.removeLimitedPartnerPerson,
           PartnerKind.REMOVE_LIMITED_PARTNER_PERSON,
           cyTranslationText.confirmationPage.postTransition.partner.removePartner,
+          "https://www.smartsurvey.co.uk/s/remove-a-limited-partner-conf/",
           "cy"
         ],
         [
           enTranslationText.serviceName.updateLimitedPartnerPerson,
           PartnerKind.UPDATE_LIMITED_PARTNER_PERSON,
           enTranslationText.confirmationPage.postTransition.partner.updatePartner,
+          "https://www.smartsurvey.co.uk/s/updt-ltd-partners-dtls-conf/ ",
           "en"
         ],
         [
           cyTranslationText.serviceName.updateLimitedPartnerPerson,
           PartnerKind.UPDATE_LIMITED_PARTNER_PERSON,
           cyTranslationText.confirmationPage.postTransition.partner.updatePartner,
+          "https://www.smartsurvey.co.uk/s/updt-ltd-partners-dtls-conf/ ",
           "cy"
         ]
       ])(
         "should load confirmation page - limited partner (person) - %s",
-        async (serviceName, partnerKind, partnerText, lang) => {
+        async (serviceName: string, partnerKind: string, partnerText: string, surveyLink: string, lang: string) => {
           const translation = lang === "en" ? enTranslationText.confirmationPage : cyTranslationText.confirmationPage;
 
           const limitedPartner = new LimitedPartnerBuilder()
@@ -270,9 +329,7 @@ describe("Confirmation Page", () => {
           const transaction = new TransactionBuilder().withKind(partnerKind).build();
           appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-          const res = await request(app)
-            .get(`${URL}?lang=${lang}`)
-            .set("Referrer", LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
+          const res = await request(app).get(`${URL}?lang=${lang}`).set("Referrer", LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
           expect(res.status).toBe(200);
 
@@ -288,11 +345,29 @@ describe("Confirmation Page", () => {
           let excludedTranslations = ["generalPartnerType", "updateGeneralPartnerType"];
 
           if (partnerKind === PartnerKind.ADD_LIMITED_PARTNER_PERSON) {
-            excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner", "updateFilingAccepted", "updateLimitedPartnerType"];
+            excludedTranslations = [
+              ...excludedTranslations,
+              "removePartner",
+              "updatePartner",
+              "updateFilingAccepted",
+              "updateLimitedPartnerType"
+            ];
           } else if (partnerKind === PartnerKind.REMOVE_LIMITED_PARTNER_PERSON) {
-            excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner", "updateFilingAccepted", "updateLimitedPartnerType"];
+            excludedTranslations = [
+              ...excludedTranslations,
+              "addPartner",
+              "updatePartner",
+              "updateFilingAccepted",
+              "updateLimitedPartnerType"
+            ];
           } else if (partnerKind === PartnerKind.UPDATE_LIMITED_PARTNER_PERSON) {
-            excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "filingAccepted", "limitedPartnerType"];
+            excludedTranslations = [
+              ...excludedTranslations,
+              "addPartner",
+              "removePartner",
+              "filingAccepted",
+              "limitedPartnerType"
+            ];
           }
 
           testTranslations(res.text, translation.postTransition.partner, excludedTranslations);
@@ -303,6 +378,8 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
 
           expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+
+          expect(res.text).toContain(surveyLink);
         }
       );
     });
@@ -313,41 +390,47 @@ describe("Confirmation Page", () => {
           enTranslationText.serviceName.addLimitedPartner,
           PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY,
           enTranslationText.confirmationPage.postTransition.partner.addPartner,
+          "https://www.smartsurvey.co.uk/s/add-a-limited-partner-conf/",
           "en"
         ],
         [
           cyTranslationText.serviceName.addLimitedPartner,
           PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY,
           cyTranslationText.confirmationPage.postTransition.partner.addPartner,
+          "https://www.smartsurvey.co.uk/s/add-a-limited-partner-conf/",
           "cy"
         ],
         [
           enTranslationText.serviceName.removeLimitedPartnerEntity,
           PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
           enTranslationText.confirmationPage.postTransition.partner.removePartner,
+          "https://www.smartsurvey.co.uk/s/remove-a-limited-partner-conf/",
           "en"
         ],
         [
           cyTranslationText.serviceName.removeLimitedPartnerEntity,
           PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
           cyTranslationText.confirmationPage.postTransition.partner.removePartner,
+          "https://www.smartsurvey.co.uk/s/remove-a-limited-partner-conf/",
           "cy"
         ],
         [
           enTranslationText.serviceName.updateLimitedPartnerLegalEntity,
           PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
           enTranslationText.confirmationPage.postTransition.partner.updatePartner,
+          "https://www.smartsurvey.co.uk/s/updt-ltd-partners-dtls-conf/ ",
           "en"
         ],
         [
           cyTranslationText.serviceName.updateLimitedPartnerLegalEntity,
           PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
           cyTranslationText.confirmationPage.postTransition.partner.updatePartner,
+          "https://www.smartsurvey.co.uk/s/updt-ltd-partners-dtls-conf/ ",
           "cy"
         ]
       ])(
         "should load confirmation page - limited partner (legal entity) - %s",
-        async (serviceName, partnerKind, partnerText, lang) => {
+        async (serviceName: string, partnerKind: string, partnerText: string, surveyLink: string, lang: string) => {
           const translation = lang === "en" ? enTranslationText.confirmationPage : cyTranslationText.confirmationPage;
 
           const limitedPartner = new LimitedPartnerBuilder()
@@ -359,9 +442,7 @@ describe("Confirmation Page", () => {
           const transaction = new TransactionBuilder().withKind(partnerKind).build();
           appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-          const res = await request(app)
-            .get(`${URL}?lang=${lang}`)
-            .set("Referrer", LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
+          const res = await request(app).get(`${URL}?lang=${lang}`).set("Referrer", LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
           expect(res.status).toBe(200);
 
@@ -376,11 +457,30 @@ describe("Confirmation Page", () => {
           let excludedTranslations = ["generalPartnerType", "updateGeneralPartnerType"];
 
           if (partnerKind === PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY) {
-            excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner", "updateFilingAccepted", "updateLimitedPartnerType"];
+            excludedTranslations = [
+              ...excludedTranslations,
+              "removePartner",
+              "updatePartner",
+              "updateFilingAccepted",
+              "updateLimitedPartnerType"
+            ];
           } else if (partnerKind === PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY) {
-            excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner", "updateFilingAccepted", "updateLimitedPartnerType"];
+            excludedTranslations = [
+              ...excludedTranslations,
+              "addPartner",
+              "updatePartner",
+              "updateFilingAccepted",
+              "updateLimitedPartnerType"
+            ];
           } else if (partnerKind === PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY) {
-            excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "generalPartnerType", "filingAccepted", "limitedPartnerType"];
+            excludedTranslations = [
+              ...excludedTranslations,
+              "addPartner",
+              "removePartner",
+              "generalPartnerType",
+              "filingAccepted",
+              "limitedPartnerType"
+            ];
           }
 
           testTranslations(res.text, translation.postTransition.partner, excludedTranslations);
@@ -390,6 +490,8 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
 
           expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+
+          expect(res.text).toContain(surveyLink);
         }
       );
     });
@@ -401,65 +503,75 @@ describe("Confirmation Page", () => {
         enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress,
         "limited-partnership#update-partnership-registered-office-address",
         enTranslationText.confirmationPage.postTransition.registeredOfficeAddress,
+        "https://www.smartsurvey.co.uk/s/update-a-lp-reg-office-add-conf",
         "en"
       ],
       [
         cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress,
         "limited-partnership#update-partnership-registered-office-address",
         cyTranslationText.confirmationPage.postTransition.registeredOfficeAddress,
+        "https://www.smartsurvey.co.uk/s/update-a-lp-reg-office-add-conf",
         "cy"
       ],
       [
         enTranslationText.serviceName.updateLimitedPartnershipName,
         "limited-partnership#update-partnership-name",
         enTranslationText.confirmationPage.postTransition.name,
+        "https://www.smartsurvey.co.uk/s/update-lp-name-conf/",
         "en"
       ],
       [
         cyTranslationText.serviceName.updateLimitedPartnershipName,
         "limited-partnership#update-partnership-name",
         cyTranslationText.confirmationPage.postTransition.name,
+        "https://www.smartsurvey.co.uk/s/update-lp-name-conf/",
         "cy"
       ],
       [
         enTranslationText.serviceName.updateLimitedPartnershipTerm,
         "limited-partnership#update-partnership-term",
         enTranslationText.confirmationPage.postTransition.term,
+        "https://www.smartsurvey.co.uk/s/update-the-term-of-lp-conf/",
         "en"
       ],
       [
         cyTranslationText.serviceName.updateLimitedPartnershipTerm,
         "limited-partnership#update-partnership-term",
         cyTranslationText.confirmationPage.postTransition.term,
+        "https://www.smartsurvey.co.uk/s/update-the-term-of-lp-conf/",
         "cy"
       ],
       [
         enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress,
         "limited-partnership#update-partnership-principal-place-of-business-address",
         enTranslationText.confirmationPage.postTransition.principalOfficeAddress,
+        "https://www.smartsurvey.co.uk/s/update-a-lp-principal-office-add-conf/",
         "en"
       ],
       [
         cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress,
         "limited-partnership#update-partnership-principal-place-of-business-address",
         cyTranslationText.confirmationPage.postTransition.principalOfficeAddress,
+        "https://www.smartsurvey.co.uk/s/update-a-lp-principal-office-add-conf/",
         "cy"
       ],
       [
         enTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP,
         "limited-partnership#update-partnership-redesignate-to-pflp",
         enTranslationText.confirmationPage.postTransition.typePflp,
+        "https://www.smartsurvey.co.uk/s/designate-a-lp-as-priv-fund-lp-conf/",
         "en"
       ],
       [
         cyTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP,
         "limited-partnership#update-partnership-redesignate-to-pflp",
         cyTranslationText.confirmationPage.postTransition.typePflp,
+        "https://www.smartsurvey.co.uk/s/designate-a-lp-as-priv-fund-lp-conf/",
         "cy"
       ]
     ])(
       "should load confirmation page - for limited partnership with english message text for the specific journey - %s",
-      async (serviceName: string, kind: string, message: string, lang: string) => {
+      async (serviceName: string, kind: string, message: string, surveyLink: string, lang: string) => {
         const transaction = new TransactionBuilder().withKind(kind).build();
 
         appDevDependencies.transactionGateway.feedTransactions([transaction]);
@@ -478,6 +590,8 @@ describe("Confirmation Page", () => {
         expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
 
         expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+
+        expect(res.text).toContain(toEscapedHtml(surveyLink));
       }
     );
   });
