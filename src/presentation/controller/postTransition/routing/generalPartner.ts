@@ -127,6 +127,7 @@ const postTransitionRoutingUpdateGeneralPartnerPerson = {
   pageType: PostTransitionPageType.updateGeneralPartnerPerson,
   data: {
     serviceName: "updateGeneralPartnerPerson",
+    partnerType: PartnerType.generalPartner,
     partnerEntityType: PartnerEntityType.person
   }
 };
