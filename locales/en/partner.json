@@ -26,7 +26,7 @@
             "whichRegister" : "What is the name of the register?",
             "whichRegisterHint" : "For example, the Register of Companies UK.",
             "countryRegistered" : "Which country is it registered in?",
-            "registrationNumber" : "What is the registration number?",
+            "registrationNumber" : "What is its registration number?",
             "registrationNumberHint" : "For example, the company number.",
             "publicRegisterLine1" : "We'll show all of this information on the public register."
         },
