@@ -5,26 +5,33 @@ import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../addressLookUp/url/
 const transitionRoutingContinueSavedFiling = {
   previousUrl: "/",
   currentUrl: url.CONTINUE_SAVED_FILING_URL,
-  nextUrl: "/",
+  nextUrl: url.COMPANY_NUMBER_URL,
   pageType: TransitionPageType.continueSavedFiling
 };
 
+const transitionRoutingCompanyNumber = {
+  previousUrl: url.CONTINUE_SAVED_FILING_URL,
+  currentUrl: url.COMPANY_NUMBER_URL,
+  nextUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
+  pageType: TransitionPageType.companyNumber
+};
+
 const transitionRoutingAlreadyFiled = {
-  previousUrl: url.COMPANY_LOOKUP_URL,
+  previousUrl: url.COMPANY_NUMBER_URL,
   currentUrl: url.TRANSITION_ALREADY_FILED_URL,
   nextUrl: "/",
   pageType: TransitionPageType.transitionAlreadyFiled
 };
 
 const transitionRoutingConfirmLimitedPartnership = {
-  previousUrl: url.COMPANY_LOOKUP_URL,
+  previousUrl: url.COMPANY_NUMBER_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
   nextUrl: url.EMAIL_URL,
   pageType: TransitionPageType.confirmLimitedPartnership
 };
 
 const transitionRoutingEmail = {
-  previousUrl: url.COMPANY_LOOKUP_URL,
+  previousUrl: url.COMPANY_NUMBER_URL,
   currentUrl: url.EMAIL_URL,
   nextUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   pageType: TransitionPageType.email
@@ -43,6 +50,7 @@ const transitionRoutingCheckYourAnswers = {
 
 const limitedPartnershipRouting = [
   transitionRoutingContinueSavedFiling,
+  transitionRoutingCompanyNumber,
   transitionRoutingAlreadyFiled,
   transitionRoutingConfirmLimitedPartnership,
   transitionRoutingEmail,

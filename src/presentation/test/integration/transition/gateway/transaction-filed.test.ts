@@ -21,7 +21,7 @@ describe("Transition already filed - real gateway", () => {
   const REDIRECT_URL = getUrl(TRANSITION_ALREADY_FILED_URL);
 
   it(`should redirect to transition-already-filed url - form LPTS01`, async () => {
-    const res = await request(appRealDependencies).get(URL + "?companyNumber=LP123456");
+    const res = await request(appRealDependencies).get(URL);
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
@@ -45,7 +45,7 @@ describe("Transition already filed - real gateway", () => {
       }
     });
 
-    const res = await request(appRealDependencies).get(URL + "?companyNumber=LP123456");
+    const res = await request(appRealDependencies).get(URL);
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(enTranslationText.partnership.confirmLimitedPartnership.title);
