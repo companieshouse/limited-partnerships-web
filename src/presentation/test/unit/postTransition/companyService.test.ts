@@ -145,6 +145,7 @@ describe("CompanyService", () => {
       expect(result.partner.data?.legal_entity_name).toEqual("Partner Appointment, Legal Entity");
       expect(result.partner.data?.legal_form).toEqual(appointment.identification?.legalForm);
       expect(result.partner.data?.governing_law).toEqual(appointment.identification?.legalAuthority);
+      expect(result.partner.data?.entered_on_register).toEqual(true);
       expect(result.partner.data?.legal_entity_register_name).toEqual(appointment.identification?.placeRegistered);
       expect(result.partner.data?.legal_entity_registration_location).toEqual(appointment.identification?.registerLocation);
       expect(result.partner.data?.registered_company_number).toEqual(appointment.identification?.registrationNumber);
