@@ -517,6 +517,28 @@ describe("Check Your Answers Page", () => {
       }
     );
 
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])(
+      "should not render register specific fields on RLE not on register in %s",
+      async (_description: string, lang: string, translationText: Record<string, any>) => {
+        setLocalesEnabled(true);
+
+        const rle = new PersonWithSignificantControlBuilder().isRelevantLegalEntity()
+          .withEnteredOnRegister(false)
+          .build();
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([rle]);
+
+        const res = await request(app).get(URL + `?lang=${lang}`);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.notOnRegister);
+        expect(res.text).not.toContain(translationText.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn);
+        expect(res.text).not.toContain(translationText.checkYourAnswersPage.partners.legalEntity.registrationNumber);
+      }
+    );
+
     it("should render both an RLE and an ORP when both are present", async () => {
       const rle = new PersonWithSignificantControlBuilder().withId("rle-id").isRelevantLegalEntity().build();
       const orp = new PersonWithSignificantControlBuilder().withId("orp-id").isOtherRegistrablePerson().build();
