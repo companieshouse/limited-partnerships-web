@@ -13,7 +13,6 @@ import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
   ADD_LIMITED_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
-  COMPANY_NUMBER_URL,
   CONFIRM_LIMITED_PARTNERSHIP_URL,
   CONTINUE_SAVED_FILING_URL,
   EMAIL_URL,
@@ -54,7 +53,7 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     dependencies.limitedPartnershipTransitionController.getPageRouting()
   );
 
-  router.get(COMPANY_NUMBER_URL, dependencies.limitedPartnershipTransitionController.getCompanyLookup());
+  router.get("/", dependencies.limitedPartnershipTransitionController.getCompanyLookup());
 
   router.get(
     CONFIRM_LIMITED_PARTNERSHIP_URL,

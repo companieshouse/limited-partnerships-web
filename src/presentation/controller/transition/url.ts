@@ -11,7 +11,6 @@ export const TRANSITION_START_URL = `${TRANSITION_BASE_URL}/start`;
 
 export const CONTINUE_SAVED_FILING_URL = `${TRANSITION_BASE_URL}/${template.CONTINUE_SAVED_FILING_TEMPLATE}`;
 export const COMPANY_LOOKUP_URL = `/company-lookup/search?forward=/limited-partnerships/transition/confirm-limited-partnership?companyNumber={companyNumber}&backLink=${CONTINUE_SAVED_FILING_URL}`;
-export const COMPANY_NUMBER_URL = `${TRANSITION_BASE_URL}/${template.COMPANY_NUMBER_TEMPLATE}`;
 export const TRANSITION_ALREADY_FILED_URL = `${TRANSITION_WITH_ID_URL}/${template.TRANSITION_ALREADY_FILED_TEMPLATE}`;
 export const CONFIRM_LIMITED_PARTNERSHIP_URL = `${TRANSITION_BASE_URL}/confirm-limited-partnership`;
 export const EMAIL_URL = `${TRANSITION_WITH_IDS_URL}/${template.EMAIL_TEMPLATE}`;

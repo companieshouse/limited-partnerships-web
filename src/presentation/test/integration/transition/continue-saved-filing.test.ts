@@ -1,4 +1,4 @@
-import { CONTINUE_SAVED_FILING_URL, COMPANY_NUMBER_URL } from "../../../controller/transition/url";
+import { CONTINUE_SAVED_FILING_URL } from "../../../controller/transition/url";
 import TransitionPageType from "../../../controller/transition/PageType";
 import { SERVICE_NAME_KEY_TRANSITION } from "../../../../config/constants";
 import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
@@ -8,6 +8,6 @@ runContinueSavedFilingTests({
   continueUrl: CONTINUE_SAVED_FILING_URL,
   pageType: TransitionPageType.continueSavedFiling,
   serviceTitleTranslationKey: SERVICE_NAME_KEY_TRANSITION,
-  noRedirectUrl: COMPANY_NUMBER_URL,
+  noRedirectUrl: "",
   customerFeedbackUrl: customerFeedbackUrlMap.transition
 });
