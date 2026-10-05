@@ -10,10 +10,11 @@ export const transitionFiling =
 
     if (journeyTypes.isTransition) {
       const tokens = dependencies.globalController.extractTokens(req);
-      const companyId = req.params.companyId as string;
+      const companyId =
+        req.query?.companyNumber ? req.query.companyNumber?.toString().trim() : req.params.companyId.toString().trim();
 
       try {
-        const filingHistoryItems = await dependencies.filingHistoryService.getFilingHistoryList(tokens, companyId);
+        const filingHistoryItems = await dependencies.filingHistoryService.getFilingHistoryList(tokens, companyId.trim());
 
         const formTypes = ["LPTS01", "LP5D", "LP7D"];
         const types = filingHistoryItems.map((item) => item.type);
@@ -23,7 +24,7 @@ export const transitionFiling =
         if (hasFiledForm) {
           logger.infoRequest(req, "Filing already exists, redirecting to already filed page");
 
-          let redirectUrl = dependencies.globalController.insertCompanyId(TRANSITION_ALREADY_FILED_URL, companyId);
+          let redirectUrl = dependencies.globalController.insertCompanyId(TRANSITION_ALREADY_FILED_URL, companyId.trim());
 
           const currentUrlParams = new URLSearchParams(new URL(`http://${req.url}`)?.search);
           if (currentUrlParams.size > 0) {

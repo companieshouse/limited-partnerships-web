@@ -68,6 +68,14 @@ describe("localisationMiddleware", () => {
     expect(res.locals?.lang).toEqual("en");
   });
 
+  it("preserves existing query params in currentUrl", () => {
+    req.originalUrl = "/limited-partnerships/some-page?companyNumber=LP123456";
+
+    localisationMiddleware(req as Request, res as Response, next as NextFunction);
+
+    expect(res.locals?.currentUrl).toEqual("/limited-partnerships/some-page?companyNumber=LP123456");
+  });
+
   it("does not throw when there is no session on the request", () => {
     req.session = undefined;
 
