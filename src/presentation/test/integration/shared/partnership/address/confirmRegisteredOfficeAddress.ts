@@ -51,50 +51,61 @@ export const runConfirmRegisteredOfficeAddressTests = (config: ConfirmRegistered
       it.each([
         ["en", enTranslationText],
         ["cy", cyTranslationText]
-      ])("should load the confirm registered office address page with English text", async (lang: string, translationText: Record<string, any>) => {
+      ])(
+        "should load the confirm registered office address page with %s text",
+        async (lang: string, translationText: Record<string, any>) => {
+          const res = await request(app).get(`${URL}?lang=${lang}`);
 
-        const res = await request(app).get(`${URL}?lang=${lang}`);
+          expect(res.status).toBe(200);
 
-        expect(res.status).toBe(200);
+          testTranslations(res.text, translationText.address.confirm.registeredOfficeAddress);
 
-        testTranslations(res.text, translationText.address.confirm.registeredOfficeAddress);
+          expect(res.text).toContain("4 Line 1");
+          expect(res.text).toContain("Line 2");
+          expect(res.text).toContain("Stoke-On-Trent");
+          expect(res.text).toContain("Region");
+          expect(res.text).toContain("ST6 3LJ");
+          expect(res.text).toContain(translationText.countries.england);
 
-        expect(res.text).toContain("4 Line 1");
-        expect(res.text).toContain("Line 2");
-        expect(res.text).toContain("Stoke-On-Trent");
-        expect(res.text).toContain("Region");
-        expect(res.text).toContain("ST6 3LJ");
-        expect(res.text).toContain(translationText.countries.england);
-
-        expect(res.text).toContain(config.customerFeedbackUrl);
-      });
+          expect(res.text).toContain(config.customerFeedbackUrl);
+        }
+      );
 
       describe("Map Country Code", () => {
         it.each([
-          ["Wales", {
-            postal_code: "CF3 0AD",
-            premises: "261",
-            address_line_1: "OAKLANDS CLOSE",
-            address_line_2: "",
-            locality: "CARDIFF",
-            country: "Wales"
-          }],
-          ["Scotland", {
-            postal_code: "IV18 0JT",
-            premises: "1",
-            address_line_1: "MAIN AVENUE",
-            address_line_2: "",
-            locality: "INVERGORDON",
-            country: "Scotland"
-          }],
-          ["Northern Ireland", {
-            postal_code: "BT12 6QH",
-            premises: "11E",
-            address_line_1: "GLENMACHAN CLOSE",
-            address_line_2: "",
-            locality: "BELFAST",
-            country: "Northern Ireland"
-          }]
+          [
+            "Wales",
+            {
+              postal_code: "CF3 0AD",
+              premises: "261",
+              address_line_1: "OAKLANDS CLOSE",
+              address_line_2: "",
+              locality: "CARDIFF",
+              country: "Wales"
+            }
+          ],
+          [
+            "Scotland",
+            {
+              postal_code: "IV18 0JT",
+              premises: "1",
+              address_line_1: "MAIN AVENUE",
+              address_line_2: "",
+              locality: "INVERGORDON",
+              country: "Scotland"
+            }
+          ],
+          [
+            "Northern Ireland",
+            {
+              postal_code: "BT12 6QH",
+              premises: "11E",
+              address_line_1: "GLENMACHAN CLOSE",
+              address_line_2: "",
+              locality: "BELFAST",
+              country: "Northern Ireland"
+            }
+          ]
         ])("should return Wales if country code is %s", async (country: string, address: Record<string, any>) => {
           appDevDependencies.cacheRepository.feedCache({
             [appDevDependencies.transactionGateway.transactionId]: {
@@ -108,21 +119,6 @@ export const runConfirmRegisteredOfficeAddressTests = (config: ConfirmRegistered
 
           expect(res.text).toContain(country);
         });
-      });
-
-      it.each([
-        ["en", enTranslationText],
-        ["cy", cyTranslationText]
-      ])("should load the confirm registered office address page with Welsh text", async (lang: string, translationText: Record<string, any>) => {
-
-        const res = await request(app).get(`${URL}?lang=${lang}`);
-
-        expect(res.status).toBe(200);
-
-        testTranslations(res.text, translationText.address.confirm.registeredOfficeAddress, ["newRequirement"]);
-        expect(res.text).toContain(translationText.countries.england);
-
-        expect(res.text).toContain(config.customerFeedbackUrl);
       });
     });
 

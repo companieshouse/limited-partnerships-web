@@ -16,7 +16,6 @@ it("should run choose registered office address tests for registration journey",
 runChooseRegisteredOfficeAddressTests({
   url: CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   redirectUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
-  confirmRedirectUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   translateExclude: [],
   serviceTitleTranslationKey: SERVICE_NAME_KEY_REGISTRATION,
   customerFeedbackUrl: customerFeedbackUrlMap.registration

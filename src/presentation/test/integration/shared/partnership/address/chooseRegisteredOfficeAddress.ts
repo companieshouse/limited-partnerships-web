@@ -12,7 +12,6 @@ import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from
 type ChooseRegisteredOfficeAddressTestConfig = {
   url: string;
   redirectUrl: string;
-  confirmRedirectUrl: string;
   translateExclude: string[];
   serviceTitleTranslationKey: string | { serviceName: string };
   customerFeedbackUrl: string;
