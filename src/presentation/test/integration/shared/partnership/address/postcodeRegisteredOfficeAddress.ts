@@ -41,7 +41,7 @@ export const runPostcodeRegisteredOfficeAddressTests = (config: PostcodeRegister
       it.each([
         ["en", enTranslationText],
         ["cy", cyTranslationText]
-      ])("should load the office address page - %s", async (lang: string, translationText: Record<string, any>) => {
+      ])("should load the registered office address page - %s", async (lang: string, translationText: Record<string, any>) => {
         setLocalesEnabled(true);
         const res = await request(app).get(`${URL}?lang=${lang}`);
 

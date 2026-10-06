@@ -40,27 +40,27 @@ export const runEnterRegisteredOfficeAddressTests = (config: EnterRegisteredOffi
     });
 
     describe("GET Enter Registered Office Address Page", () => {
-      it.each(
-        [
-          ["en", enTranslationText],
-          ["cy", cyTranslationText]
-        ]
-      )("should load the enter registered office address page with English text", async (lang: string, translationText: Record<string, any>) => {
+      it.each([
+        ["en", enTranslationText],
+        ["cy", cyTranslationText]
+      ])(
+        "should load the enter registered office address page with %s text",
+        async (lang: string, translationText: Record<string, any>) => {
+          const res = await request(app).get(`${URL}?lang=${lang}`);
 
-        const res = await request(app).get(`${URL}?lang=${lang}`);
+          expect(res.status).toBe(200);
 
-        expect(res.status).toBe(200);
+          testTranslations(res.text, translationText.address.enterAddress, config.translateExclude);
 
-        testTranslations(res.text, translationText.address.enterAddress, config.translateExclude);
+          testTranslations(res.text, translationText.address.registeredOffice, config.translateRegisteredOfficeAddressExclude);
 
-        testTranslations(res.text, translationText.address.registeredOffice, config.translateRegisteredOfficeAddressExclude);
-
-        expect(res.text).toContain(
-          isPostTransition(config.serviceTitleTranslationKey) ?
-            translationText.buttons.continue
-            : translationText.buttons.saveAndContinue
-        );
-      });
+          expect(res.text).toContain(
+            isPostTransition(config.serviceTitleTranslationKey) ?
+              translationText.buttons.continue
+              : translationText.buttons.saveAndContinue
+          );
+        }
+      );
     });
 
     describe("POST Enter Registered Office Address Page", () => {
