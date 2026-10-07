@@ -1,14 +1,14 @@
 import {
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url/registration";
+} from "../../../../../controller/addressLookUp/url/transition";
 
-import { SERVICE_NAME_KEY_REGISTRATION } from "../../../../../../config";
+import { SERVICE_NAME_KEY_TRANSITION } from "../../../../../../config/constants";
 
 import { runEnterRegisteredOfficeAddressTests } from "../../../shared/partnership/address/enterRegisteredOfficeAddress";
 
-it("should run enter registered office address tests for registration journey", () => {
-  expect(ENTER_REGISTERED_OFFICE_ADDRESS_URL).toContain("registration");
+it("should run enter registered office address tests for transition journey", () => {
+  expect(ENTER_REGISTERED_OFFICE_ADDRESS_URL).toContain("transition");
 });
 
 runEnterRegisteredOfficeAddressTests({
@@ -22,6 +22,6 @@ runEnterRegisteredOfficeAddressTests({
     "principalOfficeAddress",
     "errorMessages"
   ],
-  translateRegisteredOfficeAddressExclude: ["newRequirement"],
-  serviceTitleTranslationKey: SERVICE_NAME_KEY_REGISTRATION
+  translateRegisteredOfficeAddressExclude: ["provideNext"],
+  serviceTitleTranslationKey: SERVICE_NAME_KEY_TRANSITION
 });
