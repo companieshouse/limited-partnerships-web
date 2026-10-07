@@ -26,7 +26,7 @@ describe("Confirm correct limited partnership page", () => {
     it("should load confirm correct limited partnership page with english text", async () => {
       setLocalesEnabled(true);
 
-      const res = await request(app).get(URL + "?lang=en");
+      const res = await request(app).get(URL + "?companyNumber=LP123456" + "&lang=en");
 
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.partnership.confirmLimitedPartnership);
@@ -43,8 +43,7 @@ describe("Confirm correct limited partnership page", () => {
 
       appDevDependencies.companyGateway.companyProfile.dateOfCreation = "2019-01-11";
 
-      const res = await request(app).get(URL + "?lang=cy");
-
+      const res = await request(app).get(URL + "?companyNumber=LP123456" + "&lang=cy");
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.partnership.confirmLimitedPartnership);
       expect(res.text).toContain(
@@ -58,10 +57,10 @@ describe("Confirm correct limited partnership page", () => {
     it("should return an error if company_number is not valid", async () => {
       appDevDependencies.companyGateway.setError(true);
 
-      const res = await request(app).get(URL);
+      const res = await request(app).get(URL + "?companyNumber=0123456");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("The partnership cannot be found");
+      expect(res.text).toContain("Invalid company type. Expected a limited partnership.");
     });
   });
 
@@ -115,7 +114,7 @@ describe("Confirm correct limited partnership page", () => {
 
       const REDIRECT_URL = getUrl(EMAIL_URL);
 
-      const res = await request(app).post(URL);
+      const res = await request(app).post(URL + "?companyNumber=LP123456");
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);

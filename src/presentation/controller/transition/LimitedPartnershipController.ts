@@ -17,6 +17,7 @@ import PartnershipController from "../common/PartnershipController";
 
 import { CONFIRMATION_URL } from "../global/url";
 import UIErrors from "../../../domain/entities/UIErrors";
+import { CONFIRM_LIMITED_PARTNERSHIP_URL, COMPANY_LOOKUP_URL } from "./url";
 
 class LimitedPartnershipController extends PartnershipController {
   constructor(
@@ -27,6 +28,42 @@ class LimitedPartnershipController extends PartnershipController {
     private readonly limitedPartnerService: LimitedPartnerService
   ) {
     super();
+  }
+
+  getCompanyLookup() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        response.redirect(COMPANY_LOOKUP_URL);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getConfirmPage() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens } = super.extract(request);
+        const { pageType } = super.extract(request);
+        const pageRouting = super.getRouting(transitionRouting, pageType, request);
+
+        const companyId = request.query.companyNumber as string;
+
+        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, companyId);
+
+        if (result.errors?.hasErrors()) {
+          response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, null, result.errors));
+          return;
+        }
+
+        response.render(
+          super.templateName(CONFIRM_LIMITED_PARTNERSHIP_URL),
+          super.makeProps(pageRouting, { limitedPartnership: result.limitedPartnership }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 
   getPageRouting() {
@@ -45,19 +82,12 @@ class LimitedPartnershipController extends PartnershipController {
           );
         }
 
-        const { generalPartners, limitedPartners } = await this.getPartners(
-          pageRouting,
-          tokens,
-          ids.transactionId
-        );
+        const { generalPartners, limitedPartners } = await this.getPartners(pageRouting, tokens, ids.transactionId);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         if (pageRouting.pageType === TransitionPageType.transitionAlreadyFiled) {
-          const companyProfile = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
-            tokens,
-            ids.companyId
-          );
+          const companyProfile = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
           limitedPartnership = companyProfile?.limitedPartnership;
         }
@@ -86,44 +116,16 @@ class LimitedPartnershipController extends PartnershipController {
     return { generalPartners: [], limitedPartners: [] };
   }
 
-  getConfirmPage() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens } = super.extract(request);
-        const { ids, pageType } = super.extract(request);
-        const pageRouting = super.getRouting(transitionRouting, pageType, request);
-
-        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
-
-        if (result.errors) {
-          response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, null, result.errors)
-          );
-
-          return;
-        }
-
-        response.render(
-          super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership: result.limitedPartnership }, null)
-        );
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
   limitedPartnershipConfirm() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { ids, pageType, tokens } = super.extract(request);
+        const { pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
         const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
-        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
-          tokens,
-          ids.companyId
-        );
+
+        const companyId = request.query.companyNumber as string;
+
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, companyId);
 
         const result = await this.limitedPartnershipService.createTransactionAndFirstSubmission(
           tokens,
@@ -155,34 +157,6 @@ class LimitedPartnershipController extends PartnershipController {
           submissionId: result.submissionId
         } as Ids;
         const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds, request.url);
-
-        response.redirect(url);
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  checkCompanyNumber() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { ids, tokens } = super.extract(request);
-        const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
-        const pageRouting = super.getRouting(transitionRouting, pageType, request);
-        const { company_number } = request.body;
-
-        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, company_number.trim());
-
-        if (result.errors) {
-          response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { company_number: company_number.trim() }, result.errors)
-          );
-
-          return;
-        }
-
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, { ...ids, companyId: company_number.trim() }, request.url);
 
         response.redirect(url);
       } catch (error) {
@@ -290,13 +264,7 @@ class LimitedPartnershipController extends PartnershipController {
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
 
-        await this.limitedPartnershipService.sendPageData(
-          tokens,
-          ids.transactionId,
-          ids.submissionId,
-          pageType,
-          request.body
-        );
+        await this.limitedPartnershipService.sendPageData(tokens, ids.transactionId, ids.submissionId, pageType, request.body);
 
         await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
 
