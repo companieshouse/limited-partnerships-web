@@ -2,15 +2,21 @@ import request from "supertest";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 
-import { ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL } from "../../../../controller/registration/url";
+import {
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL,
+  PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL
+} from "../../../../controller/registration/url";
 
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
+import RegistrationPageType from "../../../../controller/registration/PageType";
+import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 describe("Add Protected Person With Significant Control Individual Person Page", () => {
   const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL);
@@ -55,7 +61,32 @@ describe("Add Protected Person With Significant Control Individual Person Page",
 
         expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toLocaleUpperCase());
         expect(res.text).toContain(limitedPartnership.data?.name_ending?.toLocaleUpperCase());
+
+        // Check that the link to the previous page appears twice - back link and cancel link
+        // TODO : to be changed when the previous page is created
+        expect(countOccurrences(res.text, getUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL))).toBe(2);
       }
     );
+  });
+
+  describe("Post Add Individual Person Page", () => {
+    it("should create the protected individual person", async () => {
+      expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
+        type: PersonWithSignificantControlType.PROTECTED_INDIVIDUAL_PERSON
+      });
+
+      expect(res.status).toBe(302);
+
+      const REDIRECT_URL = getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+
+      expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(1);
+      expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl[0].data.type).toEqual(
+        PersonWithSignificantControlType.PROTECTED_INDIVIDUAL_PERSON
+      );
+    });
   });
 });
