@@ -54,6 +54,7 @@ describe("Add Person With Significant Control Individual Person Page", () => {
         testTranslations(res.text, translationText.personWithSignificantControl.addPersonWithSignificantControl, [
           "addOtherRegistrablePerson",
           "addRelevantLegalEntity",
+          "addProtectedIndividualPersonConfirm",
           "commonEntityFields"
         ]);
       }
