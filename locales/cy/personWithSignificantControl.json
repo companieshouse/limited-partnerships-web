@@ -122,6 +122,21 @@
                     "mx": "WELSH - MX",
                     "other": "WELSH - OTHER"
                 }
+            },
+            "addProtectedIndividualPersonConfirm": {
+                "title": "WELSH - The PSC needs to apply for protection before you can continue",
+                "needToSubmit": "WELSH - The PSC needs to submit an application for protection and provide their PSC details using paper forms.",
+                "shouldWait": "WELSH - You should wait for them to do this before you continue, otherwise this registration may be rejected.",
+                "whatYouNeedToDoNext": "WELSH - What you need to do next",
+                "tellLimitedPartnership": "WELSH - Tell the limited partnership that the PSC needs to",
+                "applyForProtection": "WELSH - apply for protection (opens in new tab)",
+                "beforeThisRegistration": "WELSH - before this registration is submitted.",
+                "provideLimitedPartnershipNameBefore": "WELSH - In their protection application, they must provide the limited partnership name as:",
+                "provideLimitedPartnershipNameAfter": "WELSH - If the name in their application does not match this registration, we'll ask them to resubmit it.",
+                "confirmationOfReceipt": "WELSH - When the PSC receives a 'confirmation of receipt' letter from us, you can submit this registration. You don't need to wait for the protection application to be accepted.",
+                "confirmWarning": "WELSH - You should only submit this registration after Companies House has confirmed receipt of the PSC's protection application.",
+                "submitButton": "WELSH - The PSC has applied for protection",
+                "cancelLink": "WELSH - I don't want to add a protected PSC"
             }
         },
         "whichTypeOfNatureOfControlPage": {

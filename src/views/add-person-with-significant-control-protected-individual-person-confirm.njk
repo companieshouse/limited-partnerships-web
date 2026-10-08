@@ -1,0 +1,51 @@
+{% extends "layout.njk" %}
+
+{% set translationText = i18n.personWithSignificantControl.addPersonWithSignificantControl.addProtectedIndividualPersonConfirm %}
+
+{% set pageTitle = translationText.title %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include "includes/errors.njk" %}
+
+            {% include "includes/proposed-name.njk" %}
+
+            <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+
+            <p class="govuk-body">{{ translationText.needToSubmit }}</p>
+
+            <p class="govuk-body">{{ translationText.shouldWait }}</p>
+
+            <h2 class="govuk-heading-m">
+              {{ translationText.whatYouNeedToDoNext }}
+            </h2>
+
+            <p class="govuk-body">{{ translationText.tellLimitedPartnership }} <a href="https://www.gov.uk/guidance/apply-for-protection-as-a-protected-person" target="_blank">{{ translationText.applyForProtection }}</a> {{ translationText.beforeThisRegistration }}</p>
+
+            <p class="govuk-body">{{ translationText.provideLimitedPartnershipNameBefore }} {{ props.data.limitedPartnership.data.partnership_name | upper }} {{ props.data.limitedPartnership.data.name_ending | upper }}. {{ translationText.provideLimitedPartnershipNameAfter }}</p>
+
+            <p class="govuk-body">{{ translationText.confirmationOfReceipt }}</p>
+
+            <div class="govuk-inset-text">
+               {{ translationText.confirmWarning }}
+            </div>
+
+            <form class="form" method="post">
+                <input type="hidden" name="pageType" value={{ props.pageType }}>
+                {% include "includes/csrf_token.njk" %}
+
+                <input type="hidden" name="type" value="PROTECTED_INDIVIDUAL_PERSON">
+
+                {{ govukButton({
+                    text: translationText.submitButton
+                }) }}
+            </form>
+
+
+            <p class="govuk-body">
+                <a href={{ props.previousUrl }} class="govuk-link">{{ translationText.cancelLink }}</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}
