@@ -1,6 +1,12 @@
 import request from "supertest";
+import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+
 import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
@@ -11,10 +17,13 @@ import {
   REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   TELL_US_ABOUT_PSC_URL,
 } from "../../../../controller/registration/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+
 import RegistrationPageType from "../../../../controller/registration/PageType";
-import PersonWithSignificantControlBuilder, { personWithSignificantControlOtherRegistrablePerson, personWithSignificantControlRelevantLegalEntity } from "../../../builder/PersonWithSignificantControlBuilder";
-import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+import PersonWithSignificantControlBuilder, {
+  personWithSignificantControlOtherRegistrablePerson,
+  personWithSignificantControlRelevantLegalEntity
+} from "../../../builder/PersonWithSignificantControlBuilder";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 
 describe("Review Persons With Significant Control Page", () => {
   const URL = getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL);
@@ -31,11 +40,24 @@ describe("Review Persons With Significant Control Page", () => {
     .withCompleted(false)
     .build();
 
+  const pscProtectedIndividualPerson = new PersonWithSignificantControlBuilder()
+    .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+    .withType(PersonWithSignificantControlType.PROTECTED_INDIVIDUAL_PERSON)
+    .build();
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
-    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([pscRelevantLegalEntity, pscOtherRegistrablePerson]);
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withId(appDevDependencies.limitedPartnershipGateway.limitedPartnershipId)
+      .build();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships(limitedPartnership);
+
+    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
+      pscRelevantLegalEntity,
+      pscOtherRegistrablePerson,
+      pscProtectedIndividualPerson
+    ]);
   });
 
   describe("Get Review Persons With Significant Control Page", () => {
@@ -57,6 +79,13 @@ describe("Review Persons With Significant Control Page", () => {
 
       expect(res.text).toContain(`${personWithSignificantControlRelevantLegalEntity.legal_entity_name}`);
       expect(res.text).toContain(`${personWithSignificantControlOtherRegistrablePerson.legal_entity_name}`);
+
+      expect(res.text).toContain(translationText.personWithSignificantControl.reviewPage.protectedIndividualPerson.name);
+      expect(res.text).toContain(translationText.personWithSignificantControl.reviewPage.protectedIndividualPerson.description);
+      expect(res.text).toContain(
+        translationText.personWithSignificantControl.reviewPage.protectedIndividualPerson.descriptionHint
+      );
+
       expect(res.text).toContain(
         `${translationText.personWithSignificantControl.reviewPage.errorMessage.beforeName} ${personWithSignificantControlOtherRegistrablePerson.legal_entity_name} ${translationText.personWithSignificantControl.reviewPage.errorMessage.afterName}`
       );

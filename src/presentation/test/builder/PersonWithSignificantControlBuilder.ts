@@ -44,6 +44,7 @@ class PersonWithSignificantControlBuilder {
   _id = "123456";
   id = "123456";
   data: Record<string, any> = {
+    type: "",
     completed: true,
     appointment_id: "",
 
@@ -92,6 +93,11 @@ class PersonWithSignificantControlBuilder {
   withId(id: string) {
     this["_id"] = id;
     this.id = id;
+    return this;
+  }
+
+  withType(type: PersonWithSignificantControlType) {
+    this.data.type = type;
     return this;
   }
 
