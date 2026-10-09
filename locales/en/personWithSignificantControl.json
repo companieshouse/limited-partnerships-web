@@ -233,6 +233,11 @@
             "title": "Review the people with significant control (PSCs) for this partnership",
             "personsAdded": "PSC's you have added so far:",
             "individualPerson": "Individual person",
+            "protectedIndividualPerson": {
+                "name": "Individual person",
+                "description": "Protected person",
+                "descriptionHint": "This PSC needs to submit their application for protection before you submit this registration"
+            },
             "relevantLegalEntity": "Relevant legal entity (RLE)",
             "otherRegistrablePerson": "Other registrable person (ORP)",
             "addAnotherPersonWithSignificantControl": {

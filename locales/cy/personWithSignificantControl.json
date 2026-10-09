@@ -233,6 +233,11 @@
             "title": "WELSH - Review the people with significant control (PSCs) for this partnership",
             "personsAdded": "WELSH - PSC's you have added so far:",
             "individualPerson": "WELSH - Individual person",
+            "protectedIndividualPerson": {
+                "name": "WELSH - Individual person",
+                "description": "WELSH - Protected person",
+                "descriptionHint": "WELSH - This PSC needs to submit their application for protection before you submit this registration"
+            },
             "relevantLegalEntity": "WELSH - Relevant legal entity (RLE)",
             "otherRegistrablePerson": "WELSH - Other registrable person (ORP)",
             "addAnotherPersonWithSignificantControl": {

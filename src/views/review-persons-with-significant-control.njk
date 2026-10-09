@@ -34,31 +34,52 @@
             {% endif %}
 
             {% set rows = rows.concat({
-                key: {
-                  text: i18n.personWithSignificantControl.reviewPage.individualPerson,
-                  classes: "govuk-form-group govuk-form-group--error" if props.errors[( fullName | lower)]
-                },
-                value: {
-                  text: fullName
-                },
-                actions: {
-                  items: [
-                    CREATE_CHANGE_LINK(
-                      i18n.personWithSignificantControl.reviewPage.change,
-                      props.currentUrl | replace(props.pageType, "person-with-significant-control" + "/" + personWithSignificantControl.id + "/" + props.data.pageTypeIndividualPerson),
-                      null,
-                      "change-individual-person"
-                    ),
-                    CREATE_CHANGE_LINK(
-                      i18n.personWithSignificantControl.reviewPage.remove,
-                      props.currentUrl | replace(props.pageType, "person-with-significant-control" + "/" + personWithSignificantControl.id + "/" + props.data.pageTypeRemove),
-                      null,
-                      "delete-individual-person"
-                    )
-                  ]
-                }
-              })
-            %}
+              key: {
+                text: i18n.personWithSignificantControl.reviewPage.individualPerson,
+                classes: "govuk-form-group govuk-form-group--error" if props.errors[( fullName | lower)]
+              },
+              value: {
+                text: fullName
+              },
+              actions: {
+                items: [
+                  CREATE_CHANGE_LINK(
+                    i18n.personWithSignificantControl.reviewPage.change,
+                    props.currentUrl | replace(props.pageType, "person-with-significant-control" + "/" + personWithSignificantControl.id + "/" + props.data.pageTypeIndividualPerson),
+                    null,
+                    "change-individual-person"
+                  ),
+                  CREATE_CHANGE_LINK(
+                    i18n.personWithSignificantControl.reviewPage.remove,
+                    props.currentUrl | replace(props.pageType, "person-with-significant-control" + "/" + personWithSignificantControl.id + "/" + props.data.pageTypeRemove),
+                    null,
+                    "delete-individual-person"
+                  )
+                ]
+              }
+            })
+          %}
+          {% elif personWithSignificantControl.data.type == "PROTECTED_INDIVIDUAL_PERSON" %}
+            {% set rows = rows.concat({
+              key: {
+                text: i18n.personWithSignificantControl.reviewPage.protectedIndividualPerson.name,
+                classes: "govuk-form-group govuk-form-group--error" if props.errors[(personWithSignificantControl.data.legal_entity_name | lower)]
+              },
+              value: {
+                html: '<p class="govuk-!-margin-bottom-5">' + i18n.personWithSignificantControl.reviewPage.protectedIndividualPerson.description + '</p><p>' + i18n.personWithSignificantControl.reviewPage.protectedIndividualPerson.descriptionHint + '</p>'
+              },
+              actions: {
+                items: [
+                  CREATE_CHANGE_LINK(
+                    i18n.personWithSignificantControl.reviewPage.remove,
+                    props.currentUrl | replace(props.pageType, "person-with-significant-control" + "/" + personWithSignificantControl.id + "/" + props.data.pageTypeRemove),
+                    null,
+                    "delete-relevant-legal-entity"
+                  )
+                ]
+              }
+            })
+          %}
           {% elif personWithSignificantControl.data.type == "RELEVANT_LEGAL_ENTITY" %}
               {% set rows = rows.concat({
                 key: {

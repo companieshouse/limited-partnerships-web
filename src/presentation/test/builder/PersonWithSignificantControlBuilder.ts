@@ -6,7 +6,7 @@ import {
 
 import TransactionPersonWithSignificantControl from "../../../domain/entities/TransactionPersonWithSignificantControl";
 
-export const personWithSignificantControlIndividualPerson = {
+const personWithSignificantControlIndividualPerson = {
   consent_checked: true,
   title: "MR",
   title_other: "",
@@ -22,18 +22,18 @@ export const personWithSignificantControlIndividualPerson = {
   type: PersonWithSignificantControlType.INDIVIDUAL_PERSON
 };
 
-export const personWithSignificantControlRelevantLegalEntity = {
+const personWithSignificantControlRelevantLegalEntity = {
   legal_entity_name: "My Company ltd - RLE",
   legal_form: "Limited Company",
   governing_law: "Act of law",
   legal_entity_register_name: "US Register",
   legal_entity_registration_location: "United States",
   registered_company_number: "12345678",
-  entered_on_register: 'true',
+  entered_on_register: "true",
   type: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY
 };
 
-export const personWithSignificantControlOtherRegistrablePerson = {
+const personWithSignificantControlOtherRegistrablePerson = {
   legal_entity_name: "My Company ltd - ORP",
   legal_form: "Limited Company",
   governing_law: "Act of law",
@@ -44,6 +44,7 @@ class PersonWithSignificantControlBuilder {
   _id = "123456";
   id = "123456";
   data: Record<string, any> = {
+    type: "",
     completed: true,
     appointment_id: "",
 
@@ -92,6 +93,11 @@ class PersonWithSignificantControlBuilder {
   withId(id: string) {
     this["_id"] = id;
     this.id = id;
+    return this;
+  }
+
+  withType(type: PersonWithSignificantControlType) {
+    this.data.type = type;
     return this;
   }
 
