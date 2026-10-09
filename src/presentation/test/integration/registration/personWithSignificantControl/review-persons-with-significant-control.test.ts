@@ -2,12 +2,12 @@ import request from "supertest";
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import {
-  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
   CHECK_YOUR_ANSWERS_URL,
+  DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
   REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   TELL_US_ABOUT_PSC_URL,
 } from "../../../../controller/registration/url";
@@ -110,7 +110,7 @@ describe("Review Persons With Significant Control Page", () => {
 
   describe("Post Review Persons With Significant Control Page", () => {
     it.each([
-      ["individual person", "addIndividualPerson", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL],
+      ["individual person", "addIndividualPerson", DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL],
       ["relevant legal entity", "addRelevantLegalEntity", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL],
       ["other registrable person", "addOtherRegistrablePerson", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL]
     ])('should redirect to the add %s page when selecting to %s', async (personType: string, requestParam: string, redirectUrl: string) => {

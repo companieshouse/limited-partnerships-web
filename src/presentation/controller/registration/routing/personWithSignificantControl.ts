@@ -75,8 +75,15 @@ const registrationRoutingOtherRegistrablePersonWhichTypeOfNatureOfControl = {
 
 // INDIVIDUAL PERSON
 
-const registrationRoutingAddIndividualPerson = {
+const registrationRoutingDoesIndividualPersonRequireProtection = {
   previousUrl: url.PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  currentUrl: url.DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
+  nextUrl: "",
+  pageType: RegistrationPageType.doesIndividualPscRequireProtection
+};
+
+const registrationRoutingAddIndividualPerson = {
+  previousUrl: url.DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
   currentUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
   nextUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
   pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson
@@ -152,6 +159,7 @@ const personWithSignificantControlRouting = [
   registrationRoutingPersonWithSignificantControl,
   registrationRoutingWillLimitedPartnershipHavePsc,
   registrationRoutingPersonWithSignificantControlChoice,
+  registrationRoutingDoesIndividualPersonRequireProtection,
 
   registrationRoutingAddRelevantLegalEntity,
   registrationRoutingAddOtherRegistrablePerson,

@@ -1,0 +1,46 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.personWithSignificantControl.doesIndividualPscRequireProtection.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
+
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+
+        {{ govukRadios({
+          name: "parameter",
+          value: props.data.limitedPartnership.personWithSignificantControl,
+          errorMessage: props.errors.parameter if props.errors.parameter,
+          fieldset: {
+            legend: {
+              text: i18n.personWithSignificantControl.doesIndividualPscRequireProtection.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.personWithSignificantControl.doesIndividualPscRequireProtection.hint
+          },
+          items: [
+            {
+              value: "SECURE_INDIVIDUAL_PSC",
+              text: i18n.personWithSignificantControl.doesIndividualPscRequireProtection.optionYes
+            },
+            {
+              value: "NON_SECURE_INDIVIDUAL_PSC",
+              text: i18n.personWithSignificantControl.doesIndividualPscRequireProtection.optionNo
+            }
+          ]
+          }) }}
+
+        {% include "includes/what-having-personal-information-protected-means.njk" %}
+
+        {% include "includes/save-and-continue-button.njk" %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

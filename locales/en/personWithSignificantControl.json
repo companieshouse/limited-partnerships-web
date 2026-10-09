@@ -9,6 +9,25 @@
             "bullet3": "an international organisation whose members include two or more countries or territories (or their governments)",
             "bullet4": "a local authority or local government body in the UK or elsewhere"
         },
+        "secureIndividualPscInformation": {
+            "title": "What having personal information protected means",
+            "line1": "PSCs can apply to protect their details if they are at serious risk of violence or intimidation because of the limited partnership's activities",
+            "line2": "They do not need to apply if they only want to protect their address from credit reference agencies, as we do not share this information",
+            "line3": "To apply for protection, the PSC needs to:",
+            "bullet1": "submit a protection application and their PSC details by post",
+            "bullet2": "include evidence that they are eligible to have their details protected",
+            "bullet3": "pay a £100 fee",
+            "moreInformation": "For more information, ",
+            "linkText": "read the guidance on applying to protect your details (opens in a new tab)",
+            "linkUrl": "https://www.gov.uk/guidance/applying-to-protect-your-personal-information-on-the-companies-house-register"
+        },
+        "doesIndividualPscRequireProtection": {
+            "title": "Does this PSC need their details protected on the Companies Houser register?",
+            "hint": "This is for PSCs who are at serious risk, and need all of their personal information to be protected from appearing on the public register.",
+            "optionYes": "Yes, this person is at serious risk and needs their details protected",
+            "optionNo": "No",
+            "errorMessage": "Tell us if the PSC needs their details protected on the Companies House register"
+        },
         "tellUsAboutPscPage": {
             "title": "Tell us about people with significant control (PSCs)",
             "whatWeAsk": "We'll ask you if the partnership will have any PSCs on registration. If it will, you need to tell us about them.",

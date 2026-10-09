@@ -7,9 +7,9 @@ import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilde
 import RegistrationPageType from "../../../../controller/registration/PageType";
 
 import {
-  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+  DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
   WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL
 } from "../../../../controller/registration/url";
@@ -50,7 +50,11 @@ describe("Which type Page", () => {
   );
 
   it.each([
-    ["add individual person", "individual_person", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL],
+    [
+      "add individual person",
+      PersonWithSignificantControlType.INDIVIDUAL_PERSON,
+      DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL
+    ],
     [
       "add relevant legal entity",
       PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY,
@@ -62,7 +66,7 @@ describe("Which type Page", () => {
       ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL
     ]
   ])(
-    "should redirect to the add relevant legal entity page when %s option is selected",
+    "should redirect to the %s page when %s option is selected",
     async (description: string, parameter: string, url: string) => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.personWithSignificantControlChoice,

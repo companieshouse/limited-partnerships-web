@@ -33,6 +33,7 @@ import {
   TELL_US_ABOUT_PSC_URL,
   WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
@@ -347,6 +348,15 @@ export const registrationEndpoints = (
   router.post(
     ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
     dependencies.personWithSignificantControlRegistrationController.sendPageData()
+  );
+
+  router.get(
+    DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
+    dependencies.personWithSignificantControlRegistrationController.securePscChoice()
   );
 
   router.get(

@@ -1,0 +1,13 @@
+{{ govukDetails({
+  summaryText: i18n.personWithSignificantControl.secureIndividualPscInformation.title,
+  html: 
+    '<p>' + i18n.personWithSignificantControl.secureIndividualPscInformation.line1 | escape + '</p>' 
+    + '<p>' + i18n.personWithSignificantControl.secureIndividualPscInformation.line2 | escape + '</p>'
+    + '<p>' + i18n.personWithSignificantControl.secureIndividualPscInformation.line3 | escape + '</p>'
+      + '<ul>'
+          + '<li>' + i18n.personWithSignificantControl.secureIndividualPscInformation.bullet1 | escape + '</li>'
+          + '<li>' + i18n.personWithSignificantControl.secureIndividualPscInformation.bullet2 | escape + '</li>'
+          + '<li>' + i18n.personWithSignificantControl.secureIndividualPscInformation.bullet3 | escape + '</li>'
+      + '</ul>'
+    + '<p>' + i18n.personWithSignificantControl.secureIndividualPscInformation.moreInformation + '<a href="' + i18n.personWithSignificantControl.secureIndividualPscInformation.linkUrl + '" target="_blank">' + i18n.personWithSignificantControl.secureIndividualPscInformation.linkText + '</a>' + "." | escape + '</p>'
+}) }}

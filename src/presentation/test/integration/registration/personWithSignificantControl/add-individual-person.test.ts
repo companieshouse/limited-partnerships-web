@@ -7,7 +7,7 @@ import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_WITH_IDS_URL,
-  PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
 } from "../../../../controller/registration/url";
 
@@ -59,12 +59,12 @@ describe("Add Person With Significant Control Individual Person Page", () => {
       }
     );
 
-    it("should contain a back link to the choice page", async () => {
+    it("should contain a back link to the secure PSC selection page", async () => {
       const res = await request(app).get(
         getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL)
       );
 
-      const BACK_LINK = getUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL);
+      const BACK_LINK = getUrl(DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL);
 
       expect(res.status).toBe(200);
 
