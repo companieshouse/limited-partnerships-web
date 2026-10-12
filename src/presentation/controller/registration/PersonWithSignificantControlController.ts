@@ -18,6 +18,7 @@ import PersonWithSignificantControlService from "../../../application/service/Pe
 import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   CHECK_YOUR_ANSWERS_URL,
   DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
@@ -273,8 +274,12 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           );
         }
 
-        // TODO - Add logic for determining correct redirect once secure psc page has been implemented
-        const redirectUrl = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL;
+        let redirectUrl;
+        if (request.body.parameter === "SECURE_INDIVIDUAL_PSC") {
+          redirectUrl = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL;
+        } else {
+          redirectUrl = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL;
+        }
 
         response.redirect(super.insertIdsInUrl(redirectUrl, ids, request.url));
       } catch (error) {

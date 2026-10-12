@@ -8,7 +8,7 @@ import { enTranslationText, cyTranslationText } from "../../../../../test/utils/
 
 import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL,
-  PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
   REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL
 } from "../../../../controller/registration/url";
 
@@ -63,8 +63,7 @@ describe("Add Protected Person With Significant Control Individual Person Page",
         expect(res.text).toContain(limitedPartnership.data?.name_ending?.toLocaleUpperCase());
 
         // Check that the link to the previous page appears twice - back link and cancel link
-        // TODO : to be changed when the previous page is created
-        expect(countOccurrences(res.text, getUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL))).toBe(2);
+        expect(countOccurrences(res.text, getUrl(DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL))).toBe(2);
       }
     );
   });

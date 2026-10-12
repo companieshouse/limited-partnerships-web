@@ -102,7 +102,7 @@ const registrationRoutingIndividualPersonWhichTypeOfNatureOfControl = {
 // PROTECTED INDIVIDUAL PERSON
 
 const registrationRoutingAddProtectedIndividualPersonConfirm = {
-  previousUrl: url.PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL, // TODO : to be changed when the previous page is created
+  previousUrl: url.DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
   currentUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL,
   nextUrl: url.REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   pageType: RegistrationPageType.addPersonWithSignificantControlProtectedIndividualPersonConfirm

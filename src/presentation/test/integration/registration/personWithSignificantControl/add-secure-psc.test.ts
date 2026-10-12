@@ -5,6 +5,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
 import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL,
   DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL
 } from "presentation/controller/registration/url";
@@ -17,8 +18,7 @@ describe("Add Person with Significant Control Secure Individual Page", () => {
 
   const URL = getUrl(DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL);
   const REDIRECT_NON_SECURE_URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL);
-  // TODO - Update REDIRECT_SECURE_URL placeholder with the correct secure individual PSC URL
-  const REDIRECT_SECURE_URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL);
+  const REDIRECT_SECURE_URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
