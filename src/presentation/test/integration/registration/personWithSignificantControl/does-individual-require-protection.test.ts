@@ -69,9 +69,8 @@ describe("Add Person with Significant Control Secure Individual Page", () => {
     it("should return an error when no selection is made", async() => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.doesIndividualPscRequireProtection,
-        parameter: ""
+        individualPscType: ""
       });
-
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(enTranslationText.personWithSignificantControl.doesIndividualPscRequireProtection.errorMessage);
@@ -92,8 +91,8 @@ describe("Add Person with Significant Control Secure Individual Page", () => {
       "should redirect to the %s page when %s option is selected",
       async (description: string, parameter: string, redirectUrl: string) => {
         const res = await request(app).post(URL).send({
-          pageType: RegistrationPageType.personWithSignificantControlChoice,
-          parameter
+          pageType: RegistrationPageType.doesIndividualPscRequireProtection,
+          individualPscType: parameter
         });
 
         expect(res.status).toBe(302);

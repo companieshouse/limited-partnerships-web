@@ -256,7 +256,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        if (!request.body.parameter) {
+        if (!request.body.individualPscType) {
           const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,
@@ -264,7 +264,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           );
 
           const uiErrors = new UIErrors().setWebError(
-            "parameter",
+            "individualPscTypeError",
             response.locals.i18n.personWithSignificantControl.doesIndividualPscRequireProtection.errorMessage
           );
 
@@ -275,7 +275,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         }
 
         let redirectUrl;
-        if (request.body.parameter === "SECURE_INDIVIDUAL_PSC") {
+        if (request.body.individualPscType === "SECURE_INDIVIDUAL_PSC") {
           redirectUrl = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL;
         } else {
           redirectUrl = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL;
