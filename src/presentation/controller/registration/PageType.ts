@@ -24,6 +24,7 @@ enum RegistrationPageType {
   tellUsAboutPscPage = "tell-us-about-people-with-significant-control",
   willLimitedPartnershipHavePsc = "will-the-partnership-have-any-people-with-significant-control",
   personWithSignificantControlChoice = "person-with-significant-control-choice",
+  doesIndividualPscRequireProtection = "does-individual-psc-require-protection",
   addPersonWithSignificantControlIndividualPerson = "add-person-with-significant-control-individual-person",
   addPersonWithSignificantControlProtectedIndividualPersonConfirm = "add-person-with-significant-control-protected-individual-person-confirm",
   addPersonWithSignificantControlRelevantLegalEntity = "add-person-with-significant-control-relevant-legal-entity",

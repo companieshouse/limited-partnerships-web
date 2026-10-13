@@ -18,8 +18,10 @@ import PersonWithSignificantControlService from "../../../application/service/Pe
 import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   CHECK_YOUR_ANSWERS_URL,
+  DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
   REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   TELL_US_ABOUT_PSC_URL
@@ -235,7 +237,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
   }
 
   private getAddPersonWithSignificantControlRedirectUrl(request: Request, ids: Ids) {
-    let url = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL;
+    let url = DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL;
 
     if (request.body.parameter === PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY) {
       url = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL;
@@ -244,6 +246,46 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     }
 
     return super.insertIdsInUrl(url, ids, request.url);
+  }
+
+  securePscChoice() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.personWithSignificantControlService.setI18n(response.locals.i18n);
+
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        if (!request.body.typeOfIndividual) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          const uiErrors = new UIErrors().setWebError(
+            "individualPscTypeError",
+            response.locals.i18n.personWithSignificantControl.doesIndividualPscRequireProtection.errorMessage
+          );
+
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, limitedPartnership, uiErrors)
+          );
+        }
+
+        let redirectUrl;
+        if (request.body.typeOfIndividual === "SECURE_INDIVIDUAL_PSC") {
+          redirectUrl = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_PROTECTED_INDIVIDUAL_PERSON_CONFIRM_URL;
+        } else {
+          redirectUrl = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL;
+        }
+
+        response.redirect(super.insertIdsInUrl(redirectUrl, ids, request.url));
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 
   createPersonWithSignificantControl() {
@@ -737,7 +779,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     const addAnotherPersonWithSignificantControl = request.body.addAnotherPersonWithSignificantControl;
 
     const reviewPageUrlMap: Map<string, string> = new Map([
-      ["addIndividualPerson", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL],
+      ["addIndividualPerson", DOES_INDIVIDUAL_PERSON_REQUIRE_PROTECTION_URL],
       ["addRelevantLegalEntity", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL],
       ["addOtherRegistrablePerson", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL],
       ["no", CHECK_YOUR_ANSWERS_URL]
