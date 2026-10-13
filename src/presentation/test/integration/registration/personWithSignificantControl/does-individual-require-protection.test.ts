@@ -92,7 +92,7 @@ describe("Add Person with Significant Control Secure Individual Page", () => {
       async (description: string, parameter: string, redirectUrl: string) => {
         const res = await request(app).post(URL).send({
           pageType: RegistrationPageType.doesIndividualPscRequireProtection,
-          individualPscType: parameter
+          typeOfIndividual: parameter
         });
 
         expect(res.status).toBe(302);

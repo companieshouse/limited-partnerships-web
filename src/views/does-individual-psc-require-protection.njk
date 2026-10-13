@@ -12,7 +12,7 @@
         {% include "includes/csrf_token.njk" %}
 
         {{ govukRadios({
-          name: "individualPscType",
+          name: "typeOfIndividual",
           value: props.data.limitedPartnership.personWithSignificantControl,
           errorMessage: props.errors.individualPscTypeError if props.errors.individualPscTypeError,
           fieldset: {
