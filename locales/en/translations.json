@@ -85,10 +85,14 @@
         "psc": {
             "title": "People with significant control (PSCs)",
             "headingPscStatement": "PSC statement",
+            "yesPscStatement": "Yes, at least one person will count as a PSC in relation to the partnership. This may be an individual person, a relevant legal entity (RLE) or an other registrable person (ORP).",
             "noPscStatement": "There is no person identified as a person with significant control (either a registrable person or RLE) in relation to the limited partnership.",
             "changeRemoveOrAdd": "Change, remove or add people with significant control (PSCs)",
             "personTitle": "Title",
-            "notOnRegister": "Not entered on a register"
+            "notOnRegister": "Not entered on a register",
+            "protectedPersonName": "Protected person",
+            "protectedPersonDescription": "Protected person",
+            "protectedPersonDescriptionHint": "The secure form needs to be accepted before you can submit this registration."
         }
     },
 

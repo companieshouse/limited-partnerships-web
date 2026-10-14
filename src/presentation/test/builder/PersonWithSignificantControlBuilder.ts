@@ -136,6 +136,16 @@ class PersonWithSignificantControlBuilder {
     return this;
   }
 
+  withLegalEntityName(legalEntityName: string) {
+    this.data.legal_entity_name = legalEntityName;
+    return this;
+  }
+
+  withForename(forename: string) {
+    this.data.forename = forename;
+    return this;
+  }
+
   isIndividualPerson() {
     this.data = {
       ...this.data,

@@ -1,6 +1,7 @@
 {% set isRle = item.data.type === "RELEVANT_LEGAL_ENTITY" %}
 {% set isOrp = item.data.type === "OTHER_REGISTRABLE_PERSON" %}
 {% set isIp = item.data.type === "INDIVIDUAL_PERSON" %}
+{% set isPip = item.data.type === "PROTECTED_INDIVIDUAL_PERSON" %}
 {% set isRleOnRegister = isRle and (item.data.entered_on_register == "true" or item.data.entered_on_register == true) %}
 
 {% if isRle and item.data.legal_entity_registration_location %}
@@ -94,7 +95,9 @@
       },
       value: {
         text: registerNameText
-      }
+      },
+      classes: "register-row"
+      
     } if isRle,
     {
       key: {
@@ -110,7 +113,8 @@
       },
       value: {
         text: item.data.registered_company_number
-      }
+      },
+      classes: "registration-number-row"
     } if isRleOnRegister,
     {
       key: {
@@ -135,7 +139,15 @@
       value: {
         text: macros.formatAddress(item.data.principal_office_address, true, i18n)
       }
-    } if isRle or isOrp
+    } if isRle or isOrp,
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.psc.protectedPersonName
+      },
+      value: {
+        html: '<p class="govuk-!-margin-bottom-5">' + i18n.checkYourAnswersPage.psc.protectedPersonDescription + '</p><p>' + i18n.checkYourAnswersPage.psc.protectedPersonDescriptionHint + '</p>'
+      }
+    } if isPip
 
   ]
 }) }}
