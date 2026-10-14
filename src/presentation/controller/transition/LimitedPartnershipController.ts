@@ -43,13 +43,11 @@ class LimitedPartnershipController extends PartnershipController {
   getConfirmPage() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { tokens } = super.extract(request);
+        const { tokens, ids } = super.extract(request);
         const { pageType } = super.extract(request);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
 
-        const companyId = request.query.companyNumber as string;
-
-        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, companyId);
+        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
         if (result.errors?.hasErrors()) {
           response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, null, result.errors));
@@ -119,13 +117,11 @@ class LimitedPartnershipController extends PartnershipController {
   limitedPartnershipConfirm() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { pageType, tokens } = super.extract(request);
+        const { pageType, tokens, ids } = super.extract(request);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
         const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
 
-        const companyId = request.query.companyNumber as string;
-
-        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, companyId);
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
         const result = await this.limitedPartnershipService.createTransactionAndFirstSubmission(
           tokens,

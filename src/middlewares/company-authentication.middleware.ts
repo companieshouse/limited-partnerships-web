@@ -6,8 +6,7 @@ import { CHS_URL } from "../config/constants";
 
 export const companyAuthentication = (request: Request, response: Response, next: NextFunction) => {
   try {
-    const currentCompanyNumber =
-      request.query?.companyNumber ? (request.query.companyNumber as string) : (request.params.companyId as string);
+    const currentCompanyNumber = request.params.companyId as string;
 
     const companyNumberSesssion = request.session?.data.signin_info?.company_number;
     logger.info(`Company number from session: ${companyNumberSesssion}`);
