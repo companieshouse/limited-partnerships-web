@@ -1,5 +1,6 @@
 {% set checkYourAnswers = "check-your-answers" %}
 {% set willHavePscPageType = "will-the-partnership-have-any-people-with-significant-control" %}
+{% set pscStatementText = i18n.checkYourAnswersPage.psc.yesPscStatement if hasPsc else i18n.checkYourAnswersPage.psc.noPscStatement %}
 
 {{ govukSummaryList({
   classes: "govuk-!-margin-bottom-7",
@@ -9,7 +10,7 @@
         text: i18n.checkYourAnswersPage.psc.headingPscStatement
       },
       value: {
-        text: i18n.checkYourAnswersPage.psc.noPscStatement
+        text: pscStatementText
       },
       actions: {
         items: [
@@ -18,9 +19,9 @@
             (props.currentUrl | replace(checkYourAnswers, willHavePscPageType)),
             "change PSC statement",
             "change-psc-statement-button"
-          )
+          ) 
         ]
-      }
+      } if hasPsc !== true
     }
   ]
 }) }}

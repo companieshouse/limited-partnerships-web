@@ -137,6 +137,9 @@ class LimitedPartnershipController extends PartnershipController {
 
   private sortPscByType(personsWithSignificantControl: PersonWithSignificantControl[]): PersonWithSignificantControl[] {
     // Group into three arrays (preserves original order within each group)
+    const protectedIndividuals = personsWithSignificantControl.filter(
+      (p) => p?.data?.type === PersonWithSignificantControlType.PROTECTED_INDIVIDUAL_PERSON
+    );
     const individuals = personsWithSignificantControl.filter(
       (p) => p?.data?.type === PersonWithSignificantControlType.INDIVIDUAL_PERSON
     );
@@ -147,7 +150,7 @@ class LimitedPartnershipController extends PartnershipController {
       (p) => p?.data?.type === PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON
     );
 
-    return [...individuals, ...legalEntities, ...otherRegistrables];
+    return [...protectedIndividuals, ...individuals, ...legalEntities, ...otherRegistrables];
   }
 
   private async renderCheckYourAnswersWithLawfulPurposeError(request: Request, response: Response) {

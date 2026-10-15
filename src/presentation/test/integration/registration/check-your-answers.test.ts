@@ -3,17 +3,17 @@ import app from "../app";
 
 import {
   Jurisdiction,
-  PartnershipType
+  PartnershipType,
+  PersonWithSignificantControlType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL, REVIEW_LIMITED_PARTNERS_URL, REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { checkIfPartnerValuesInText, contributionKeys, getUrl, checkYourAnswersLegalEntityKeys, checkYourAnswersPersonKeys, setLocalesEnabled, testTranslations } from "../../utils";
+import { checkIfPartnerValuesInText, contributionKeys, getUrl, checkYourAnswersLegalEntityKeys, checkYourAnswersPersonKeys, setLocalesEnabled, testTranslations, countOccurrences } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import PersonWithSignificantControlBuilder from "../../builder/PersonWithSignificantControlBuilder";
-import TransactionPersonWithSignificantControl from "../../../../domain/entities/TransactionPersonWithSignificantControl";
 import { formatDate } from "../../../../utils/date-format";
 import {
   EMAIL_TEMPLATE,
@@ -41,8 +41,31 @@ describe("Check Your Answers Page", () => {
   let limitedPartnerPerson: TransactionLimitedPartner;
   let limitedPartnerLegalEntity: TransactionLimitedPartner;
 
+  const rle = new PersonWithSignificantControlBuilder()
+    .withId("rle-id")
+    .isRelevantLegalEntity()
+    .withLegalEntityName("PSC_ORDER_RLE")
+    .build();
+  const orp = new PersonWithSignificantControlBuilder()
+    .withId("orp-id")
+    .isOtherRegistrablePerson()
+    .withLegalEntityName("PSC_ORDER_ORP")
+    .build();
+  const individual = new PersonWithSignificantControlBuilder()
+    .withId("individual-id")
+    .isIndividualPerson()
+    .withForename("PSC_ORDER_INDIVIDUAL_FORENAME")
+    .build();
+  const protectedIndividual = new PersonWithSignificantControlBuilder()
+    .withId("protected-individual-id")
+    .withType(PersonWithSignificantControlType.PROTECTED_INDIVIDUAL_PERSON)
+    .build();
+
   beforeEach(() => {
-    limitedPartnership = new LimitedPartnershipBuilder().withSicCodes(["10110", "46711"]).build();
+    limitedPartnership = new LimitedPartnershipBuilder()
+      .withHasPersonWithSignificantControl(true)
+      .withPartnershipType(PartnershipType.SLP)
+      .build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -67,7 +90,12 @@ describe("Check Your Answers Page", () => {
       .build();
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
 
-    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([]);
+    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
+      rle,
+      protectedIndividual,
+      individual,
+      orp
+    ]);
   });
 
   describe("GET Check Your Answers Page", () => {
@@ -78,6 +106,9 @@ describe("Check Your Answers Page", () => {
       const langParam = lang === "en" ? "?lang=en" : "?lang=cy";
 
       setLocalesEnabled(true);
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.LP).build();
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
       const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
@@ -119,6 +150,8 @@ describe("Check Your Answers Page", () => {
     });
 
     it("should load the check your answers page with data from api and show change links", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.LP).withSicCodes(["10110", "46711"]).build();
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
@@ -358,44 +391,6 @@ describe("Check Your Answers Page", () => {
 
   describe("PSC statement on CYA page", () => {
     it.each([
-      ["English", "en", enTranslationText],
-      ["Welsh", "cy", cyTranslationText]
-    ])(
-      "should display No PSC statement with change link in %s when has_person_with_significant_control is false",
-      async (_description: string, lang: string, translationText: Record<string, any>) => {
-        setLocalesEnabled(true);
-
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .withPartnershipType(PartnershipType.SLP)
-          .withHasPersonWithSignificantControl(false)
-          .build();
-
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-        const res = await request(app).get(URL + `?lang=${lang}`);
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.title);
-        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.headingPscStatement);
-        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.noPscStatement);
-        expect(res.text).toContain("will-the-partnership-have-any-people-with-significant-control");
-        expect(res.text).toContain("change-psc-statement-button");
-      }
-    );
-
-    it("should not display PSC section when has_person_with_significant_control is not set", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.SLP).build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.title);
-      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.noPscStatement);
-    });
-
-    it.each([
       [PartnershipType.LP],
       [PartnershipType.PFLP]
     ])(
@@ -427,10 +422,6 @@ describe("Check Your Answers Page", () => {
     ])(
       "should set the back link correctly for partnership type %s when has_person_with_significant_control is %s",
       async (partnershipType: PartnershipType, hasPersonWithSignificantControl: boolean, expectedBackLinkPageType: string) => {
-        if (hasPersonWithSignificantControl) {
-          const personWithSignificantControl = new PersonWithSignificantControlBuilder().isRelevantLegalEntity().build();
-          appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
-        }
         const limitedPartnership = new LimitedPartnershipBuilder()
           .withPartnershipType(partnershipType)
           .withHasPersonWithSignificantControl(hasPersonWithSignificantControl)
@@ -444,132 +435,65 @@ describe("Check Your Answers Page", () => {
         expect(res.text).toContain(`href="${expectedBackLinkPageType}" class="govuk-back-link"`);
       }
     );
+
+    it.each([
+      ["with Psc's", true, enTranslationText.checkYourAnswersPage.psc.yesPscStatement],
+      ["without Psc's", false, enTranslationText.checkYourAnswersPage.psc.noPscStatement]
+    ])("should render the yes PSC statement when answered yes and no PSC statement with change link when answered no", async (_description: string, hasPsc: boolean, expectedPscStatement: string) => {
+
+      if (!hasPsc) {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withPartnershipType(PartnershipType.SLP)
+          .withHasPersonWithSignificantControl(false)
+          .build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      }
+
+      const res = await request(app).get(URL);
+
+      expect(res.text).toContain(enTranslationText.checkYourAnswersPage.psc.headingPscStatement);
+      expect(res.text).toContain(expectedPscStatement);
+      expect(res.text).toContain(enTranslationText.checkYourAnswersPage.psc.title);
+
+      if (hasPsc){
+        expect(res.text).not.toContain("will-the-partnership-have-any-people-with-significant-control");
+        expect(res.text).toContain(enTranslationText.checkYourAnswersPage.psc.changeRemoveOrAdd);
+        expect(res.text).toContain("review-persons-with-significant-control");
+      } else {
+        expect(res.text).toContain("will-the-partnership-have-any-people-with-significant-control");
+      }
+    });
   });
 
   describe("PSC details on CYA page", () => {
-    beforeEach(() => {
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withPartnershipType(PartnershipType.SLP)
-        .withHasPersonWithSignificantControl(true)
-        .build();
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
-    });
+    it("should render the correct number of register rows for GP LP and RLE and none for ORP", async () => {
 
-    it.each([
-      ["English", "en", enTranslationText],
-      ["Welsh", "cy", cyTranslationText]
-    ])(
-      "should render the PSC section heading and change link in %s",
-      async (_description: string, lang: string, translationText: Record<string, any>) => {
-        setLocalesEnabled(true);
+      const res = await request(app).get(URL);
 
-        const rle = new PersonWithSignificantControlBuilder().isRelevantLegalEntity().build();
-        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([rle]);
-
-        const res = await request(app).get(URL + `?lang=${lang}`);
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.title);
-        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.changeRemoveOrAdd);
-        expect(res.text).toContain("review-persons-with-significant-control");
-      }
-    );
-
-    const rleOnlyValues = () => {
-      const rleData = new PersonWithSignificantControlBuilder().isRelevantLegalEntity().build().data!;
-      return [rleData.legal_entity_register_name, rleData.registered_company_number];
-    };
-
-    it.each([
-      ["RELEVANT_LEGAL_ENTITY", () => new PersonWithSignificantControlBuilder().isRelevantLegalEntity().build(), true],
-      [
-        "OTHER_REGISTRABLE_PERSON",
-        () => new PersonWithSignificantControlBuilder().isOtherRegistrablePerson().build(),
-        false
-      ]
-    ])(
-      "should render the correct detail rows for %s",
-      async (
-        _type: string,
-        buildPsc: () => TransactionPersonWithSignificantControl,
-        expectRleOnlyRows: boolean
-      ) => {
-        const psc = buildPsc();
-        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([psc]);
-
-        const res = await request(app).get(URL);
-        const { legal_entity_name, legal_form, governing_law } = psc.data!;
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(legal_entity_name);
-        expect(res.text).toContain(legal_form);
-        expect(res.text).toContain(governing_law);
-
-        rleOnlyValues().forEach((value) => {
-          if (expectRleOnlyRows) {
-            expect(res.text).toContain(value);
-          } else {
-            expect(res.text).not.toContain(value);
-          }
-        });
-      }
+      expect(res.status).toBe(200);
+      expect(countOccurrences(res.text, enTranslationText.checkYourAnswersPage.partners.legalEntity.legalForm)).toBe(4);
+      expect(countOccurrences(res.text, enTranslationText.checkYourAnswersPage.partners.legalEntity.governingLaw)).toBe(4);
+      expect(countOccurrences(res.text, "register-row")).toBe(3);
+      expect(countOccurrences(res.text, "registration-number-row")).toBe(3);
+    }
     );
 
     it.each([
       ["English", "en", enTranslationText],
       ["Welsh", "cy", cyTranslationText]
     ])(
-      "should not render register specific fields on RLE not on register in %s",
+      "should render the Protected Individual Person correctly in %s",
       async (_description: string, lang: string, translationText: Record<string, any>) => {
         setLocalesEnabled(true);
-
-        const rle = new PersonWithSignificantControlBuilder().isRelevantLegalEntity()
-          .withEnteredOnRegister(false)
-          .build();
-        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([rle]);
 
         const res = await request(app).get(URL + `?lang=${lang}`);
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.notOnRegister);
-        expect(res.text).not.toContain(translationText.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn);
-        expect(res.text).not.toContain(translationText.checkYourAnswersPage.partners.legalEntity.registrationNumber);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.protectedPersonName);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.protectedPersonDescription);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.protectedPersonDescriptionHint);
       }
     );
-
-    it("should render both an RLE and an ORP when both are present", async () => {
-      const rle = new PersonWithSignificantControlBuilder().withId("rle-id").isRelevantLegalEntity().build();
-      const orp = new PersonWithSignificantControlBuilder().withId("orp-id").isOtherRegistrablePerson().build();
-      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([rle, orp]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(rle.data!.legal_entity_name);
-      expect(res.text).toContain(orp.data!.legal_entity_name);
-    });
-
-    it("should render an ORP when legal_entity_registration_location is absent", async () => {
-      const orp = new PersonWithSignificantControlBuilder().withId("orp-id").isOtherRegistrablePerson().build();
-      delete orp.data!.legal_entity_registration_location;
-      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([orp]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(orp.data!.legal_entity_name);
-    });
-
-    it("should show the no PSC statement when user answered yes but no PSCs have been added", async () => {
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.checkYourAnswersPage.psc.title);
-      expect(res.text).toContain(enTranslationText.checkYourAnswersPage.psc.noPscStatement);
-      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.changeRemoveOrAdd);
-    });
 
     it.each([
       ["English", "en", enTranslationText],
@@ -579,75 +503,56 @@ describe("Check Your Answers Page", () => {
       async (_description: string, lang: string, translationText: Record<string, any>) => {
         setLocalesEnabled(true);
 
-        const psc = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
-        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([psc]);
-
         const res = await request(app).get(URL + `?lang=${lang}`);
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(translationText.checkYourAnswersPage.psc.personTitle);
-        expect(res.text).not.toContain(translationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.personTitle);
-        expect(res.text).toContain(psc.data?.title);
-        expect(res.text).toContain(psc.data?.forename);
-        expect(res.text).toContain(psc.data?.middle_names);
-        expect(res.text).toContain(psc.data?.surname);
-        expect(res.text).toContain(formatDate(psc.data?.date_of_birth as string, translationText));
-        expect(res.text).toContain(psc.data?.nationality1);
-        expect(res.text).toContain(psc.data?.nationality2);
+        expect(res.text).not.toContain(
+          translationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.personTitle
+        );
+        expect(res.text).toContain(individual.data?.title);
+        expect(res.text).toContain(individual.data?.forename);
+        expect(res.text).toContain(individual.data?.middle_names);
+        expect(res.text).toContain(individual.data?.surname);
+        expect(res.text).toContain(formatDate(individual.data?.date_of_birth as string, translationText));
+        expect(res.text).toContain(individual.data?.nationality1);
+        expect(res.text).toContain(individual.data?.nationality2);
       }
     );
 
     it("should render the PSCs in the correct order", async () => {
-      const rle = new PersonWithSignificantControlBuilder().withId("rle-id").isRelevantLegalEntity().build();
-      const orp = new PersonWithSignificantControlBuilder().withId("orp-id").isOtherRegistrablePerson().build();
-      const individual = new PersonWithSignificantControlBuilder().withId("individual-id").isIndividualPerson().build();
-
-      const rleName = "PSC_ORDER_RLE";
-      const orpName = "PSC_ORDER_ORP";
-      const individualForename = "PSC_ORDER_INDIVIDUAL_FORENAME";
-      rle.data!.legal_entity_name = rleName;
-      orp.data!.legal_entity_name = orpName;
-      individual.data!.forename = individualForename;
-
-      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([rle, orp, individual]);
+      const protectedLabel = enTranslationText.checkYourAnswersPage.psc.protectedPersonName;
 
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
 
-      const rleIndex = res.text.indexOf(rleName);
-      const orpIndex = res.text.indexOf(orpName);
-      const individualIndex = res.text.indexOf(individualForename);
+      const protectedIndex = res.text.indexOf(protectedLabel);
+      const rleIndex = res.text.indexOf(rle.data?.legal_entity_name as string);
+      const orpIndex = res.text.indexOf(orp.data?.legal_entity_name as string);
+      const individualIndex = res.text.indexOf(individual.data?.forename as string);
 
+      expect(protectedIndex).toBeGreaterThan(-1);
       expect(rleIndex).toBeGreaterThan(-1);
       expect(orpIndex).toBeGreaterThan(-1);
       expect(individualIndex).toBeGreaterThan(-1);
 
+      expect(protectedIndex).toBeLessThan(individualIndex);
+      expect(protectedIndex).toBeLessThan(rleIndex);
+      expect(protectedIndex).toBeLessThan(orpIndex);
       expect(individualIndex).toBeLessThan(orpIndex);
       expect(rleIndex).toBeLessThan(orpIndex);
     });
-
   });
 
   describe("POST Check Your Answers Page", () => {
-    it("should send lawful purpose statement", async () => {
+    it("should send lawful purpose statement and redirect to next page", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      await request(app).post(URL).send({
-        pageType: RegistrationPageType.checkYourAnswers,
-        lawful_purpose_statement_checked: "true"
-      });
-
-      expect(
-        appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]?.data?.lawful_purpose_statement_checked
-      ).toBe("true");
-    });
-
-    it("should navigate to next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.checkYourAnswers,
         lawful_purpose_statement_checked: "true"
@@ -655,6 +560,9 @@ describe("Check Your Answers Page", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${PAYMENT_LINK_JOURNEY}`);
+      expect(
+        appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]?.data?.lawful_purpose_statement_checked
+      ).toBe("true");
     });
 
     it("should throw error when payment redirect url is missing", async () => {
@@ -694,16 +602,6 @@ describe("Check Your Answers Page", () => {
         expect(res.text).toContain(translationText.govUk.error.title);
       }
     );
-
-    it("should not send data when lawful purpose statement is not ticked", async () => {
-      await request(app).post(URL).send({
-        pageType: RegistrationPageType.checkYourAnswers
-      });
-
-      expect(
-        appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]?.data?.lawful_purpose_statement_checked
-      ).toBeUndefined();
-    });
   });
 });
 

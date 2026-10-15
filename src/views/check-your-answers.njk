@@ -69,7 +69,9 @@
             <p class="govuk-body-m govuk-!-margin-bottom-6">
               <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewPersonsWithSignificantControlType) }}" class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.psc.changeRemoveOrAdd }}</a>
             </p>
-
+            
+            {% include "pages/checkYourAnswers/psc-statement.njk" %}
+      
             {% for item in props.data.personsWithSignificantControl %}
               {% include "pages/checkYourAnswers/person-with-significant-control.njk" %}
             {% endfor %}
