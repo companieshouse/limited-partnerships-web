@@ -605,6 +605,46 @@ describe("Check Your Answers Page", () => {
       expect(individualIndex).toBeLessThan(firmIndex);
       expect(firmIndex).toBeLessThan(trustIndex);
     });
+
+    it("should render the natures of control in the correct order", async () => {
+      const allNaturesOfControl = {
+        type: NatureOfControlType.INDIVIDUAL,
+        share_of_assets_25_to_50: true,
+        voting_rights_25_to_50: true,
+        right_to_appointment_and_remove: true,
+        significant_influence_control: true,
+      };
+
+      const individualWithAllNaturesOfControl = new PersonWithSignificantControlBuilder()
+        .withId("individual-all-natures-id")
+        .isIndividualPerson()
+        .withForename("PSC_ORDER_ALL_NATURES")
+        .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL])
+        .withNaturesOfControl([allNaturesOfControl])
+        .build();
+
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
+        individualWithAllNaturesOfControl
+      ]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+
+      const sharesIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.shares.moreThan25);
+      const votingIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.votingRights.moreThan25);
+      const appointmentIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.appointOrRemoveManagement);
+      const significantInfluenceIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.significantInfluenceOrControl);
+
+      expect(sharesIndex).toBeGreaterThan(-1);
+      expect(votingIndex).toBeGreaterThan(-1);
+      expect(appointmentIndex).toBeGreaterThan(-1);
+      expect(significantInfluenceIndex).toBeGreaterThan(-1);
+
+      expect(sharesIndex).toBeLessThan(votingIndex);
+      expect(votingIndex).toBeLessThan(appointmentIndex);
+      expect(appointmentIndex).toBeLessThan(significantInfluenceIndex);
+    });
   });
 
   describe("POST Check Your Answers Page", () => {
