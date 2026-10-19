@@ -57,7 +57,7 @@
       }
     } if isIp,
     SET_DATE_OF_BIRTH_SECTION(item, i18n) if isIp,
-     {
+    {
       key: {
         text: i18n.checkYourAnswersPage.partners.person.nationality
       },
@@ -97,7 +97,6 @@
         text: registerNameText
       },
       classes: "register-row"
-      
     } if isRle,
     {
       key: {
@@ -116,6 +115,7 @@
       },
       classes: "registration-number-row"
     } if isRleOnRegister,
+    SET_NATURE_OF_CONTROL_SECTION(item, i18n) if isIp or isRle or isOrp,
     {
       key: {
         text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress

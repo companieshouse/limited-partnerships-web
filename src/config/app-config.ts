@@ -22,6 +22,7 @@ import { setNationalitiesDropdown } from "../utils/nationalities";
 import { setCurrenciesDropdown } from "../utils/currencies";
 import { setSicCodesList } from "../utils/sic-codes";
 import { showContinueButton } from "../utils/isPostTransitionNotAdd";
+import { setNatureOfControlSection } from "../utils/natureOfControl";
 
 export const appConfig = (app: express.Application) => {
   // set some app variables from the environment
@@ -69,6 +70,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("SET_DATE_EFFECTIVE_FROM_SECTION", setDateEffectiveFromSection);
   nunjucksEnv.addGlobal("SET_DATE_OF_UPDATE_SECTION", setDateOfUpdateSection);
   nunjucksEnv.addGlobal("SET_CEASE_DATE_SECTION", setCeaseDateSection);
+  nunjucksEnv.addGlobal("SET_NATURE_OF_CONTROL_SECTION", setNatureOfControlSection);
   nunjucksEnv.addGlobal("SET_COUNTRIES_DROPDOWN", setCountriesDropdown);
   nunjucksEnv.addGlobal("SET_NATIONALITIES_DROPDOWN", setNationalitiesDropdown);
   nunjucksEnv.addGlobal("SET_CURRENCIES_DROPDOWN", setCurrenciesDropdown);

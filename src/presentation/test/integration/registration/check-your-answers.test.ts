@@ -3,6 +3,7 @@ import app from "../app";
 
 import {
   Jurisdiction,
+  NatureOfControlType,
   PartnershipType,
   PersonWithSignificantControlType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
@@ -41,20 +42,32 @@ describe("Check Your Answers Page", () => {
   let limitedPartnerPerson: TransactionLimitedPartner;
   let limitedPartnerLegalEntity: TransactionLimitedPartner;
 
+  const existingNatureOfControl = {
+    type: NatureOfControlType.INDIVIDUAL,
+    share_of_assets_25_to_50: true,
+    voting_rights_25_to_50: true
+  };
+
   const rle = new PersonWithSignificantControlBuilder()
     .withId("rle-id")
     .isRelevantLegalEntity()
     .withLegalEntityName("PSC_ORDER_RLE")
+    .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL])
+    .withNaturesOfControl([existingNatureOfControl])
     .build();
   const orp = new PersonWithSignificantControlBuilder()
     .withId("orp-id")
     .isOtherRegistrablePerson()
     .withLegalEntityName("PSC_ORDER_ORP")
+    .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL])
+    .withNaturesOfControl([existingNatureOfControl])
     .build();
   const individual = new PersonWithSignificantControlBuilder()
     .withId("individual-id")
     .isIndividualPerson()
     .withForename("PSC_ORDER_INDIVIDUAL_FORENAME")
+    .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL])
+    .withNaturesOfControl([existingNatureOfControl])
     .build();
   const protectedIndividual = new PersonWithSignificantControlBuilder()
     .withId("protected-individual-id")
