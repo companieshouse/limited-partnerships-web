@@ -42,7 +42,7 @@ describe("Check Your Answers Page", () => {
   let limitedPartnerPerson: TransactionLimitedPartner;
   let limitedPartnerLegalEntity: TransactionLimitedPartner;
 
-  const existingNatureOfControl = {
+  const individualNatureOfControl = {
     type: NatureOfControlType.INDIVIDUAL,
     share_of_assets_25_to_50: true,
     voting_rights_25_to_50: true
@@ -53,21 +53,21 @@ describe("Check Your Answers Page", () => {
     .isRelevantLegalEntity()
     .withLegalEntityName("PSC_ORDER_RLE")
     .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL])
-    .withNaturesOfControl([existingNatureOfControl])
+    .withNaturesOfControl([individualNatureOfControl])
     .build();
   const orp = new PersonWithSignificantControlBuilder()
     .withId("orp-id")
     .isOtherRegistrablePerson()
     .withLegalEntityName("PSC_ORDER_ORP")
     .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL])
-    .withNaturesOfControl([existingNatureOfControl])
+    .withNaturesOfControl([individualNatureOfControl])
     .build();
   const individual = new PersonWithSignificantControlBuilder()
     .withId("individual-id")
     .isIndividualPerson()
-    .withForename("PSC_ORDER_INDIVIDUAL_FORENAME")
+    .withForename("PSC_ORDER_INDIVIDUAL")
     .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL])
-    .withNaturesOfControl([existingNatureOfControl])
+    .withNaturesOfControl([individualNatureOfControl])
     .build();
   const protectedIndividual = new PersonWithSignificantControlBuilder()
     .withId("protected-individual-id")
@@ -533,7 +533,7 @@ describe("Check Your Answers Page", () => {
       }
     );
 
-    it("should render the PSCs in the correct order", async () => {
+    it("should render the PSCs in the correct order - PSC Type", async () => {
       const protectedLabel = enTranslationText.checkYourAnswersPage.psc.protectedPersonName;
 
       const res = await request(app).get(URL);
@@ -555,6 +555,55 @@ describe("Check Your Answers Page", () => {
       expect(protectedIndex).toBeLessThan(orpIndex);
       expect(individualIndex).toBeLessThan(orpIndex);
       expect(rleIndex).toBeLessThan(orpIndex);
+    });
+
+    it("should render the PSCs in the correct order - Nature of Control", async () => {
+      const firmNatureOfControl = {
+        type: NatureOfControlType.FIRM,
+        share_of_assets_25_to_50: true,
+        voting_rights_25_to_50: true
+      };
+      const trustNatureOfControl = {
+        type: NatureOfControlType.TRUST,
+        share_of_assets_25_to_50: true,
+        voting_rights_25_to_50: true
+      };
+
+      const individualThroughFirm = new PersonWithSignificantControlBuilder()
+        .withId("individual-firm-id")
+        .isIndividualPerson()
+        .withForename("PSC_ORDER_FIRM")
+        .withNatureOfControlTypes([NatureOfControlType.FIRM])
+        .withNaturesOfControl([firmNatureOfControl])
+        .build();
+      const individualThroughTrust = new PersonWithSignificantControlBuilder()
+        .withId("individual-trust-id")
+        .isIndividualPerson()
+        .withForename("PSC_ORDER_TRUST")
+        .withNatureOfControlTypes([NatureOfControlType.TRUST])
+        .withNaturesOfControl([trustNatureOfControl])
+        .build();
+
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
+        individual,
+        individualThroughTrust,
+        individualThroughFirm
+      ]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+
+      const individualIndex = res.text.indexOf(individual.data?.forename as string);
+      const firmIndex = res.text.indexOf(individualThroughFirm.data?.forename as string);
+      const trustIndex = res.text.indexOf(individualThroughTrust.data?.forename as string);
+
+      expect(individualIndex).toBeGreaterThan(-1);
+      expect(firmIndex).toBeGreaterThan(-1);
+      expect(trustIndex).toBeGreaterThan(-1);
+
+      expect(individualIndex).toBeLessThan(firmIndex);
+      expect(firmIndex).toBeLessThan(trustIndex);
     });
   });
 
