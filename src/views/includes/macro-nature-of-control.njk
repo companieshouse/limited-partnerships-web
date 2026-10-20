@@ -7,7 +7,6 @@
   {% endif %}
 
   {%- set naturesOfControl = pscData.natures_of_control -%}
-  {%- set htmlSnippets = [] -%}
 
   {% for nature in naturesOfControl %}
     {{ natureOfControlItem(nature, pscType, i18n) }}
