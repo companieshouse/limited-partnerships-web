@@ -118,7 +118,7 @@
                 "votingRights": {
                     "moreThan25": "WELSH - more than 25% but not more than 50% ownership of voting rights",
                     "moreThan50": "WELSH - more than 50% but less than 75% ownership of voting rights",
-                    "moreThan75": "WELSH - 75% or more ownership of shares of voting rights"
+                    "moreThan75": "WELSH - 75% or more ownership of voting rights"
                 },
                 "appointOrRemoveManagement": "WELSH - appoint or remove a majority of the persons entitled to take part in the management of the limited partnership",
                 "significantInfluenceOrControl": "WELSH - exercise, or actually exercises, significant influence or control over the limited partnership"
