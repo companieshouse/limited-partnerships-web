@@ -1,8 +1,8 @@
 {% macro natureOfControl(pscData, i18n) %}
   {%- set pscType = "individual" -%}
-  {% if pscData.type === PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY %}
+  {% if pscData.type === "RELEVANT_LEGAL_ENTITY" %}
     {%- set pscType = "rle" -%}
-  {% elif pscData.type === PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON %}
+  {% elif pscData.type === "OTHER_REGISTRABLE_PERSON" %}
     {%- set pscType = "orp" -%}
   {% endif %}
 
@@ -16,9 +16,9 @@
 
 {% macro natureOfControlItem(nature, pscType, i18n) %}
   {%- set natureOfControlType = "individualControl" -%}
-  {% if nature.type === NatureOfControlType.FIRM %}
+  {% if nature.type === "FIRM" %}
     {%- set natureOfControlType = "controlOverFirm" -%}
-  {% elif nature.type === NatureOfControlType.TRUST %}
+  {% elif nature.type === "TRUST" %}
     {%- set natureOfControlType = "controlOverTrust" -%}
   {% endif %}
 
