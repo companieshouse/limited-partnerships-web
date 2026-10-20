@@ -7,7 +7,7 @@ import {
   PartnershipType,
   PersonWithSignificantControl
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { NatureOfControlType, PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import PaymentService from "../../../application/service/PaymentService";
@@ -140,37 +140,17 @@ class LimitedPartnershipController extends PartnershipController {
     const protectedIndividuals = personsWithSignificantControl.filter(
       (p) => p?.data?.type === PersonWithSignificantControlType.PROTECTED_INDIVIDUAL_PERSON
     );
-    const individuals = this.sortPscByNatureOfControl(
-      personsWithSignificantControl.filter(
-        (p) => p?.data?.type === PersonWithSignificantControlType.INDIVIDUAL_PERSON
-      )
+    const individuals = personsWithSignificantControl.filter(
+      (p) => p?.data?.type === PersonWithSignificantControlType.INDIVIDUAL_PERSON
     );
-    const legalEntities = this.sortPscByNatureOfControl(
-      personsWithSignificantControl.filter(
-        (p) => p?.data?.type === PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY
-      )
+    const legalEntities = personsWithSignificantControl.filter(
+      (p) => p?.data?.type === PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY
     );
-    const otherRegistrables = this.sortPscByNatureOfControl(
-      personsWithSignificantControl.filter(
-        (p) => p?.data?.type === PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON
-      )
+    const otherRegistrables = personsWithSignificantControl.filter(
+      (p) => p?.data?.type === PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON
     );
 
     return [...protectedIndividuals, ...individuals, ...legalEntities, ...otherRegistrables];
-  }
-
-  private sortPscByNatureOfControl(personsWithSignificantControl: PersonWithSignificantControl[]): PersonWithSignificantControl[] {
-    const individualControl = personsWithSignificantControl.filter(
-      (p) => p?.data?.nature_of_control_types?.includes(NatureOfControlType.INDIVIDUAL)
-    );
-    const firmControl = personsWithSignificantControl.filter(
-      (p) => p?.data?.nature_of_control_types?.includes(NatureOfControlType.FIRM)
-    );
-    const trustControl = personsWithSignificantControl.filter(
-      (p) => p?.data?.nature_of_control_types?.includes(NatureOfControlType.TRUST)
-    );
-
-    return [...individualControl, ...firmControl, ...trustControl];
   }
 
   private async renderCheckYourAnswersWithLawfulPurposeError(request: Request, response: Response) {

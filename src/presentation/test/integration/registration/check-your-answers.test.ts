@@ -557,46 +557,41 @@ describe("Check Your Answers Page", () => {
       expect(rleIndex).toBeLessThan(orpIndex);
     });
 
-    it("should render the PSCs in the correct order - Nature of Control", async () => {
+    it("should render the natures of control in the correct order", async () => {
       const firmNatureOfControl = {
         type: NatureOfControlType.FIRM,
         share_of_assets_25_to_50: true,
-        voting_rights_25_to_50: true
+        voting_rights_25_to_50: true,
+        right_to_appointment_and_remove: true,
+        significant_influence_control: true,
       };
       const trustNatureOfControl = {
         type: NatureOfControlType.TRUST,
         share_of_assets_25_to_50: true,
-        voting_rights_25_to_50: true
+        voting_rights_25_to_50: true,
+        right_to_appointment_and_remove: true,
+        significant_influence_control: true,
       };
 
-      const individualThroughFirm = new PersonWithSignificantControlBuilder()
-        .withId("individual-firm-id")
+      const individualWithAllNatureOfControlTypes = new PersonWithSignificantControlBuilder()
+        .withId("individual-all-natures-id")
         .isIndividualPerson()
-        .withForename("PSC_ORDER_FIRM")
-        .withNatureOfControlTypes([NatureOfControlType.FIRM])
-        .withNaturesOfControl([firmNatureOfControl])
-        .build();
-      const individualThroughTrust = new PersonWithSignificantControlBuilder()
-        .withId("individual-trust-id")
-        .isIndividualPerson()
-        .withForename("PSC_ORDER_TRUST")
-        .withNatureOfControlTypes([NatureOfControlType.TRUST])
-        .withNaturesOfControl([trustNatureOfControl])
+        .withForename("PSC_ORDER_ALL_NATURES")
+        .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL, NatureOfControlType.FIRM, NatureOfControlType.TRUST])
+        .withNaturesOfControl([individualNatureOfControl, firmNatureOfControl, trustNatureOfControl])
         .build();
 
       appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
-        individual,
-        individualThroughTrust,
-        individualThroughFirm
+        individualWithAllNatureOfControlTypes
       ]);
 
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
 
-      const individualIndex = res.text.indexOf(individual.data?.forename as string);
-      const firmIndex = res.text.indexOf(individualThroughFirm.data?.forename as string);
-      const trustIndex = res.text.indexOf(individualThroughTrust.data?.forename as string);
+      const individualIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.individual.individualControl);
+      const firmIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.individual.controlOverFirm);
+      const trustIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.individual.controlOverTrust);
 
       expect(individualIndex).toBeGreaterThan(-1);
       expect(firmIndex).toBeGreaterThan(-1);
