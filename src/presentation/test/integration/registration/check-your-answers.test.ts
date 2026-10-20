@@ -533,7 +533,7 @@ describe("Check Your Answers Page", () => {
       }
     );
 
-    it("should render the PSCs in the correct order - PSC Type", async () => {
+    it("should render the PSCs in the correct order", async () => {
       const protectedLabel = enTranslationText.checkYourAnswersPage.psc.protectedPersonName;
 
       const res = await request(app).get(URL);
@@ -557,7 +557,7 @@ describe("Check Your Answers Page", () => {
       expect(rleIndex).toBeLessThan(orpIndex);
     });
 
-    it("should render the natures of control in the correct order", async () => {
+    it("should render the nature of control types in the correct order", async () => {
       const firmNatureOfControl = {
         type: NatureOfControlType.FIRM,
         share_of_assets_25_to_50: true,
