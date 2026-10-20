@@ -9,7 +9,14 @@ export const setNatureOfControlSection = (item: Record<string, any>, i18n: Recor
   }
 
   let htmlText = "";
-  const naturesOfControl = item.data.natures_of_control;
+
+  const naturesOfControl = [
+    NatureOfControlType.INDIVIDUAL,
+    NatureOfControlType.FIRM,
+    NatureOfControlType.TRUST,
+  ].flatMap((type) =>
+    item.data.natures_of_control.filter((nature: NatureOfControl) => nature.type === type)
+  );
 
   naturesOfControl.forEach((nature: NatureOfControl) => {
     let natureOfControlType = "individualControl";

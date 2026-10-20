@@ -577,8 +577,8 @@ describe("Check Your Answers Page", () => {
         .withId("individual-all-natures-id")
         .isIndividualPerson()
         .withForename("PSC_ORDER_ALL_NATURES")
-        .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL, NatureOfControlType.FIRM, NatureOfControlType.TRUST])
-        .withNaturesOfControl([individualNatureOfControl, firmNatureOfControl, trustNatureOfControl])
+        .withNatureOfControlTypes([NatureOfControlType.FIRM, NatureOfControlType.TRUST, NatureOfControlType.INDIVIDUAL])
+        .withNaturesOfControl([firmNatureOfControl, trustNatureOfControl, individualNatureOfControl])
         .build();
 
       appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
