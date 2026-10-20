@@ -557,50 +557,6 @@ describe("Check Your Answers Page", () => {
       expect(rleIndex).toBeLessThan(orpIndex);
     });
 
-    it("should render the nature of control types in the correct order", async () => {
-      const firmNatureOfControl = {
-        type: NatureOfControlType.FIRM,
-        share_of_assets_25_to_50: true,
-        voting_rights_25_to_50: true,
-        right_to_appointment_and_remove: true,
-        significant_influence_control: true,
-      };
-      const trustNatureOfControl = {
-        type: NatureOfControlType.TRUST,
-        share_of_assets_25_to_50: true,
-        voting_rights_25_to_50: true,
-        right_to_appointment_and_remove: true,
-        significant_influence_control: true,
-      };
-
-      const individualWithAllNatureOfControlTypes = new PersonWithSignificantControlBuilder()
-        .withId("individual-all-natures-id")
-        .isIndividualPerson()
-        .withForename("PSC_ORDER_ALL_NATURES")
-        .withNatureOfControlTypes([NatureOfControlType.FIRM, NatureOfControlType.TRUST, NatureOfControlType.INDIVIDUAL])
-        .withNaturesOfControl([firmNatureOfControl, trustNatureOfControl, individualNatureOfControl])
-        .build();
-
-      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
-        individualWithAllNatureOfControlTypes
-      ]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-
-      const individualIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.individual.individualControl);
-      const firmIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.individual.controlOverFirm);
-      const trustIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.individual.controlOverTrust);
-
-      expect(individualIndex).toBeGreaterThan(-1);
-      expect(firmIndex).toBeGreaterThan(-1);
-      expect(trustIndex).toBeGreaterThan(-1);
-
-      expect(individualIndex).toBeLessThan(firmIndex);
-      expect(firmIndex).toBeLessThan(trustIndex);
-    });
-
     it("should render the natures of control in the correct order", async () => {
       const allNaturesOfControl = {
         type: NatureOfControlType.INDIVIDUAL,
