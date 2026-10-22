@@ -2,7 +2,6 @@ import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limi
 
 import UIErrors from "../entities/UIErrors";
 import { symbols } from "../../application/service/utils/currencies";
-// import { JourneyTypes } from "../entities/journey";
 import { PartnerType } from "../types";
 import { isAddLimitedPartnerPage } from "../../presentation/controller/transition/PageType";
 
