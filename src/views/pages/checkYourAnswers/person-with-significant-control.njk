@@ -1,3 +1,5 @@
+{% import 'includes/macro-nature-of-control.njk' as natureOfControlMacro %}
+
 {% set isRle = item.data.type === "RELEVANT_LEGAL_ENTITY" %}
 {% set isOrp = item.data.type === "OTHER_REGISTRABLE_PERSON" %}
 {% set isIp = item.data.type === "INDIVIDUAL_PERSON" %}
@@ -57,7 +59,7 @@
       }
     } if isIp,
     SET_DATE_OF_BIRTH_SECTION(item, i18n) if isIp,
-     {
+    {
       key: {
         text: i18n.checkYourAnswersPage.partners.person.nationality
       },
@@ -97,7 +99,6 @@
         text: registerNameText
       },
       classes: "register-row"
-      
     } if isRle,
     {
       key: {
@@ -116,6 +117,14 @@
       },
       classes: "registration-number-row"
     } if isRleOnRegister,
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.psc.natureOfControl.title
+      },
+      value: {
+        html: natureOfControlMacro.natureOfControl(item.data, i18n)
+      }
+    } if isIp or isRle or isOrp,
     {
       key: {
         text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress

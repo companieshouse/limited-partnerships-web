@@ -3,6 +3,7 @@ import app from "../app";
 
 import {
   Jurisdiction,
+  NatureOfControlType,
   PartnershipType,
   PersonWithSignificantControlType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
@@ -41,20 +42,32 @@ describe("Check Your Answers Page", () => {
   let limitedPartnerPerson: TransactionLimitedPartner;
   let limitedPartnerLegalEntity: TransactionLimitedPartner;
 
+  const individualNatureOfControl = {
+    type: NatureOfControlType.INDIVIDUAL,
+    share_of_assets_25_to_50: true,
+    voting_rights_25_to_50: true
+  };
+
   const rle = new PersonWithSignificantControlBuilder()
     .withId("rle-id")
     .isRelevantLegalEntity()
     .withLegalEntityName("PSC_ORDER_RLE")
+    .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL])
+    .withNaturesOfControl([individualNatureOfControl])
     .build();
   const orp = new PersonWithSignificantControlBuilder()
     .withId("orp-id")
     .isOtherRegistrablePerson()
     .withLegalEntityName("PSC_ORDER_ORP")
+    .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL])
+    .withNaturesOfControl([individualNatureOfControl])
     .build();
   const individual = new PersonWithSignificantControlBuilder()
     .withId("individual-id")
     .isIndividualPerson()
-    .withForename("PSC_ORDER_INDIVIDUAL_FORENAME")
+    .withForename("PSC_ORDER_INDIVIDUAL")
+    .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL])
+    .withNaturesOfControl([individualNatureOfControl])
     .build();
   const protectedIndividual = new PersonWithSignificantControlBuilder()
     .withId("protected-individual-id")
@@ -542,6 +555,46 @@ describe("Check Your Answers Page", () => {
       expect(protectedIndex).toBeLessThan(orpIndex);
       expect(individualIndex).toBeLessThan(orpIndex);
       expect(rleIndex).toBeLessThan(orpIndex);
+    });
+
+    it("should render the natures of control in the correct order", async () => {
+      const allNaturesOfControl = {
+        type: NatureOfControlType.INDIVIDUAL,
+        share_of_assets_25_to_50: true,
+        voting_rights_25_to_50: true,
+        right_to_appointment_and_remove: true,
+        significant_influence_control: true,
+      };
+
+      const individualWithAllNaturesOfControl = new PersonWithSignificantControlBuilder()
+        .withId("individual-all-natures-id")
+        .isIndividualPerson()
+        .withForename("PSC_ORDER_ALL_NATURES")
+        .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL])
+        .withNaturesOfControl([allNaturesOfControl])
+        .build();
+
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
+        individualWithAllNaturesOfControl
+      ]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+
+      const sharesIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.shares.moreThan25);
+      const votingIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.votingRights.moreThan25);
+      const appointmentIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.appointOrRemoveManagement);
+      const significantInfluenceIndex = res.text.indexOf(enTranslationText.checkYourAnswersPage.psc.natureOfControl.significantInfluenceOrControl);
+
+      expect(sharesIndex).toBeGreaterThan(-1);
+      expect(votingIndex).toBeGreaterThan(-1);
+      expect(appointmentIndex).toBeGreaterThan(-1);
+      expect(significantInfluenceIndex).toBeGreaterThan(-1);
+
+      expect(sharesIndex).toBeLessThan(votingIndex);
+      expect(votingIndex).toBeLessThan(appointmentIndex);
+      expect(appointmentIndex).toBeLessThan(significantInfluenceIndex);
     });
   });
 

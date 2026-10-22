@@ -92,7 +92,37 @@
             "notOnRegister": "Not entered on a register",
             "protectedPersonName": "Protected person",
             "protectedPersonDescription": "Protected person",
-            "protectedPersonDescriptionHint": "The secure form needs to be accepted before you can submit this registration."
+            "protectedPersonDescriptionHint": "The secure form needs to be accepted before you can submit this registration.",
+            "natureOfControl": {
+                "title": "Nature of control",
+                "individual": {
+                    "individualControl": "The individual holds (directly or indirectly) the right to:",
+                    "controlOverFirm": "The individual has control over a firm. The members of that firm hold (directly or indirectly) the right to:",
+                    "controlOverTrust": "The individual has control over a trust. The trustees of that trust hold (directly or indirectly) the right to:"
+                },
+                "rle": {
+                    "individualControl": "The RLE holds (directly or indirectly) the right to:",
+                    "controlOverFirm": "The RLE has control over a firm. The members of that firm hold (directly or indirectly) the right to:",
+                    "controlOverTrust": "The RLE has control over a trust. The trustees of that trust hold (directly or indirectly) the right to:"
+                },
+                "orp": {
+                    "individualControl": "The ORP holds (directly or indirectly) the right to:",
+                    "controlOverFirm": "The ORP has control over a firm. The members of that firm hold (directly or indirectly) the right to:",
+                    "controlOverTrust": "The ORP has control over a trust. The trustees of that trust hold (directly or indirectly) the right to:"
+                },
+                "shares": {
+                    "moreThan25": "more than 25% but not more than 50% of shares",
+                    "moreThan50": "more than 50% but less than 75% of shares",
+                    "moreThan75": "75% or more of shares"
+                },
+                "votingRights": {
+                    "moreThan25": "more than 25% but not more than 50% ownership of voting rights",
+                    "moreThan50": "more than 50% but less than 75% ownership of voting rights",
+                    "moreThan75": "75% or more ownership of voting rights"
+                },
+                "appointOrRemoveManagement": "appoint or remove a majority of the persons entitled to take part in the management of the limited partnership",
+                "significantInfluenceOrControl": "exercise, or actually exercises, significant influence or control over the limited partnership"
+            }
         }
     },
 

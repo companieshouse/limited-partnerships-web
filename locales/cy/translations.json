@@ -92,7 +92,37 @@
             "notOnRegister": "WELSH - Not entered on a register",
             "protectedPersonName": "WELSH - Protected person",
             "protectedPersonDescription": "WELSH - Protected person",
-            "protectedPersonDescriptionHint": "WELSH - The secure form needs to be accepted before you can submit this registration."
+            "protectedPersonDescriptionHint": "WELSH - The secure form needs to be accepted before you can submit this registration.",
+            "natureOfControl": {
+                "title": "WELSH - Nature of control",
+                "individual": {
+                    "individualControl": "WELSH - The individual holds (directly or indirectly) the right to:",
+                    "controlOverFirm": "WELSH - The individual has control over a firm. The members of that firm hold (directly or indirectly) the right to:",
+                    "controlOverTrust": "WELSH - The individual has control over a trust. The trustees of that trust hold (directly or indirectly) the right to:"
+                },
+                "rle": {
+                    "individualControl": "WELSH - The RLE holds (directly or indirectly) the right to:",
+                    "controlOverFirm": "WELSH - The RLE has control over a firm. The members of that firm hold (directly or indirectly) the right to:",
+                    "controlOverTrust": "WELSH - The RLE has control over a trust. The trustees of that trust hold (directly or indirectly) the right to:"
+                },
+                "orp": {
+                    "individualControl": "WELSH - The ORP holds (directly or indirectly) the right to:",
+                    "controlOverFirm": "WELSH - The ORP has control over a firm. The members of that firm hold (directly or indirectly) the right to:",
+                    "controlOverTrust": "WELSH - The ORP has control over a trust. The trustees of that trust hold (directly or indirectly) the right to:"
+                },
+                "shares": {
+                    "moreThan25": "WELSH - more than 25% but not more than 50% of shares",
+                    "moreThan50": "WELSH - more than 50% but less than 75% of shares",
+                    "moreThan75": "WELSH - 75% or more of shares"
+                },
+                "votingRights": {
+                    "moreThan25": "WELSH - more than 25% but not more than 50% ownership of voting rights",
+                    "moreThan50": "WELSH - more than 50% but less than 75% ownership of voting rights",
+                    "moreThan75": "WELSH - 75% or more ownership of voting rights"
+                },
+                "appointOrRemoveManagement": "WELSH - appoint or remove a majority of the persons entitled to take part in the management of the limited partnership",
+                "significantInfluenceOrControl": "WELSH - exercise, or actually exercises, significant influence or control over the limited partnership"
+            }
         }
     },
 

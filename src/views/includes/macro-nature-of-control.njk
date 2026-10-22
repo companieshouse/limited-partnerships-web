@@ -1,0 +1,37 @@
+{% macro natureOfControl(pscData, i18n) %}
+  {%- set pscType = "individual" -%}
+  {% if pscData.type === "RELEVANT_LEGAL_ENTITY" %}
+    {%- set pscType = "rle" -%}
+  {% elif pscData.type === "OTHER_REGISTRABLE_PERSON" %}
+    {%- set pscType = "orp" -%}
+  {% endif %}
+
+  {%- set naturesOfControl = pscData.natures_of_control -%}
+
+  {% for nature in naturesOfControl %}
+    {{ natureOfControlItem(nature, pscType, i18n) }}
+  {% endfor %}
+{% endmacro %}
+
+{% macro natureOfControlItem(nature, pscType, i18n) %}
+  {%- set natureOfControlType = "individualControl" -%}
+  {% if nature.type === "FIRM" %}
+    {%- set natureOfControlType = "controlOverFirm" -%}
+  {% elif nature.type === "TRUST" %}
+    {%- set natureOfControlType = "controlOverTrust" -%}
+  {% endif %}
+
+  {%- set nocText = i18n.checkYourAnswersPage.psc.natureOfControl -%}
+
+  <p class="govuk-body">{{ nocText[pscType][natureOfControlType] }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    {% if nature.share_of_assets_25_to_50 %}<li>{{ nocText.shares.moreThan25 }}</li>{% endif %}
+    {% if nature.share_of_assets_50_to_75 %}<li>{{ nocText.shares.moreThan50 }}</li>{% endif %}
+    {% if nature.share_of_assets_75_to_100 %}<li>{{ nocText.shares.moreThan75 }}</li>{% endif %}
+    {% if nature.voting_rights_25_to_50 %}<li>{{ nocText.votingRights.moreThan25 }}</li>{% endif %}
+    {% if nature.voting_rights_50_to_75 %}<li>{{ nocText.votingRights.moreThan50 }}</li>{% endif %}
+    {% if nature.voting_rights_75_to_100 %}<li>{{ nocText.votingRights.moreThan75 }}</li>{% endif %}
+    {% if nature.right_to_appointment_and_remove %}<li>{{ nocText.appointOrRemoveManagement }}</li>{% endif %}
+    {% if nature.significant_influence_control %}<li>{{ nocText.significantInfluenceOrControl }}</li>{% endif %}
+  </ul>
+{% endmacro %}
