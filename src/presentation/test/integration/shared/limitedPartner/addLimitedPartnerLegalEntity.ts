@@ -88,6 +88,8 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
 
           const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
           appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+          // Post-transition reads the partnership type from the company profile
+          companyProfile.data.subtype = partnershipType;
 
           const res = await request(app).get(`${getUrl(config.url)}?lang=${lang}`);
 
@@ -108,8 +110,16 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
 
           testTranslations(res.text, translationText.partner.addOrUpdatePartnerLegalEntityPage, config.translateExclude);
 
-          if (!isCapitalContributionPresent) {
-            expect(res.text).not.toContain(translationText.partner.capitalContribution.title);
+          if (isCapitalContributionPresent) {
+            expect(res.text).toContain(toEscapedHtml(translationText.partner.capitalContribution.title));
+            expect(res.text).toContain(toEscapedHtml(translationText.partner.capitalContribution.currencyTypeLabel));
+            expect(res.text).toContain(toEscapedHtml(translationText.partner.capitalContribution.valueLabel));
+            expect(res.text).toContain(toEscapedHtml(translationText.partner.capitalContribution.compositionTitle));
+          } else {
+            expect(res.text).not.toContain(toEscapedHtml(translationText.partner.capitalContribution.title));
+            expect(res.text).not.toContain(toEscapedHtml(translationText.partner.capitalContribution.currencyTypeLabel));
+            expect(res.text).not.toContain(toEscapedHtml(translationText.partner.capitalContribution.valueLabel));
+            expect(res.text).not.toContain(toEscapedHtml(translationText.partner.capitalContribution.compositionTitle));
           }
 
           if (isPostTransition(config.serviceTitleTranslationKey)) {
@@ -211,6 +221,58 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
           expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.valueRequired);
           expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.atLeastOneType);
         });
+      }
+
+      if (config.serviceTitleTranslationKey === SERVICE_NAME_KEY_TRANSITION) {
+        it.each([PartnershipType.LP, PartnershipType.SLP])(
+          "transition journey should not require capital contribution when the section is left blank for an %s",
+          async (partnershipType: PartnershipType) => {
+            const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+            appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+            const res = await request(app)
+              .post(getUrl(config.url))
+              .send({
+                ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
+                ...limitedPartner.data,
+                ...datesBody,
+                partnershipType,
+                contribution_currency_type: "",
+                contribution_currency_value: "",
+                contribution_sub_types: undefined
+              });
+
+            expect(res.status).toBe(302);
+
+            expect(res.text).toContain(`Redirecting to ${getUrl(config.redirectUrl)}`);
+          }
+        );
+
+        it.each([PartnershipType.LP, PartnershipType.SLP])(
+          "transition journey should validate capital contribution when the section is partially completed for an %s",
+          async (partnershipType: PartnershipType) => {
+            const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+            appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+            const res = await request(app)
+              .post(getUrl(config.url))
+              .send({
+                ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
+                ...limitedPartner.data,
+                ...datesBody,
+                partnershipType,
+                contribution_currency_type: "",
+                contribution_currency_value: "100.00",
+                contribution_sub_types: undefined
+              });
+
+            expect(res.status).toBe(200);
+
+            expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.currencyRequired);
+            expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.atLeastOneType);
+            expect(res.text).not.toContain(enTranslationText.errorMessages.capitalContribution.valueRequired);
+          }
+        );
       }
 
       it("should not require capital contribution when the section is not shown (PFLP)", async () => {

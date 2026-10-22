@@ -1,7 +1,9 @@
 import UIErrors from "../../../../domain/entities/UIErrors";
 import {
   capitalContributionValidation,
-  isCapitalContributionApplicable
+  isCapitalContributionApplicable,
+  shouldValidateCapitalContribution,
+  validatePartnerCapitalContribution
 } from "../../../../domain/validator/capitalContributionValidator";
 
 import { PartnerType } from "../../../../domain/types";
@@ -150,18 +152,87 @@ describe("Gateway capital contribition validation test suite", () => {
 
 describe("isCapitalContributionApplicable", () => {
   it.each([
-    ["registration LP", { journeyTypes: { isRegistration: true }, partnershipType: "LP", partnerType: PartnerType.limitedPartner }, true],
-    ["registration SLP", { journeyTypes: { isRegistration: true }, partnershipType: "SLP", partnerType: PartnerType.limitedPartner }, true],
-    ["post-transition LP", { journeyTypes: { isPostTransition: true }, partnershipType: "LP", partnerType: PartnerType.limitedPartner }, true],
-    ["post-transition SLP", { journeyTypes: { isPostTransition: true }, partnershipType: "SLP", partnerType: PartnerType.limitedPartner }, true],
-    ["registration PFLP", { journeyTypes: { isRegistration: true }, partnershipType: "PFLP", partnerType: PartnerType.limitedPartner }, false],
-    ["registration SPFLP", { journeyTypes: { isRegistration: true }, partnershipType: "SPFLP", partnerType: PartnerType.limitedPartner }, false],
-    ["transition LP (section not shown)", { journeyTypes: { isTransition: true }, partnershipType: "LP", partnerType: PartnerType.limitedPartner }, false],
-    ["missing partnership type", { journeyTypes: { isRegistration: true } }, false],
-    ["missing journey types", { partnershipType: "LP" }, false],
-    ["empty data", {}, false],
-    ["general partner", { journeyTypes: { isRegistration: true }, partnershipType: "LP", partnerType: PartnerType.generalPartner }, false]
+    ["LP limited partner", { partnershipType: "LP", partnerType: PartnerType.limitedPartner }, true],
+    ["SLP limited partner", { partnershipType: "SLP", partnerType: PartnerType.limitedPartner }, true],
+    ["PFLP limited partner", { partnershipType: "PFLP", partnerType: PartnerType.limitedPartner }, false],
+    ["SPFLP limited partner", { partnershipType: "SPFLP", partnerType: PartnerType.limitedPartner }, false],
+    ["LP general partner", { partnershipType: "LP", partnerType: PartnerType.generalPartner }, false],
+    ["missing partnership type", { partnerType: PartnerType.limitedPartner }, false],
+    ["empty data", {}, false]
   ])("returns %s -> %s", (_description, data: any, expected) => {
-    expect(isCapitalContributionApplicable(data.journeyTypes, data.partnershipType, data.partnerType || "" as PartnerType)).toBe(expected);
+    expect(isCapitalContributionApplicable(data.partnershipType, data.partnerType || ("" as PartnerType))).toBe(expected);
+  });
+});
+
+describe("shouldValidateCapitalContribution", () => {
+  const base = {
+    partnershipType: "LP",
+    partnerType: PartnerType.limitedPartner,
+    pageType: "add-limited-partner-person"
+  };
+
+  it.each([
+    ["registration with empty contribution", { ...base, journeyTypes: { isRegistration: true } }, true],
+    ["post-transition with empty contribution", { ...base, journeyTypes: { isPostTransition: true } }, true],
+    ["transition add page with empty contribution", { ...base, journeyTypes: { isTransition: true } }, false],
+    [
+      "transition add page with contribution entered",
+      { ...base, journeyTypes: { isTransition: true }, contribution_currency_value: "100.00" },
+      true
+    ],
+    ["not applicable partner type", { ...base, partnerType: PartnerType.generalPartner, journeyTypes: { isRegistration: true } }, false]
+  ])("returns %s -> %s", (_description, data: any, expected) => {
+    expect(shouldValidateCapitalContribution(data)).toBe(expected);
+  });
+});
+
+describe("validatePartnerCapitalContribution", () => {
+  const errorMessages = enTranslationText.errorMessages?.capitalContribution;
+  const base = {
+    partnershipType: "LP",
+    partnerType: PartnerType.limitedPartner,
+    pageType: "add-limited-partner-person",
+    journeyTypes: { isRegistration: true }
+  };
+
+  it("should set errors when contribution is required but missing", () => {
+    const uiErrors = new UIErrors();
+
+    validatePartnerCapitalContribution({ ...base }, enTranslationText.currencies, uiErrors, errorMessages);
+
+    expect(uiErrors.errors).toEqual(
+      expect.objectContaining({
+        contribution_currency_type: { text: "Select the currency of the capital contribution" },
+        contribution_sub_types: { text: "Select at least one type of contribution" }
+      })
+    );
+  });
+
+  it("should not set errors when contribution is skipped on transition add page", () => {
+    const uiErrors = new UIErrors();
+
+    validatePartnerCapitalContribution(
+      { ...base, journeyTypes: { isTransition: true } },
+      enTranslationText.currencies,
+      uiErrors,
+      errorMessages
+    );
+
+    expect(uiErrors.hasErrors()).toBe(false);
+  });
+
+  it("should replace the currency name with its code when valid", () => {
+    const uiErrors = new UIErrors();
+    const data: Record<string, any> = {
+      ...base,
+      contribution_currency_type: "Pound Sterling (GBP)",
+      contribution_currency_value: "100.00",
+      contribution_sub_types: ["MONEY"]
+    };
+
+    validatePartnerCapitalContribution(data, enTranslationText.currencies, uiErrors, errorMessages);
+
+    expect(uiErrors.hasErrors()).toBe(false);
+    expect(data.contribution_currency_type).toEqual("GBP");
   });
 });

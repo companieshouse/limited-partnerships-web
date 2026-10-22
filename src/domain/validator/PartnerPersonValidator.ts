@@ -1,4 +1,4 @@
-import { capitalContributionValidation, isCapitalContributionApplicable } from "./capitalContributionValidator";
+import { validatePartnerCapitalContribution } from "./capitalContributionValidator";
 import {
   CEASE_DATE_FIELD,
   DATE_EFFECTIVE_FROM_FIELD,
@@ -125,19 +125,7 @@ class PartnerPersonValidator {
 
     this.validateNationalities(uiErrors);
 
-    if (isCapitalContributionApplicable(this.data.journeyTypes, this.data.partnershipType, this.data.partnerType || ("" as PartnerType))) {
-      capitalContributionValidation(
-        {
-          contribution_currency_type: this.data.contribution_currency_type,
-          contribution_currency_value: this.data.contribution_currency_value,
-          contribution_sub_types: this.data.contribution_sub_types
-        },
-        this.currencies,
-        this.overrideCapitalContributionType.bind(this),
-        uiErrors,
-        this.errorMessages?.capitalContribution
-      );
-    }
+    validatePartnerCapitalContribution(this.data, this.currencies, uiErrors, this.errorMessages?.capitalContribution);
 
     if (
       !this.data.journeyTypes?.isTransition &&
@@ -220,10 +208,6 @@ class PartnerPersonValidator {
         this.errorMessages?.disqualificationStatementMissingGeneralPartner
       );
     }
-  }
-
-  private overrideCapitalContributionType(capitalContributionType: string): void {
-    this.data.contribution_currency_type = capitalContributionType;
   }
 }
 
