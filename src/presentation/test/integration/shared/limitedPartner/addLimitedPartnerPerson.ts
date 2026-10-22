@@ -13,7 +13,7 @@ import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
-import { getServiceTitle, isPostTransition } from "../utils";
+import { expectCapitalContributionSection, getServiceTitle, isPostTransition } from "../utils";
 
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
@@ -122,17 +122,7 @@ export const runAddLimitedPartnerPersonTests = (config: AddLimitedPartnerPersonT
 
           testTranslations(res.text, translationText.partner.addPartnerPersonPage, config.translateExclude);
 
-          if (isCapitalContributionPresent) {
-            expect(res.text).toContain(toEscapedHtml(translationText.partner.capitalContribution.title));
-            expect(res.text).toContain(toEscapedHtml(translationText.partner.capitalContribution.currencyTypeLabel));
-            expect(res.text).toContain(toEscapedHtml(translationText.partner.capitalContribution.valueLabel));
-            expect(res.text).toContain(toEscapedHtml(translationText.partner.capitalContribution.compositionTitle));
-          } else {
-            expect(res.text).not.toContain(toEscapedHtml(translationText.partner.capitalContribution.title));
-            expect(res.text).not.toContain(toEscapedHtml(translationText.partner.capitalContribution.currencyTypeLabel));
-            expect(res.text).not.toContain(toEscapedHtml(translationText.partner.capitalContribution.valueLabel));
-            expect(res.text).not.toContain(toEscapedHtml(translationText.partner.capitalContribution.compositionTitle));
-          }
+          expectCapitalContributionSection(res.text, translationText, isCapitalContributionPresent);
 
           if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
             const key =
