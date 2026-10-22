@@ -22,6 +22,7 @@ import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feed
 import { PagesRouting } from "../../../../controller/PageRouting";
 import PageType from "../../../../controller/PageType";
 import { runLegalEntityValidationTests } from "../legalEntityValidationTestSuite";
+import { runTransitionCapitalContributionTests } from "../transitionCapitalContributionTestSuite";
 
 type AddLimitedPartnerLegalEntityTestConfig = {
   url: string;
@@ -224,55 +225,15 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
       }
 
       if (config.serviceTitleTranslationKey === SERVICE_NAME_KEY_TRANSITION) {
-        it.each([PartnershipType.LP, PartnershipType.SLP])(
-          "transition journey should not require capital contribution when the section is left blank for an %s",
-          async (partnershipType: PartnershipType) => {
-            const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
-            appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-            const res = await request(app)
-              .post(getUrl(config.url))
-              .send({
-                ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
-                ...limitedPartner.data,
-                ...datesBody,
-                partnershipType,
-                contribution_currency_type: "",
-                contribution_currency_value: "",
-                contribution_sub_types: undefined
-              });
-
-            expect(res.status).toBe(302);
-
-            expect(res.text).toContain(`Redirecting to ${getUrl(config.redirectUrl)}`);
+        runTransitionCapitalContributionTests({
+          url: getUrl(config.url),
+          redirectUrl: getUrl(config.redirectUrl),
+          pageData: {
+            ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
+            ...limitedPartner.data,
+            ...datesBody
           }
-        );
-
-        it.each([PartnershipType.LP, PartnershipType.SLP])(
-          "transition journey should validate capital contribution when the section is partially completed for an %s",
-          async (partnershipType: PartnershipType) => {
-            const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
-            appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-            const res = await request(app)
-              .post(getUrl(config.url))
-              .send({
-                ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
-                ...limitedPartner.data,
-                ...datesBody,
-                partnershipType,
-                contribution_currency_type: "",
-                contribution_currency_value: "100.00",
-                contribution_sub_types: undefined
-              });
-
-            expect(res.status).toBe(200);
-
-            expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.currencyRequired);
-            expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.atLeastOneType);
-            expect(res.text).not.toContain(enTranslationText.errorMessages.capitalContribution.valueRequired);
-          }
-        );
+        });
       }
 
       it("should not require capital contribution when the section is not shown (PFLP)", async () => {

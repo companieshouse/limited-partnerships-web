@@ -18,6 +18,7 @@ import { getServiceTitle, isPostTransition } from "../utils";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 import { SERVICE_NAME_KEY_REGISTRATION, SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
+import { runTransitionCapitalContributionTests } from "../transitionCapitalContributionTestSuite";
 
 type AddLimitedPartnerPersonTestConfig = {
   url: string;
@@ -238,47 +239,11 @@ export const runAddLimitedPartnerPersonTests = (config: AddLimitedPartnerPersonT
       }
 
       if (config.serviceTitleTranslationKey === SERVICE_NAME_KEY_TRANSITION) {
-        it.each([PartnershipType.LP, PartnershipType.SLP])(
-          "transition journey should not require capital contribution when the section is left blank for an %s",
-          async (partnershipType: PartnershipType) => {
-            const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
-            appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-            const res = await request(app).post(getUrl(config.url)).send({
-              ...validPageData,
-              partnershipType,
-              contribution_currency_type: "",
-              contribution_currency_value: "",
-              contribution_sub_types: undefined
-            });
-
-            expect(res.status).toBe(302);
-
-            expect(res.text).toContain(`Redirecting to ${getUrl(config.redirectUrl)}`);
-          }
-        );
-
-        it.each([PartnershipType.LP, PartnershipType.SLP])(
-          "transition journey should validate capital contribution when the section is partially completed for an %s",
-          async (partnershipType: PartnershipType) => {
-            const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
-            appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-            const res = await request(app).post(getUrl(config.url)).send({
-              ...validPageData,
-              partnershipType,
-              contribution_currency_type: "",
-              contribution_currency_value: "100.00",
-              contribution_sub_types: undefined
-            });
-
-            expect(res.status).toBe(200);
-
-            expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.currencyRequired);
-            expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.atLeastOneType);
-            expect(res.text).not.toContain(enTranslationText.errorMessages.capitalContribution.valueRequired);
-          }
-        );
+        runTransitionCapitalContributionTests({
+          url: getUrl(config.url),
+          redirectUrl: getUrl(config.redirectUrl),
+          pageData: validPageData
+        });
       }
 
       it("should not require capital contribution when the section is not shown (PFLP)", async () => {
