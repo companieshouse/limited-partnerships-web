@@ -13,7 +13,12 @@ import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
-import { expectCapitalContributionSection, getServiceTitle, isPostTransition } from "../utils";
+import {
+  expectCapitalContributionSectionHidden,
+  expectCapitalContributionSectionShown,
+  getServiceTitle,
+  isPostTransition
+} from "../utils";
 
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
@@ -122,7 +127,11 @@ export const runAddLimitedPartnerPersonTests = (config: AddLimitedPartnerPersonT
 
           testTranslations(res.text, translationText.partner.addPartnerPersonPage, config.translateExclude);
 
-          expectCapitalContributionSection(res.text, translationText, isCapitalContributionPresent);
+          if (isCapitalContributionPresent) {
+            expectCapitalContributionSectionShown(res.text, translationText);
+          } else {
+            expectCapitalContributionSectionHidden(res.text, translationText);
+          }
 
           if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
             const key =

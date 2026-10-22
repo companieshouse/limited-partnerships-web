@@ -12,18 +12,15 @@ export const isPostTransition = (
   serviceTitleTranslationKey: string | { serviceName: string }
 ): boolean => typeof serviceTitleTranslationKey !== "string";
 
-export const expectCapitalContributionSection = (
-  html: string,
-  translationText: Record<string, any>,
-  isPresent: boolean
-): void => {
+const getCapitalContributionTexts = (translationText: Record<string, any>): string[] => {
   const { title, currencyTypeLabel, valueLabel, compositionTitle } = translationText.partner.capitalContribution;
+  return [title, currencyTypeLabel, valueLabel, compositionTitle].map(toEscapedHtml);
+};
 
-  [title, currencyTypeLabel, valueLabel, compositionTitle].forEach((text: string) => {
-    if (isPresent) {
-      expect(html).toContain(toEscapedHtml(text));
-    } else {
-      expect(html).not.toContain(toEscapedHtml(text));
-    }
-  });
+export const expectCapitalContributionSectionShown = (html: string, translationText: Record<string, any>): void => {
+  getCapitalContributionTexts(translationText).forEach((text) => expect(html).toContain(text));
+};
+
+export const expectCapitalContributionSectionHidden = (html: string, translationText: Record<string, any>): void => {
+  getCapitalContributionTexts(translationText).forEach((text) => expect(html).not.toContain(text));
 };

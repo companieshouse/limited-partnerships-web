@@ -15,7 +15,12 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
 import { SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
 
-import { expectCapitalContributionSection, getServiceTitle, isPostTransition } from "../utils";
+import {
+  expectCapitalContributionSectionHidden,
+  expectCapitalContributionSectionShown,
+  getServiceTitle,
+  isPostTransition
+} from "../utils";
 
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
@@ -111,7 +116,11 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
 
           testTranslations(res.text, translationText.partner.addOrUpdatePartnerLegalEntityPage, config.translateExclude);
 
-          expectCapitalContributionSection(res.text, translationText, isCapitalContributionPresent);
+          if (isCapitalContributionPresent) {
+            expectCapitalContributionSectionShown(res.text, translationText);
+          } else {
+            expectCapitalContributionSectionHidden(res.text, translationText);
+          }
 
           if (isPostTransition(config.serviceTitleTranslationKey)) {
             expect(res.text).toContain(customerFeedbackUrlMap.addLimitedPartner);
