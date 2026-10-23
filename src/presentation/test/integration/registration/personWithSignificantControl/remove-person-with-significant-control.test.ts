@@ -25,11 +25,6 @@ describe("Remove Person With Significant Control Page", () => {
     .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
     .build();
 
-  const protectedPsc = new PersonWithSignificantControlBuilder()
-    .withType(PersonWithSignificantControlType.PROTECTED_INDIVIDUAL_PERSON)
-    .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
-    .build();
-
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -83,12 +78,19 @@ describe("Remove Person With Significant Control Page", () => {
       async (_description: string, lang: string, translationText: any) => {
         setLocalesEnabled(true);
 
+        const protectedPsc = new PersonWithSignificantControlBuilder()
+          .withType(PersonWithSignificantControlType.PROTECTED_INDIVIDUAL_PERSON)
+          .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+          .build();
+
         appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([protectedPsc]);
 
         const res = await request(app).get(`${URL}?lang=${lang}`);
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(translationText.personWithSignificantControl.removePscPage.protectedPerson);
+        expect(res.text).toContain(
+          `${translationText.personWithSignificantControl.removePscPage.title} ${translationText.personWithSignificantControl.removePscPage.protectedPerson}?`
+        );
       }
     );
 
