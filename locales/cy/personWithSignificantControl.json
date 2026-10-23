@@ -246,7 +246,8 @@
             }
         },
         "removePscPage": {
-            "title": "WELSH - Are you sure you want to remove"
+            "title": "WELSH - Are you sure you want to remove",
+            "protectedPerson": "WELSH - the protected person"
         },
         "reviewPage": {
             "title": "WELSH - Review the people with significant control (PSCs) for this partnership",

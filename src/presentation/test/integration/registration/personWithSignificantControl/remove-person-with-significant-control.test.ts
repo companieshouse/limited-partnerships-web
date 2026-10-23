@@ -11,6 +11,7 @@ import {
 } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 describe("Remove Person With Significant Control Page", () => {
   const URL = getUrl(REMOVE_PERSON_WITH_SIGNIFICANT_CONTROL_URL);
 
@@ -49,7 +50,7 @@ describe("Remove Person With Significant Control Page", () => {
           `${translationText.personWithSignificantControl.removePscPage.title} - ${translationText.serviceRegistration} - GOV.UK`
         );
 
-        testTranslations(res.text, translationText.personWithSignificantControl.removePscPage, ["errorMessage"]);
+        testTranslations(res.text, translationText.personWithSignificantControl.removePscPage, ["errorMessage", "protectedPerson"]);
 
         expect(res.text).toContain(`${pscRle?.data?.legal_entity_name}`);
       }
@@ -68,6 +69,30 @@ describe("Remove Person With Significant Control Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${psc?.data?.legal_entity_name}`);
     });
+
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])(
+      "should display protected person text in the page title with %s text",
+      async (_description: string, lang: string, translationText: any) => {
+        setLocalesEnabled(true);
+
+        const protectedPsc = new PersonWithSignificantControlBuilder()
+          .withType(PersonWithSignificantControlType.PROTECTED_INDIVIDUAL_PERSON)
+          .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+          .build();
+
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([protectedPsc]);
+
+        const res = await request(app).get(`${URL}?lang=${lang}`);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(
+          `${translationText.personWithSignificantControl.removePscPage.title} ${translationText.personWithSignificantControl.removePscPage.protectedPerson}?`
+        );
+      }
+    );
 
     it("should contain the partnership name above the page title", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();

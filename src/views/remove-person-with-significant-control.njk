@@ -7,6 +7,8 @@
   {% set name = props.data.personWithSignificantControl.data.forename + " " + props.data.personWithSignificantControl.data.surname %}
 {% elif props.data.personWithSignificantControl.data.legal_entity_name %}
   {% set name = props.data.personWithSignificantControl.data.legal_entity_name %}
+{% elif props.data.personWithSignificantControl.data.type == "PROTECTED_INDIVIDUAL_PERSON" %}
+  {% set name = i18n.personWithSignificantControl.removePscPage.protectedPerson %}
 {% endif %}
 
 {% block content %}
