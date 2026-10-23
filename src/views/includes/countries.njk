@@ -5,6 +5,8 @@
   {% set list = COUNTRIES %} 
   {% if subsetType === "unitedKingdom" %}
     {% set list = COUNTRIES.slice(0,5) %} 
+  {% elseif isUsualResidentialAddress %}
+    {% set list = COUNTRIES %}
   {% elseif subsetType === "overseas" %}
     {% set list = COUNTRIES.slice(0,1).concat(COUNTRIES.slice(5)) %} 
   {% endif %}

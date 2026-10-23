@@ -19,7 +19,15 @@ export const setCountriesDropdown = (i18n: Record<string, any>, countryField: st
       countries.push({ value: "", text: i18n.countries[country], selected: countryField === "" });
       continue;
     }
-    if (isUsualResidentialAddress && country === "unitedKingdom") {
+    if (isUsualResidentialAddress) {
+      if (country === "unitedKingdom") {
+        continue;
+      }
+      countries.push({
+        value: enCountries[country],
+        text: i18n.countries[country],
+        selected: countryField?.toLowerCase() === enCountries[country]?.toLowerCase()
+      });
       continue;
     }
 
