@@ -54,11 +54,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
         "generalPartner",
         "usualResidentialAddress",
         "errorMessages",
-        // uk countries
-        "countryEngland",
-        "countryScotland",
-        "countryWales",
-        "countryNorthernIreland",
         "personWithSignificantControl"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -90,11 +85,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
         "generalPartner",
         "usualResidentialAddress",
         "errorMessages",
-        // uk countries
-        "countryEngland",
-        "countryScotland",
-        "countryWales",
-        "countryNorthernIreland",
         "personWithSignificantControl"
       ]);
 
