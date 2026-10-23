@@ -39,71 +39,63 @@ describe("Enter Usual Residential Address Page", () => {
   });
 
   describe("GET Enter general partners usual residential address", () => {
-    it("should load enter general partners usual residential address page with english text", async () => {
-      setLocalesEnabled(true);
+    it.each([
+      [
+        "english",
+        "en",
+        enTranslationText,
+        "overseas",
+        ["countryEngland", "countryWales", "countryScotland", "countryNorthernIreland"]
+      ],
+      [
+        "welsh",
+        "cy",
+        cyTranslationText,
+        "overseas",
+        ["countryEngland", "countryWales", "countryScotland", "countryNorthernIreland"]
+      ],
+      ["english", "en", enTranslationText, "unitedKingdom", []],
+      ["welsh", "cy", cyTranslationText, "unitedKingdom", []]
+    ])(
+      "should load enter general partners usual residential address page with %s text",
+      async (language, lang, translationText, territoryChoice, additionalExclude = []) => {
+        setLocalesEnabled(true);
 
-      const res = await request(app).get(URL + "?lang=en");
+        appDevDependencies.cacheRepository.feedCache({
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ura_territory_choice: territoryChoice
+          }
+        });
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.enterAddress, [
-        "registeredOfficeAddress",
-        "principalPlaceOfBusinessAddress",
-        "jurisdictionCountry",
-        "postcodeMissing",
-        "correspondenceAddress",
-        "principalOfficeAddress",
-        "postcodeOptional",
-        "limitedPartner",
-        "personWithSignificantControl",
-        "errorMessages",
-        // uk countries
-        "countryEngland",
-        "countryScotland",
-        "countryWales",
-        "countryNorthernIreland"
-      ]);
-      expect(res.text).not.toContain("WELSH -");
-      expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
-      expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
-      expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+        const res = await request(app).get(URL + "?lang=" + lang);
 
-      expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
-    });
+        expect(res.status).toBe(200);
+        testTranslations(res.text, translationText.address.enterAddress, [
+          "registeredOfficeAddress",
+          "principalPlaceOfBusinessAddress",
+          "jurisdictionCountry",
+          "correspondenceAddress",
+          "principalOfficeAddress",
+          "postcodeOptional",
+          "limitedPartner",
+          "personWithSignificantControl",
+          "errorMessages",
+          ...additionalExclude
+        ]);
 
-    it("should load enter general partners usual residential address manual entry page with welsh text", async () => {
-      setLocalesEnabled(true);
-
-      appDevDependencies.cacheRepository.feedCache({
-        [appDevDependencies.transactionGateway.transactionId]: {
-          ura_territory_choice: "overseas"
+        if (lang === "en") {
+          expect(res.text).not.toContain("WELSH -");
+        } else {
+          expect(res.text).toContain("WELSH -");
         }
-      });
+        expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
+        expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
+        expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+        expect(res.text).not.toContain(translationText.countries.unitedKingdom);
 
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.enterAddress, [
-        "registeredOfficeAddress",
-        "principalPlaceOfBusinessAddress",
-        "jurisdictionCountry",
-        "postcodeMissing",
-        "postcode",
-        "correspondenceAddress",
-        "principalOfficeAddress",
-        "limitedPartner",
-        "personWithSignificantControl",
-        "errorMessages",
-        // uk countries
-        "countryEngland",
-        "countryScotland",
-        "countryWales",
-        "countryNorthernIreland"
-      ]);
-
-      expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
-      expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
-      expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-    });
+        expect(res.text).toContain(translationText.buttons.saveAndContinue);
+      }
+    );
 
     it("should load enter general partners usual residential address manual entry page with overseas back link", async () => {
       appDevDependencies.cacheRepository.feedCache({
