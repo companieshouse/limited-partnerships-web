@@ -2,7 +2,7 @@ import request from "supertest";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { getUrl, setLocalesEnabled, testCountryDropdown, testTranslations } from "../../../../utils";
 import * as config from "../../../../../../config";
 
 import {
@@ -40,25 +40,13 @@ describe("Enter Usual Residential Address Page", () => {
 
   describe("GET Enter general partners usual residential address", () => {
     it.each([
-      [
-        "english",
-        "en",
-        enTranslationText,
-        "overseas",
-        ["countryEngland", "countryWales", "countryScotland", "countryNorthernIreland"]
-      ],
-      [
-        "welsh",
-        "cy",
-        cyTranslationText,
-        "overseas",
-        ["countryEngland", "countryWales", "countryScotland", "countryNorthernIreland"]
-      ],
-      ["english", "en", enTranslationText, "unitedKingdom", []],
-      ["welsh", "cy", cyTranslationText, "unitedKingdom", []]
+      ["english", "en", enTranslationText, "overseas"],
+      ["welsh", "cy", cyTranslationText, "overseas"],
+      ["english", "en", enTranslationText, "unitedKingdom"],
+      ["welsh", "cy", cyTranslationText, "unitedKingdom"]
     ])(
       "should load enter general partners usual residential address page with %s text",
-      async (language, lang, translationText, territoryChoice, additionalExclude = []) => {
+      async (language, lang, translationText, territoryChoice) => {
         setLocalesEnabled(true);
 
         appDevDependencies.cacheRepository.feedCache({
@@ -79,8 +67,7 @@ describe("Enter Usual Residential Address Page", () => {
           "postcodeOptional",
           "limitedPartner",
           "personWithSignificantControl",
-          "errorMessages",
-          ...additionalExclude
+          "errorMessages"
         ]);
 
         if (lang === "en") {
@@ -91,7 +78,11 @@ describe("Enter Usual Residential Address Page", () => {
         expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
         expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
         expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-        expect(res.text).not.toContain(translationText.countries.unitedKingdom);
+
+        testCountryDropdown(res.text, translationText.countries, {
+          territoryChoice,
+          isUsualResidentialAddress: true
+        });
 
         expect(res.text).toContain(translationText.buttons.saveAndContinue);
       }
