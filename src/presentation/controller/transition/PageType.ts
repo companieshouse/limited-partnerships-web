@@ -31,4 +31,13 @@ export const isAddPartnerLegalEntityPage = (pageType: string): boolean => {
   return addPartnerLegalEntityPageType.includes(pageType);
 };
 
+const addLimitedPartnerPageType: string[] = [
+  TransitionPageType.addLimitedPartnerPerson,
+  TransitionPageType.addLimitedPartnerLegalEntity
+];
+
+export const isAddLimitedPartnerPage = (pageType: string): boolean => {
+  return addLimitedPartnerPageType.includes(pageType);
+};
+
 export default TransitionPageType;

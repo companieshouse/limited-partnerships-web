@@ -2,21 +2,35 @@ import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limi
 
 import UIErrors from "../entities/UIErrors";
 import { symbols } from "../../application/service/utils/currencies";
-import { JourneyTypes } from "../entities/journey";
 import { PartnerType } from "../types";
+import { isAddLimitedPartnerPage } from "../../presentation/controller/transition/PageType";
 
 const MAX_DIGITS = 10;
 
 const CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES: string[] = [PartnershipType.LP, PartnershipType.SLP];
 
-const isCapitalContributionApplicable = (journeyTypes: JourneyTypes, partnershipType: PartnershipType, partnerType: PartnerType): boolean => {
+const isCapitalContributionApplicable = (partnershipType: PartnershipType, partnerType: PartnerType): boolean => {
   if (partnerType !== PartnerType.limitedPartner) {
     return false;
   }
-  const isCapitalContributionJourney = Boolean(journeyTypes?.isRegistration || journeyTypes?.isPostTransition);
   const isCapitalContributionPartnershipType = CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES.includes(partnershipType);
 
-  return isCapitalContributionJourney && isCapitalContributionPartnershipType;
+  return isCapitalContributionPartnershipType;
+};
+
+// Capital contribution is optional when adding a partner during transition.
+const isOptionalAndEmpty = (data: Record<string, any>): boolean => {
+  const isContributionEmpty =
+    !data.contribution_currency_type && !data.contribution_currency_value && !data.contribution_sub_types;
+
+  return Boolean(data.journeyTypes?.isTransition) && isAddLimitedPartnerPage(data.pageType) && isContributionEmpty;
+};
+
+const shouldValidateCapitalContribution = (data: Record<string, any>): boolean => {
+  return (
+    isCapitalContributionApplicable(data.partnershipType, data.partnerType || ("" as PartnerType)) &&
+    !isOptionalAndEmpty(data)
+  );
 };
 
 const capitalContributionValidation = (data: Record<string, any>, currencies: Record<string, any>, overrideCapitalContributionType: (capitalContributionType: string) => void, uiErrors: UIErrors, errorMessages: any): void => {
@@ -36,6 +50,31 @@ const capitalContributionValidation = (data: Record<string, any>, currencies: Re
   if (!data.contribution_sub_types?.length) {
     uiErrors.setWebError("contribution_sub_types", errorMessages?.atLeastOneType);
   }
+};
+
+const validatePartnerCapitalContribution = (
+  data: Record<string, any>,
+  currencies: Record<string, any>,
+  uiErrors: UIErrors,
+  errorMessages: any
+): void => {
+  if (!shouldValidateCapitalContribution(data)) {
+    return;
+  }
+
+  capitalContributionValidation(
+    {
+      contribution_currency_type: data.contribution_currency_type,
+      contribution_currency_value: data.contribution_currency_value,
+      contribution_sub_types: data.contribution_sub_types
+    },
+    currencies,
+    (currencyCode: string) => {
+      data.contribution_currency_type = currencyCode;
+    },
+    uiErrors,
+    errorMessages
+  );
 };
 
 const contributionCurrencyValueValidation = (data: Record<string, any>, uiErrors: UIErrors, errorMessages: any) => {
@@ -84,4 +123,9 @@ const hasComma = (str: string): boolean => {
   return str.includes(",");
 };
 
-export { capitalContributionValidation, isCapitalContributionApplicable };
+export {
+  capitalContributionValidation,
+  isCapitalContributionApplicable,
+  shouldValidateCapitalContribution,
+  validatePartnerCapitalContribution
+};

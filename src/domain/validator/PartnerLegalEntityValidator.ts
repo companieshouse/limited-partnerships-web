@@ -20,7 +20,7 @@ import {
 import UIErrors from "../entities/UIErrors";
 import { validateDate } from "./DateValidators";
 import { buildDateOfUpdateErrorMessages } from "./dateOfUpdateErrorMessages";
-import { capitalContributionValidation, isCapitalContributionApplicable } from "./capitalContributionValidator";
+import { validatePartnerCapitalContribution } from "./capitalContributionValidator";
 import { PartnerType } from "../types";
 import { isFieldValueMissing, validateField } from "./FieldValidators";
 import { isAddPartnerLegalEntityPage as isAddPartnerLegalEntityPageRegistration } from "../../presentation/controller/registration/PageType";
@@ -130,25 +130,7 @@ class PartnerLegalEntityValidator {
     this.handleEnteredOnRegister(uiErrors);
 
     // contributions
-    if (
-      isCapitalContributionApplicable(
-        this.data.journeyTypes,
-        this.data.partnershipType,
-        this.data.partnerType || ("" as PartnerType)
-      )
-    ) {
-      capitalContributionValidation(
-        {
-          contribution_currency_type: this.data.contribution_currency_type,
-          contribution_currency_value: this.data.contribution_currency_value,
-          contribution_sub_types: this.data.contribution_sub_types
-        },
-        this.currencies,
-        this.overrideCapitalContributionType.bind(this),
-        uiErrors,
-        this.errorMessages?.capitalContribution
-      );
-    }
+    validatePartnerCapitalContribution(this.data, this.currencies, uiErrors, this.errorMessages?.capitalContribution);
 
     // date effective from
     if (this.isDateEffectiveFromValidationRequired()) {
@@ -164,10 +146,6 @@ class PartnerLegalEntityValidator {
     if (this.isDisqualifiedStatementValidationRequired()) {
       this.validateDisqualifiedStatement(uiErrors);
     }
-  }
-
-  private overrideCapitalContributionType(capitalContributionType: string): void {
-    this.data.contribution_currency_type = capitalContributionType;
   }
 
   private validateDateField(
