@@ -84,6 +84,9 @@ export const testCountryDropdown = (
     if (territoryChoice === "unitedKingdom") {
       return ukCountryKeys.has(countryKey);
     }
+    if (!territoryChoice) {
+      return true;
+    }
     // Overseas URA lists omit "United Kingdom"; other overseas lists omit the four UK countries.
     return isUsualResidentialAddress ? countryKey !== "unitedKingdom" : !ukCountryKeys.has(countryKey);
   };
