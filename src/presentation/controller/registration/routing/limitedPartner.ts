@@ -44,8 +44,6 @@ const registrationRoutingAddLimitedPartnerLegalEntity = {
   }
 };
 
-// usual residential address
-
 const registrationRoutingReviewLimitedPartners = {
   previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
   currentUrl: url.REVIEW_LIMITED_PARTNERS_URL,

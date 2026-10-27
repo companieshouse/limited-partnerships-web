@@ -3,7 +3,7 @@ import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testCountryDropdown, testTranslations, toEscapedHtml } from "../../../../utils";
 import * as config from "../../../../../../config";
 
 import {
@@ -45,20 +45,32 @@ describe("Enter Usual Residential Address Page", () => {
 
   describe("GET Enter limited partners usual residential address", () => {
     it.each([
-      [PartnerKind.ADD_LIMITED_PARTNER_PERSON, enTranslationText.serviceName.addLimitedPartner],
-      [PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, enTranslationText.serviceName.updateLimitedPartnerPerson]
+      ["add", "en", "unitedKingdom"],
+      ["update", "en", "overseas"],
+      ["add", "cy", "overseas"],
+      ["update", "cy", "unitedKingdom"]
     ])(
-      "should load enter limited partners usual residential address page with english text",
-      async (partnerKind: PartnerKind, serviceName: string) => {
+      "should load enter limited partners usual residential address page with %s text",
+      async (journey: string, lang: string, territoryChoice: string) => {
         setLocalesEnabled(true);
+
+        const isAddJourney = journey === "add";
+        const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+        const partnerKind = isAddJourney ? PartnerKind.ADD_LIMITED_PARTNER_PERSON : PartnerKind.UPDATE_LIMITED_PARTNER_PERSON;
 
         const transaction = new TransactionBuilder().withKind(partnerKind).build();
         appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-        const res = await request(app).get(URL + "?lang=en");
+        appDevDependencies.cacheRepository.feedCache({
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ura_territory_choice: territoryChoice
+          }
+        });
+
+        const res = await request(app).get(URL + `?lang=${lang}`);
 
         expect(res.status).toBe(200);
-        testTranslations(res.text, enTranslationText.address.enterAddress, [
+        testTranslations(res.text, translationText.address.enterAddress, [
           "registeredOfficeAddress",
           "principalPlaceOfBusinessAddress",
           "jurisdictionCountry",
@@ -68,24 +80,39 @@ describe("Enter Usual Residential Address Page", () => {
           "postcodeOptional",
           "generalPartner",
           "personWithSignificantControl",
-          "errorMessages",
-          // uk countries
-          "countryEngland",
-          "countryScotland",
-          "countryWales",
-          "countryNorthernIreland"
+          "errorMessages"
         ]);
-        expect(res.text).not.toContain("WELSH -");
+
+        if (lang === "cy") {
+          expect(res.text).toContain("WELSH -");
+        } else {
+          expect(res.text).not.toContain("WELSH -");
+        }
+
         expect(res.text).toContain(limitedPartnerPerson.forename?.toUpperCase());
         expect(res.text).toContain(limitedPartnerPerson.surname?.toUpperCase());
         expect(res.text).not.toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+
+        const serviceName =
+          isAddJourney ? translationText.serviceName.addLimitedPartner : translationText.serviceName.updateLimitedPartnerPerson;
         expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
 
-        if (partnerKind === PartnerKind.ADD_LIMITED_PARTNER_PERSON) {
+        if (isAddJourney) {
           expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
         } else {
           expect(res.text).toContain(enTranslationText.buttons.continue);
         }
+
+        const BACK_LINK =
+          territoryChoice === "overseas" ?
+            getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)
+            : getUrl(POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+        expect(res.text).toContain(BACK_LINK);
+
+        testCountryDropdown(res.text, translationText.countries, {
+          territoryChoice,
+          isUsualResidentialAddress: true
+        });
       }
     );
 
@@ -111,12 +138,7 @@ describe("Enter Usual Residential Address Page", () => {
         "principalOfficeAddress",
         "generalPartner",
         "personWithSignificantControl",
-        "errorMessages",
-        // uk countries
-        "countryEngland",
-        "countryScotland",
-        "countryWales",
-        "countryNorthernIreland"
+        "errorMessages"
       ]);
 
       expect(res.text).toContain(limitedPartnerPerson.forename?.toUpperCase());

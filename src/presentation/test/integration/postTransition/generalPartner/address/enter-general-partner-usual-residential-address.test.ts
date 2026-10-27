@@ -3,7 +3,14 @@ import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import {
+  countOccurrences,
+  getUrl,
+  setLocalesEnabled,
+  testCountryDropdown,
+  testTranslations,
+  toEscapedHtml
+} from "../../../../utils";
 import * as config from "../../../../../../config";
 
 import {
@@ -21,6 +28,7 @@ import GeneralPartnerBuilder, {
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import TransactionGeneralPartner from "../../../../../../domain/entities/TransactionGeneralPartner";
 import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
+
 describe("Enter Usual Residential Address Page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
   const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -42,20 +50,39 @@ describe("Enter Usual Residential Address Page", () => {
 
   describe("GET Enter general partners usual residential address", () => {
     it.each([
-      [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
-      [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
+      ["en", "add", "unitedKingdom"],
+      ["en", "update", "overseas"],
+      ["cy", "add", "overseas"],
+      ["cy", "update", "unitedKingdom"]
     ])(
-      "should load enter general partners usual residential address page with english text",
-      async (partnerKind, serviceName) => {
+      "should load enter general partners usual residential address page with %s text",
+      async (lang, journey, territoryChoice) => {
         setLocalesEnabled(true);
 
-        const transaction = new TransactionBuilder().withKind(partnerKind).build();
+        const isAddJourney = journey === "add";
+        const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+        const transactionKind = isAddJourney ? PartnerKind.ADD_GENERAL_PARTNER_PERSON : PartnerKind.UPDATE_GENERAL_PARTNER_PERSON;
+
+        appDevDependencies.cacheRepository.feedCache({
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ura_territory_choice: territoryChoice
+          }
+        });
+
+        generalPartner = new GeneralPartnerBuilder()
+          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+          .withKind(transactionKind)
+          .isPerson()
+          .build();
+        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+        const transaction = new TransactionBuilder().withKind(transactionKind).build();
         appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-        const res = await request(app).get(URL + "?lang=en");
+        const res = await request(app).get(URL + "?lang=" + lang);
 
         expect(res.status).toBe(200);
-        testTranslations(res.text, enTranslationText.address.enterAddress, [
+        testTranslations(res.text, translationText.address.enterAddress, [
           "registeredOfficeAddress",
           "principalPlaceOfBusinessAddress",
           "jurisdictionCountry",
@@ -65,102 +92,43 @@ describe("Enter Usual Residential Address Page", () => {
           "postcodeOptional",
           "limitedPartner",
           "personWithSignificantControl",
-          "errorMessages",
-          // uk countries
-          "countryEngland",
-          "countryScotland",
-          "countryWales",
-          "countryNorthernIreland"
+          "errorMessages"
         ]);
-        expect(res.text).not.toContain("WELSH -");
-        expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
-        expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
-        expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-        expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
 
-        if (partnerKind === PartnerKind.ADD_GENERAL_PARTNER_PERSON) {
-          expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
+        if (lang === "cy") {
+          expect(res.text).toContain("WELSH -");
         } else {
-          expect(res.text).toContain(enTranslationText.buttons.continue);
+          expect(res.text).not.toContain("WELSH -");
         }
-      }
-    );
-
-    it.each([
-      [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
-      [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
-    ])(
-      "should load enter general partners usual residential address manual entry page with welsh text",
-      async (partnerKind, serviceName) => {
-        setLocalesEnabled(true);
-
-        const transaction = new TransactionBuilder().withKind(partnerKind).build();
-        appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-        appDevDependencies.cacheRepository.feedCache({
-          [appDevDependencies.transactionGateway.transactionId]: {
-            ura_territory_choice: "overseas"
-          }
-        });
-
-        const res = await request(app).get(URL + "?lang=cy");
-
-        expect(res.status).toBe(200);
-        testTranslations(res.text, cyTranslationText.address.enterAddress, [
-          "registeredOfficeAddress",
-          "principalPlaceOfBusinessAddress",
-          "jurisdictionCountry",
-          "postcodeMissing",
-          "postcode",
-          "correspondenceAddress",
-          "principalOfficeAddress",
-          "limitedPartner",
-          "personWithSignificantControl",
-          "errorMessages",
-          // uk countries
-          "countryEngland",
-          "countryScotland",
-          "countryWales",
-          "countryNorthernIreland"
-        ]);
 
         expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
         expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
         expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-        expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+
+        const expectedServiceName =
+          journey === "add" ?
+            translationText.serviceName.addGeneralPartner
+            : translationText.serviceName.updateGeneralPartnerPerson;
+        expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
+
+        if (isAddJourney) {
+          expect(res.text).toContain(translationText.buttons.saveAndContinue);
+        } else {
+          expect(res.text).toContain(translationText.buttons.continue);
+        }
+
+        const BACK_LINK =
+          territoryChoice === "overseas" ?
+            getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)
+            : getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+        expect(res.text).toContain(BACK_LINK);
+
+        testCountryDropdown(res.text, translationText.countries, {
+          territoryChoice,
+          isUsualResidentialAddress: true
+        });
       }
     );
-
-    it("should load enter general partners usual residential address manual entry page with overseas back link", async () => {
-      appDevDependencies.cacheRepository.feedCache({
-        [appDevDependencies.transactionGateway.transactionId]: {
-          ura_territory_choice: "overseas"
-        }
-      });
-
-      const redirectUrl = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-
-      const res = await request(app).get(URL);
-      expect(res.status).toBe(200);
-
-      expect(res.text).toContain(redirectUrl);
-    });
-
-    it("should load enter general partners usual residential address manual entry page with postcode lookup back link", async () => {
-      appDevDependencies.cacheRepository.feedCache({
-        [appDevDependencies.transactionGateway.transactionId]: {
-          ura_territory_choice: "unitedKingdom"
-        }
-      });
-
-      const redirectUrl = getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-
-      expect(res.text).toContain(redirectUrl);
-    });
   });
 
   describe("POST Enter general partners usual residential address Page", () => {

@@ -8,6 +8,7 @@ import {
   countOccurrences,
   getUrl,
   setLocalesEnabled,
+  testCountryDropdown,
   testTranslations,
   toEscapedHtml
 } from "../../../utils";
@@ -22,7 +23,6 @@ import {
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { YOUR_COMPANY_URL } from "../../../../../config";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
@@ -40,78 +40,57 @@ describe("Enter Principal Place Of Business Address Page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
     appDevDependencies.limitedPartnershipGateway.feedErrors();
     appDevDependencies.limitedPartnershipGateway.setError(false);
-
-    const limitedPartner = new LimitedPartnerBuilder()
-      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-      .isPerson()
-      .build();
-
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
   });
 
   describe("GET Enter Principal Place Of Business Address Page", () => {
-    it("should load the enter principal place of business address page with English text", async () => {
-      setLocalesEnabled(true);
+    it.each([
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
+    ])(
+      "should load the enter principal place of business address page with %s text",
+      async (lang: string, translationText: Record<string, any>) => {
+        setLocalesEnabled(true);
 
-      const res = await request(app).get(URL + "?lang=en");
+        const res = await request(app).get(`${URL}?lang=${lang}`);
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.enterAddress, [
-        "jurisdictionCountry",
-        "usualResidentialAddress",
-        "correspondenceAddress",
-        "registeredOfficeAddress",
-        "principalOfficeAddress",
-        "errorMessages",
-        "titleHint3",
-        "newRequirement",
-        "titleHint2"
-      ]);
-      expect(res.text).not.toContain("WELSH -");
+        expect(res.status).toBe(200);
 
-      expect(res.text).toContain(companyProfile.data.serviceAddress?.premises);
-      expect(res.text).toContain(companyProfile.data.serviceAddress?.addressLineOne);
-      expect(res.text).toContain(companyProfile.data.serviceAddress?.postalCode);
-      expect(res.text).toContain(companyProfile.data.serviceAddress?.locality);
-      expect(res.text).toContain(companyProfile.data.serviceAddress?.country);
-      expect(
-        countOccurrences(
-          res.text,
-          toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)
-        )
-      ).toBe(2);
-      expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress);
-      expect(res.text).toContain(BACK_LINK);
+        testTranslations(res.text, translationText.address.enterAddress, [
+          "jurisdictionCountry",
+          "usualResidentialAddress",
+          "correspondenceAddress",
+          "registeredOfficeAddress",
+          "principalOfficeAddress",
+          "errorMessages",
+          "titleHint3",
+          "newRequirement",
+          "titleHint2"
+        ]);
 
-      expect(res.text).toContain(enTranslationText.buttons.continue);
-    });
+        if (lang === "cy") {
+          expect(res.text).toContain("WELSH -");
+        } else {
+          expect(res.text).not.toContain("WELSH -");
+        }
 
-    it("should load the enter principal place of business address page with Welsh text", async () => {
-      setLocalesEnabled(true);
+        expect(res.text).toContain(companyProfile.data.serviceAddress?.premises);
+        expect(res.text).toContain(companyProfile.data.serviceAddress?.addressLineOne);
+        expect(res.text).toContain(companyProfile.data.serviceAddress?.postalCode);
+        expect(res.text).toContain(companyProfile.data.serviceAddress?.locality);
+        expect(res.text).toContain(companyProfile.data.serviceAddress?.country);
+        expect(
+          countOccurrences(
+            res.text,
+            toEscapedHtml(translationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)
+          )
+        ).toBe(2);
+        expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress);
+        expect(res.text).toContain(BACK_LINK);
+        expect(res.text).toContain(translationText.buttons.continue);
 
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.enterAddress, [
-        "jurisdictionCountry",
-        "usualResidentialAddress",
-        "correspondenceAddress",
-        "registeredOfficeAddress",
-        "principalOfficeAddress",
-        "errorMessages",
-        "titleHint3",
-        "newRequirement",
-        "titleHint2"
-      ]);
-      expect(
-        countOccurrences(
-          res.text,
-          toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)
-        )
-      ).toBe(2);
-      expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress);
-      expect(res.text).toContain(BACK_LINK);
-    });
+        testCountryDropdown(res.text, translationText.countries, { territoryChoice: "" });
+      }
+    );
   });
 
   describe("POST Enter Principal Place Of Business Address Page", () => {

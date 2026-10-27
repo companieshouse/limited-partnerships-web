@@ -66,6 +66,41 @@ export const testTranslations = (text: string, translations: Record<string, any>
   }
 };
 
+export const testCountryDropdown = (
+  html: string,
+  countries: Record<string, string>,
+  options: { territoryChoice: string; isUsualResidentialAddress?: boolean }
+) => {
+  const { territoryChoice, isUsualResidentialAddress = false } = options;
+
+  const ukCountryKeys = new Set(["england", "scotland", "wales", "northernIreland"]);
+
+  const shouldDisplayCountry = (countryKey: string) => {
+    // Every country dropdown includes the "Select a country" option.
+    if (countryKey === "selectOne") {
+      return true;
+    }
+    // UK territory choice includes only the four UK countries.
+    if (territoryChoice === "unitedKingdom") {
+      return ukCountryKeys.has(countryKey);
+    }
+    if (!territoryChoice) {
+      return true;
+    }
+    // Overseas URA lists omit "United Kingdom"; other overseas lists omit the four UK countries.
+    return isUsualResidentialAddress ? countryKey !== "unitedKingdom" : !ukCountryKeys.has(countryKey);
+  };
+
+  Object.entries(countries).forEach(([countryKey, countryValue]) => {
+    const optionMarkup = `>${toEscapedHtml(countryValue)}</option>`;
+    if (shouldDisplayCountry(countryKey)) {
+      expect(html).toContain(optionMarkup);
+    } else {
+      expect(html).not.toContain(optionMarkup);
+    }
+  });
+};
+
 export const setupPartners = (isLimitedPartner: boolean, isPerson: boolean) => {
   let partner: LimitedPartner | GeneralPartner;
 

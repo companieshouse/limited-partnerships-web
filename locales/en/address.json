@@ -164,12 +164,7 @@
             "regionTitle": "County",
             "postcode": "Postcode",
             "postalCodeTitle": "Postcode",
-            "country": "Country",
-            "countrySelect": "Select a country",
-            "countryEngland": "England",
-            "countryScotland": "Scotland",
-            "countryWales": "Wales",
-            "countryNorthernIreland": "Northern Ireland"
+            "country": "Country"
         },
 
         "findPostcode": {

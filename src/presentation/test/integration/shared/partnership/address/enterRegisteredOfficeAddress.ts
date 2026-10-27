@@ -4,7 +4,7 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { getUrl, setLocalesEnabled, testCountryDropdown, testTranslations } from "../../../../utils";
 
 import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 
@@ -53,6 +53,8 @@ export const runEnterRegisteredOfficeAddressTests = (config: EnterRegisteredOffi
           testTranslations(res.text, translationText.address.enterAddress, config.translateExclude);
 
           testTranslations(res.text, translationText.address.registeredOffice, config.translateRegisteredOfficeAddressExclude);
+
+          testCountryDropdown(res.text, translationText.countries, { territoryChoice: "unitedKingdom" });
 
           expect(res.text).toContain(
             isPostTransition(config.serviceTitleTranslationKey) ?

@@ -75,8 +75,9 @@
           {% set countryFormValue = address.country %}
           {% set countryErrorMessage = props.errors.country if props.errors %}
           {% set labelFormatting = "govuk-label govuk-input--width-10" %}
+          {% set isUsualResidentialAddress = true %}
                             
-          {{ macros.getSpecifiedCountryList(i18n, props.data.cache.ura_territory_choice, countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting) }}
+          {{ macros.getSpecifiedCountryList(i18n, props.data.cache.ura_territory_choice, countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting, isUsualResidentialAddress) }}
 
         {% else %}
           {% include "pages/address/enter-address-common-fields.njk" %}

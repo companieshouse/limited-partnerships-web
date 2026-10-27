@@ -1,10 +1,12 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
-{% macro getSpecifiedCountryList(i18n, subsetType, id, text, countryField, errorMessage, labelFormatting)  %}
-  {% set COUNTRIES = SET_COUNTRIES_DROPDOWN(i18n, countryField) %}
+{% macro getSpecifiedCountryList(i18n, subsetType, id, text, countryField, errorMessage, labelFormatting, isUsualResidentialAddress)  %}
+  {% set COUNTRIES = SET_COUNTRIES_DROPDOWN(i18n, countryField, isUsualResidentialAddress) %}
 
   {% set list = COUNTRIES %} 
   {% if subsetType === "unitedKingdom" %}
     {% set list = COUNTRIES.slice(0,5) %} 
+  {% elseif isUsualResidentialAddress %}
+    {% set list = COUNTRIES %}
   {% elseif subsetType === "overseas" %}
     {% set list = COUNTRIES.slice(0,1).concat(COUNTRIES.slice(5)) %} 
   {% endif %}
