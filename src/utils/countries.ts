@@ -7,7 +7,11 @@ const enCountriesPath = path.join(LOCALES_PATH, "en", "countries.json");
 // need to use require to lookup the file at runtime in CiDev
 const enCountriesText: Record<string, any> = require(enCountriesPath);
 
-export const setCountriesDropdown = (i18n: Record<string, any>, countryField: string, isUsualResidentialAddress?: boolean) => {
+export const setCountriesDropdown = (
+  i18n: Record<string, any>,
+  countryField: string,
+  isUsualResidentialAddress: boolean = false
+) => {
   const countries: { value: string; text: string; selected: boolean }[] = [];
   const ukCountries: { value: string; text: string; selected: boolean }[] = [];
   const enCountries = enCountriesText.countries;
@@ -19,30 +23,25 @@ export const setCountriesDropdown = (i18n: Record<string, any>, countryField: st
       countries.push({ value: "", text: i18n.countries[country], selected: countryField === "" });
       continue;
     }
+
+    const countryEntry = {
+      value: enCountries[country],
+      text: i18n.countries[country],
+      selected: countryField?.toLowerCase() === enCountries[country]?.toLowerCase()
+    };
+
     if (isUsualResidentialAddress) {
       if (country === "unitedKingdom") {
         continue;
       }
-      countries.push({
-        value: enCountries[country],
-        text: i18n.countries[country],
-        selected: countryField?.toLowerCase() === enCountries[country]?.toLowerCase()
-      });
+      countries.push(countryEntry);
       continue;
     }
 
     if (ukCountriesKeys.includes(country)) {
-      ukCountries.push({
-        value: enCountries[country],
-        text: i18n.countries[country],
-        selected: countryField?.toLowerCase() === enCountries[country]?.toLowerCase()
-      });
+      ukCountries.push(countryEntry);
     } else {
-      countries.push({
-        value: enCountries[country],
-        text: i18n.countries[country],
-        selected: countryField?.toLowerCase() === enCountries[country]?.toLowerCase()
-      });
+      countries.push(countryEntry);
     }
   }
 
