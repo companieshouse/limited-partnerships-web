@@ -19,17 +19,17 @@ const isCapitalContributionApplicable = (partnershipType: PartnershipType, partn
 };
 
 // Capital contribution is optional when adding a partner during transition.
-const isOptionalAndEmpty = (data: Record<string, any>): boolean => {
+const isNotOptionalOrEmpty = (data: Record<string, any>): boolean => {
   const isContributionEmpty =
     !data.contribution_currency_type && !data.contribution_currency_value && !data.contribution_sub_types;
 
-  return Boolean(data.journeyTypes?.isTransition) && isAddLimitedPartnerPage(data.pageType) && isContributionEmpty;
+  return !data.journeyTypes?.isTransition || !isAddLimitedPartnerPage(data.pageType) || !isContributionEmpty;
 };
 
 const shouldValidateCapitalContribution = (data: Record<string, any>): boolean => {
   return (
     isCapitalContributionApplicable(data.partnershipType, data.partnerType || ("" as PartnerType)) &&
-    !isOptionalAndEmpty(data)
+    isNotOptionalOrEmpty(data)
   );
 };
 
