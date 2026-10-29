@@ -15,13 +15,19 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
 import { SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
 
-import { getServiceTitle, isPostTransition } from "../utils";
+import {
+  expectCapitalContributionSectionHidden,
+  expectCapitalContributionSectionShown,
+  getServiceTitle,
+  isPostTransition
+} from "../utils";
 
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 import { PagesRouting } from "../../../../controller/PageRouting";
 import PageType from "../../../../controller/PageType";
 import { runLegalEntityValidationTests } from "../legalEntityValidationTestSuite";
+import { runTransitionCapitalContributionTests } from "../transitionCapitalContributionTestSuite";
 
 type AddLimitedPartnerLegalEntityTestConfig = {
   url: string;
@@ -88,6 +94,8 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
 
           const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
           appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+          // Post-transition reads the partnership type from the company profile
+          companyProfile.data.subtype = partnershipType;
 
           const res = await request(app).get(`${getUrl(config.url)}?lang=${lang}`);
 
@@ -108,8 +116,10 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
 
           testTranslations(res.text, translationText.partner.addOrUpdatePartnerLegalEntityPage, config.translateExclude);
 
-          if (!isCapitalContributionPresent) {
-            expect(res.text).not.toContain(translationText.partner.capitalContribution.title);
+          if (isCapitalContributionPresent) {
+            expectCapitalContributionSectionShown(res.text, translationText);
+          } else {
+            expectCapitalContributionSectionHidden(res.text, translationText);
           }
 
           if (isPostTransition(config.serviceTitleTranslationKey)) {
@@ -210,6 +220,18 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
           expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.currencyRequired);
           expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.valueRequired);
           expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.atLeastOneType);
+        });
+      }
+
+      if (config.serviceTitleTranslationKey === SERVICE_NAME_KEY_TRANSITION) {
+        runTransitionCapitalContributionTests({
+          url: getUrl(config.url),
+          redirectUrl: getUrl(config.redirectUrl),
+          pageData: {
+            ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
+            ...limitedPartner.data,
+            ...datesBody
+          }
         });
       }
 

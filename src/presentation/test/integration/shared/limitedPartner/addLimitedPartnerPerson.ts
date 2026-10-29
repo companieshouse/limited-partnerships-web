@@ -13,11 +13,17 @@ import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
-import { getServiceTitle, isPostTransition } from "../utils";
+import {
+  expectCapitalContributionSectionHidden,
+  expectCapitalContributionSectionShown,
+  getServiceTitle,
+  isPostTransition
+} from "../utils";
 
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 import { SERVICE_NAME_KEY_REGISTRATION, SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
+import { runTransitionCapitalContributionTests } from "../transitionCapitalContributionTestSuite";
 
 type AddLimitedPartnerPersonTestConfig = {
   url: string;
@@ -121,8 +127,10 @@ export const runAddLimitedPartnerPersonTests = (config: AddLimitedPartnerPersonT
 
           testTranslations(res.text, translationText.partner.addPartnerPersonPage, config.translateExclude);
 
-          if (!isCapitalContributionPresent) {
-            expect(res.text).not.toContain(translationText.partner.capitalContribution.title);
+          if (isCapitalContributionPresent) {
+            expectCapitalContributionSectionShown(res.text, translationText);
+          } else {
+            expectCapitalContributionSectionHidden(res.text, translationText);
           }
 
           if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
@@ -226,6 +234,14 @@ export const runAddLimitedPartnerPersonTests = (config: AddLimitedPartnerPersonT
           expect(res.text).toContain(cyTranslationText.errorMessages.capitalContribution.currencyRequired);
           expect(res.text).toContain(cyTranslationText.errorMessages.capitalContribution.valueRequired);
           expect(res.text).toContain(cyTranslationText.errorMessages.capitalContribution.atLeastOneType);
+        });
+      }
+
+      if (config.serviceTitleTranslationKey === SERVICE_NAME_KEY_TRANSITION) {
+        runTransitionCapitalContributionTests({
+          url: getUrl(config.url),
+          redirectUrl: getUrl(config.redirectUrl),
+          pageData: validPageData
         });
       }
 
