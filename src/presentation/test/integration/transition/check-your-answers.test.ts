@@ -150,61 +150,109 @@ describe("Check Your Answers Page", () => {
   });
 
   describe("partners", () => {
-    it("should load the check your answers page with partners - EN", async () => {
-      const res = await request(app).get(URL);
+    it.each([
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
+    ])("should load the check your answers page with partners - %s", async (lang, translationText) => {
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
 
-      expect(res.text).not.toContain(
-        enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution
-      );
+      expect(res.text).not.toContain(translationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
 
-      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, [
+      testTranslations(res.text, translationText.checkYourAnswersPage.partners, [
         "capitalContribution",
         "dateEffectiveFrom",
         "ceaseDate",
         "warningMessageUpdate"
       ]);
 
-      checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, checkYourAnswersPersonKeys, enTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, checkYourAnswersPersonKeys, translationText);
 
-      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, enTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, translationText);
 
-      checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, checkYourAnswersPersonKeys, enTranslationText);
+      checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, checkYourAnswersPersonKeys, translationText);
 
-      checkIfPartnerValuesInText(res.text, limitedPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, enTranslationText);
+      checkIfPartnerValuesInText(res.text, limitedPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, translationText);
 
-      expect(res.text).toContain(enTranslationText.nationalities.british);
-      expect(res.text).toContain(enTranslationText.countries.unitedStates);
+      expect(res.text).toContain(translationText.nationalities.british);
+      expect(res.text).toContain(translationText.countries.unitedStates);
     });
 
-    it("should load the check your answers page with partners - CY", async () => {
-      const res = await request(app).get(URL + "?lang=cy");
+    it.each([
+      ["en", PartnershipType.LP, enTranslationText],
+      ["cy", PartnershipType.LP, cyTranslationText],
+      ["en", PartnershipType.SLP, enTranslationText],
+      ["cy", PartnershipType.SLP, cyTranslationText]
+    ])(
+      "should show limited partner capital contributions - %s - %s",
+      async (lang, partnershipType, translationText) => {
+        setLocalesEnabled(true);
 
-      expect(res.status).toBe(200);
+        limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      expect(res.text).not.toContain(
-        cyTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution
-      );
+        limitedPartnerPerson = new LimitedPartnerBuilder()
+          .isPerson()
+          .withContributionCurrencyType("GBP")
+          .withContributionCurrencyValue("5000.00")
+          .withContributionSubtypes(["MONEY", "SHARES"])
+          .build();
+        limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+          .isLegalEntity()
+          .withContributionCurrencyType("EUR")
+          .withContributionCurrencyValue("10000.00")
+          .withContributionSubtypes(["LAND_OR_PROPERTY", "SERVICES_OR_GOODS", "ANY_OTHER_ASSET"])
+          .build();
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
 
-      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, [
-        "capitalContribution",
-        "dateEffectiveFrom",
-        "ceaseDate",
-        "warningMessageUpdate"
-      ]);
+        const res = await request(app).get(URL + `?lang=${lang}`);
 
-      checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, checkYourAnswersPersonKeys, cyTranslationText);
+        expect(res.status).toBe(200);
 
-      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, cyTranslationText);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
 
-      checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, checkYourAnswersPersonKeys, cyTranslationText);
+        expect(res.text).toContain(`5000.00 ${translationText.currencies.GBP}`);
+        expect(res.text).toContain(translationText.partner.capitalContribution.money);
+        expect(res.text).toContain(translationText.partner.capitalContribution.shares);
 
-      checkIfPartnerValuesInText(res.text, limitedPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, cyTranslationText);
+        expect(res.text).toContain(`10000.00 ${translationText.currencies.EUR}`);
+        expect(res.text).toContain(translationText.partner.capitalContribution.landOrProperty);
+        expect(res.text).toContain(translationText.partner.capitalContribution.servicesOrGoods);
+        expect(res.text).toContain(translationText.partner.capitalContribution.anyOtherAsset);
+      }
+    );
 
-      expect(res.text).toContain(cyTranslationText.nationalities.british);
-      expect(res.text).toContain(cyTranslationText.countries.unitedStates);
-    });
+    it.each([
+      ["en", PartnershipType.LP, enTranslationText],
+      ["cy", PartnershipType.LP, cyTranslationText],
+      ["en", PartnershipType.SLP, enTranslationText],
+      ["cy", PartnershipType.SLP, cyTranslationText]
+    ])(
+      "should not show limited partner capital contributions when there are none - %s - %s",
+      async (lang, partnershipType, translationText) => {
+        setLocalesEnabled(true);
+
+        limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL + `?lang=${lang}`);
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(limitedPartnerPerson.data?.forename);
+        expect(res.text).toContain(limitedPartnerLegalEntity.data?.legal_entity_name);
+
+        expect(res.text).not.toContain(translationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+        Object.values(translationText.currencies).forEach((currency) => expect(res.text).not.toContain(currency));
+        expect(res.text).not.toContain(translationText.partner.capitalContribution.money);
+        expect(res.text).not.toContain(translationText.partner.capitalContribution.landOrProperty);
+        expect(res.text).not.toContain(translationText.partner.capitalContribution.shares);
+        expect(res.text).not.toContain(translationText.partner.capitalContribution.servicesOrGoods);
+        expect(res.text).not.toContain(translationText.partner.capitalContribution.anyOtherAsset);
+      }
+    );
   });
 
   describe("POST Check Your Answers Page", () => {
