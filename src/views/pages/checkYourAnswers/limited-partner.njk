@@ -14,16 +14,14 @@
     {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) + ", " + macros.formatNationality(item.data.nationality2, i18n) %}
   {% endif %}
   
-  {% if journeyTypes.isRegistration or journeyTypes.isPostTransition %}
-    {% set capitalContributionHtml -%}
-      <p class="govuk-body">
-        {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
-      </p>
-      <p class="govuk-body">
-        {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
-      </p>
-    {%- endset %}
-  {% endif %}
+  {% set capitalContributionHtml -%}
+    <p class="govuk-body">
+      {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
+    </p>
+    <p class="govuk-body">
+      {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
+    </p>
+  {%- endset %}
 
   {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
@@ -72,8 +70,7 @@
         }
       } if (props.data.limitedPartnership.data.partnership_type === "LP"
             or props.data.limitedPartnership.data.partnership_type === "SLP")
-            and item.data.contribution_currency_value
-            and (journeyTypes.isRegistration or journeyTypes.isPostTransition),
+            and item.data.contribution_currency_value,
 
       SET_DATE_EFFECTIVE_FROM_SECTION(item, "limitedPartner", journeyTypes, i18n)   
     ]
@@ -81,16 +78,15 @@
 
 {% elif item.data.legal_entity_name %}
   {% set country = i18n.countries[macros.makeCamelCase(item.data.legal_entity_registration_location)] %}
-  {% if journeyTypes.isRegistration or journeyTypes.isPostTransition %}
-    {% set capitalContributionHtml -%}
-      <p class="govuk-body">
-        {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
-      </p>
-      <p class="govuk-body">
-        {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
-      </p>
-    {%- endset %}
-  {% endif %}
+  {% set capitalContributionHtml -%}
+    <p class="govuk-body">
+      {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
+    </p>
+    <p class="govuk-body">
+      {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
+    </p>
+  {%- endset %}
+  
   
   {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
@@ -162,8 +158,7 @@
         }
       } if (props.data.limitedPartnership.data.partnership_type === "LP"
             or props.data.limitedPartnership.data.partnership_type === "SLP")
-            and item.data.contribution_currency_value
-            and (journeyTypes.isRegistration or journeyTypes.isPostTransition),
+            and item.data.contribution_currency_value,
       
       SET_DATE_EFFECTIVE_FROM_SECTION(item, "limitedPartner", journeyTypes, i18n)
     ]
