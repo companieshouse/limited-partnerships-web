@@ -28,7 +28,8 @@ export const localisationMiddleware = (
   res.locals.languages = localisationProps.languages;
   res.locals.i18n = localisationProps.i18n;
   res.locals.lang = localisationProps.lang;
-  res.locals.currentUrl = req.originalUrl.split("?")[0];
+  // Keep the query string so the language switcher preserves params like companyNumber
+  res.locals.currentUrl = req.originalUrl;
 
   next();
 };
