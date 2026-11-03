@@ -32,7 +32,17 @@
         },
         value: {
           text: item.data.forename + " " + item.data.surname
-        }
+        },
+         actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              ((props.currentUrl + "#forename") | replace(props.pageType, "add-limited-partner-person")),
+              i18n.checkYourAnswersPage.partners.person.name,
+              "change-name-button"
+            )
+          ]
+        } if journeyTypes.isPostTransition
       },
       {
         key: {
@@ -40,10 +50,20 @@
         },
         value: {
           text: item.data.former_names
-        }
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              ((props.currentUrl + "#former_names") | replace(props.pageType, "add-limited-partner-person")),
+              i18n.checkYourAnswersPage.partners.person.formerNames,
+              "change-former-names-button"
+            )
+          ]
+        } if journeyTypes.isPostTransition
       } if item.data.former_names,
       
-      SET_DATE_OF_BIRTH_SECTION(item, i18n),
+      SET_DATE_OF_BIRTH_SECTION(item, i18n, journeyTypes, props),
       
       {
         key: {
@@ -51,7 +71,17 @@
         },
         value: {
           text: nationalities
-        }
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              ((props.currentUrl + "#nationality1") | replace(props.pageType, "add-limited-partner-person")),
+              i18n.checkYourAnswersPage.partners.person.nationality,
+              "change-nationality-button"
+            )
+          ]
+        } if journeyTypes.isPostTransition
       },
       {
         key: {
@@ -59,7 +89,17 @@
         },
         value: {
           text: macros.formatAddress(item.data.usual_residential_address, true, i18n)
-        }
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              ((props.currentUrl) | replace(props.pageType, "enter-limited-partner-usual-residential-address")),
+              i18n.checkYourAnswersPage.partners.person.usualResidentialAddress,
+              "change-usual-residential-address-button"
+            )
+          ]
+        } if journeyTypes.isPostTransition
       },
       {
         key: {
@@ -67,12 +107,22 @@
         },
         value: {
           html: capitalContributionHtml
-        }
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              ((props.currentUrl + "#contribution_currency_type") | replace(props.pageType, "add-limited-partner-person")),
+              i18n.checkYourAnswersPage.partners.limitedPartners.capitalContribution,
+              "change-capital-contribution-button"
+            )
+          ]
+        } if journeyTypes.isPostTransition
       } if (props.data.limitedPartnership.data.partnership_type === "LP"
             or props.data.limitedPartnership.data.partnership_type === "SLP")
             and item.data.contribution_currency_value,
 
-      SET_DATE_EFFECTIVE_FROM_SECTION(item, "limitedPartner", journeyTypes, i18n)   
+      SET_DATE_EFFECTIVE_FROM_SECTION(item, "limitedPartner", journeyTypes, i18n, props)   
     ]
   }) }}
 

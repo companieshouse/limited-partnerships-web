@@ -3,10 +3,25 @@ import app from "../../../app";
 
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
-import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
-import { checkIfPartnerValuesInText, countOccurrences, getUrl, checkYourAnswersPersonKeys, setLocalesEnabled, testTranslations } from "../../../../utils";
+import {
+  ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+  LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL
+} from "../../../../../controller/postTransition/url";
+import {
+  checkIfPartnerValuesInText,
+  countOccurrences,
+  getUrl,
+  checkYourAnswersPersonKeys,
+  setLocalesEnabled,
+  testTranslations,
+  expectChangeLinks
+} from "../../../../utils";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
+import {
+  CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url/postTransition";
 import LimitedPartnerBuilder from "../../../../../../presentation/test/builder/LimitedPartnerBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
@@ -29,6 +44,9 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
       .withFormerNames("Joe Dee")
       .withDateEffectiveFrom("2024-10-10")
       .withNationality1("Welsh")
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("1000")
+      .withContributionSubtypes(["MONEY"])
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
@@ -58,6 +76,16 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     }
     expect(countOccurrences(res.text, translationText.serviceName.addLimitedPartner)).toBe(2);
     expect(res.text).toContain(`data-event-id="check-your-answers-add-limited-partner-submit-button"`);
+
+    expectChangeLinks(res.text, [
+      `${ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL}?lang=${lang}#forename`,
+      `${ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL}?lang=${lang}#former_names`,
+      `${ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL}?lang=${lang}#nationality1`,
+      `${ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL}?lang=${lang}#date_of_birth-day`,
+      `${ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL}?lang=${lang}#contribution_currency_type`,
+      `${ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL}?lang=${lang}#date_effective_from-day`,
+      `${ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL}?lang=${lang}`
+    ]);
   });
 
   it.each([
