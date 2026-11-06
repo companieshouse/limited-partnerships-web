@@ -223,7 +223,8 @@
              },
             "removePartner":{
                 "selectRemoveChoice": "Select if you are sure you want to remove this partner."
-             }
+             },
+             "updateCapitalContributionRequired": "Select whether you need to update this partner's capital contributions"
         },
 
         "personWithSignificantControl": {

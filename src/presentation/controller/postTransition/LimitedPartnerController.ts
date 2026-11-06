@@ -65,6 +65,14 @@ class LimitedPartnerPostTransitionController extends PartnerController {
     });
   }
 
+  getCapitalContributionPagesRouting() {
+    return this.postTransitionPartnerController.getCapitalContributionPagesRouting();
+  }
+
+  sendCapitalContributionPagesData() {
+    return this.postTransitionPartnerController.sendCapitalContributionPagesData();
+  }
+
   getUpdatePageRouting() {
     return this.postTransitionPartnerController.getUpdatePartner(PartnerType.limitedPartner);
   }

@@ -4,7 +4,8 @@ import {
   IncorporationKind,
   LimitedPartner,
   LimitedPartnership,
-  PartnerKind
+  PartnerKind,
+  PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
@@ -550,6 +551,107 @@ class PostTransitionPartnerController extends PartnerController {
     return { errors, fieldToReset };
   }
 
+  getCapitalContributionPagesRouting() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids, pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(
+          tokens,
+          ids,
+          PartnerType.limitedPartner
+        );
+
+        if (
+          limitedPartnership.data?.partnership_type === PartnershipType.PFLP ||
+          limitedPartnership.data?.partnership_type === PartnershipType.SPFLP
+        ) {
+          response.redirect(super.insertIdsInUrl(pageRouting.data?.nextNoUrl, ids, request.url));
+          return;
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartner: partnerEntity }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  sendCapitalContributionPagesData() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        if (!request.body.update_capital_contribution_required) {
+          const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(
+            tokens,
+            ids,
+            PartnerType.limitedPartner
+          );
+          const { data: renderData, url } = this.buildPartnerErrorRenderData(
+            pageType,
+            pageRouting,
+            limitedPartnership,
+            partnerEntity,
+            {},
+            PartnerType.limitedPartner
+          );
+
+          const errors = new UIErrors().setWebError(
+            pageRouting.data?.fieldName,
+            response.locals.i18n.errorMessages.partners.updateCapitalContributionRequired
+          );
+
+          return response.render(super.templateName(url), super.makeProps(pageRouting, renderData, errors));
+        }
+
+        const result = await super.sendData(PartnerType.limitedPartner, tokens, ids, request.body);
+
+        if (result?.errors) {
+          const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(
+            tokens,
+            ids,
+            PartnerType.limitedPartner
+          );
+
+          const { data: renderData, url } = this.buildPartnerErrorRenderData(
+            pageType,
+            pageRouting,
+            limitedPartnership,
+            partnerEntity,
+            request.body,
+            PartnerType.limitedPartner
+          );
+
+          response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
+
+          return;
+        }
+
+        if (request.body.update_capital_contribution_required === "true") {
+          response.redirect(this.insertIdsInUrl(pageRouting.data?.nextYesUrl, ids));
+          return;
+        } else if (request.body.update_capital_contribution_required === "false") {
+          response.redirect(this.insertIdsInUrl(pageRouting.data?.nextNoUrl, ids));
+          return;
+        }
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   sendDateOfUpdatePageData(partner: PartnerType) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -629,7 +731,6 @@ class PostTransitionPartnerController extends PartnerController {
           }
         };
       }
-
     }
 
     if (partner === PartnerType.generalPartner) {

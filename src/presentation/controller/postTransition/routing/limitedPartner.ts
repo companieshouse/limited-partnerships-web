@@ -115,12 +115,26 @@ const postTransitionRoutingRemoveLimitedPartnerLegalEntityCheckYourAnswers = {
 const postTransitionRoutingUpdateLimitedPartnerPerson = {
   previousUrl: YOUR_COMPANY_OFFICERS_URL,
   currentUrl: url.UPDATE_LIMITED_PARTNER_PERSON_URL,
-  nextUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  nextUrl: url.UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_YES_NO_URL,
   pageType: PostTransitionPageType.updateLimitedPartnerPerson,
   data: {
     serviceName: "updateLimitedPartnerPerson",
     partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.person
+  }
+};
+
+const postTransitionRoutingUpdateCapitalContributionYesNo = {
+  previousUrl: url.UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+  currentUrl: url.UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_YES_NO_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateLimitedPartnerCapitalContributionYesNo,
+  data: {
+    nextYesUrl: url.UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_URL,
+    nextNoUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+    titleKey: "limitedPartnerCapitalContribution",
+    fieldName: "update_capital_contribution_required",
+    trackingLabel: "update-capital-contribution-yes-no"
   }
 };
 
@@ -243,6 +257,7 @@ const limitedPartnerRouting = [
   postTransitionRoutingRemoveLimitedPartnerLegalEntityCheckYourAnswers,
 
   postTransitionRoutingUpdateLimitedPartnerPerson,
+  postTransitionRoutingUpdateCapitalContributionYesNo,
   postTransitionRoutingUpdateUsualResidentialAddressYesNo,
   postTransitionRoutingWhenDidLimitedPartnerPersonChange,
   postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers,
