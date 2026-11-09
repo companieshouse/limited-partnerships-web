@@ -91,7 +91,7 @@ describe("Update Capital Contribution Yes No Page", () => {
       ["PLP", PartnershipType.PFLP],
       ["SPFLP", PartnershipType.SPFLP]
     ])(
-      "should redicted to usual residential address if type is %s",
+      "should redirected to usual residential address if type is %s",
       async (description: string, partnershipType: PartnershipType) => {
         const companyProfile = new CompanyProfileBuilder().withSubtype(partnershipType).build();
         appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);

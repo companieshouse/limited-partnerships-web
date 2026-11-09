@@ -101,7 +101,6 @@ class LimitedPartnerPostTransitionController extends PartnerController {
   sendCapitalContributionPagesData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        this.generalPartnerService.setI18n(response.locals.i18n);
         this.limitedPartnerService.setI18n(response.locals.i18n);
 
         const { tokens, ids } = super.extract(request);
@@ -167,35 +166,15 @@ class LimitedPartnerPostTransitionController extends PartnerController {
   }> {
     let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> = {};
 
-    if (ids.submissionId) {
-      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-        tokens,
-        ids.transactionId,
-        ids.submissionId
-      );
-    }
-
     if (this.companyService) {
-      if (!limitedPartnership.data) {
-        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
+      const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
-        limitedPartnership = {
-          ...result.limitedPartnership,
-          data: {
-            ...result.limitedPartnership.data
-          }
-        };
-      } else {
-        const registration_date = await this.companyService.getCompanyIncorporationDate(tokens, ids.companyId);
-
-        limitedPartnership = {
-          ...limitedPartnership,
-          data: {
-            ...limitedPartnership.data,
-            registration_date
-          }
-        };
-      }
+      limitedPartnership = {
+        ...result.limitedPartnership,
+        data: {
+          ...result.limitedPartnership.data
+        }
+      };
     }
 
     const limitedPartner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
