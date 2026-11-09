@@ -148,7 +148,8 @@ const postTransitionRoutingUpdateUsualResidentialAddressYesNo = {
     nextNoUrl: url.WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
     titleKey: "limitedPartnerUsualResidentialAddress",
     fieldName: "update_usual_residential_address_required",
-    trackingLabel: "update-usual-residential-address-yes-no"
+    trackingLabel: "update-usual-residential-address-yes-no",
+    conditionalPreviousUrl: url.UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_YES_NO_URL
   }
 };
 

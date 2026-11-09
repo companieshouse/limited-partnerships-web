@@ -230,6 +230,8 @@ class PostTransitionPartnerController extends PartnerController {
           template = UPDATE_ADDRESS_YES_NO_TEMPLATE;
         }
 
+        this.conditionalPostTransitionPreviousUrl(pageRouting, ids, limitedPartnership);
+
         response.render(
           template,
           super.makeProps(pageRouting, { limitedPartnership, partnerType, [partnerType]: partner }, null)
@@ -238,6 +240,15 @@ class PostTransitionPartnerController extends PartnerController {
         next(error);
       }
     };
+  }
+
+  private conditionalPostTransitionPreviousUrl(pageRouting: PageRouting, ids: Ids, limitedPartnership: LimitedPartnership) {
+    if (pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo &&
+      limitedPartnership.data?.partnership_type === PartnershipType.LP ||
+      limitedPartnership.data?.partnership_type === PartnershipType.SLP
+    ) {
+      pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.conditionalPreviousUrl, ids);
+    }
   }
 
   getCheckYourAnswersPageRouting(partnerType: PartnerType) {

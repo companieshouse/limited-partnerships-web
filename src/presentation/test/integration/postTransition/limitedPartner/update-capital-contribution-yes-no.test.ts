@@ -15,6 +15,7 @@ import { enTranslationText, cyTranslationText } from "../../../../../test/utils/
 import {
   UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_URL,
   UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_YES_NO_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
   UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL
 } from "../../../../controller/postTransition/url";
 
@@ -81,6 +82,8 @@ describe("Update Capital Contribution Yes No Page", () => {
         }
 
         expect(res.text).toContain(translationText.buttons.continue);
+
+        expect(res.text).toContain(getUrl(UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL));
       }
     );
 
