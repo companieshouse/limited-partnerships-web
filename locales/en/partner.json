@@ -186,6 +186,12 @@
             "secondNationalitySelectPrompt": "Select a second nationality",
             "secondNationalityHint" : "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
             "publicRegisterLine1" : "We'll show all of this information on the public register."
+        },
+        "update": {
+            "limitedPartnerCapitalContribution": {
+                "title": "Do you need to update the capital contributions?",
+                "hint": "This is the total value of the monetary and non-monetary contributions"
+            }
         }
     }
 }
