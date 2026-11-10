@@ -101,7 +101,7 @@ describe("Update Capital Contribution Yes No Page", () => {
   });
 
   describe("POST Update Capital Contribution Page", () => {
-    it("should redirect to %s is selected", async () => {
+    it("should redirect to URA yes no", async () => {
       const res = await request(app)
         .post(`${URL}`)
         .send({
