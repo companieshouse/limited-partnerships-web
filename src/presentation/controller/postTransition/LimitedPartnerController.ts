@@ -245,7 +245,7 @@ class LimitedPartnerPostTransitionController extends PartnerController {
 
         const serviceName = response.locals?.serviceName;
         if (serviceName) {
-          const serviceNameQuery = serviceName.toLowerCase().replace(/\s+/g, "-");
+          const serviceNameQuery = serviceName.toLowerCase().replaceAll(/\s+/g, "-");
           url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, serviceNameQuery);
         }
 
