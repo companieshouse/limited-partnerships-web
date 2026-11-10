@@ -24,6 +24,8 @@ import TransactionGeneralPartner from "../../../../../domain/entities/Transactio
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
+import PostTransitionPageType from "../../../../controller/postTransition/pageType";
+import postTransitionRouting from "../../../../controller/postTransition/routing";
 
 describe("Update Capital Contribution Yes No Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_URL);
@@ -96,5 +98,36 @@ describe("Update Capital Contribution Yes No Page", () => {
         expect(res.text).toContain(`Redirecting to ${REDIRECT}`);
       }
     );
+  });
+
+  describe("POST Update Capital Contribution Page", () => {
+    it("should redirect to %s is selected", async () => {
+      const res = await request(app)
+        .post(`${URL}`)
+        .send({
+          pageType: PostTransitionPageType.updateLimitedPartnerCapitalContribution,
+          contribution_currency_type: "Pound Sterling (GBP)",
+          contribution_currency_value: "100.00",
+          contribution_sub_types: ["MONEY"]
+        });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT}`);
+    });
+
+    it("should return validation error when no data", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          ...postTransitionRouting.get(PostTransitionPageType.updateLimitedPartnerCapitalContribution),
+          partnershipType: PartnershipType.LP
+        });
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.currencyRequired);
+      expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.valueRequired);
+      expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.atLeastOneType);
+    });
   });
 });

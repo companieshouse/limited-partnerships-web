@@ -91,7 +91,10 @@ class LimitedPartnerPostTransitionController extends PartnerController {
           return;
         }
 
-        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartnership, limitedPartner }, null));
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership, limitedPartner }, null)
+        );
       } catch (error) {
         next(error);
       }
@@ -107,42 +110,36 @@ class LimitedPartnerPostTransitionController extends PartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        if (!request.body.update_capital_contribution_required) {
-          const { limitedPartnership, limitedPartner } = await this.getPartnershipAndPartnerEntity(tokens, ids);
-          const { data: renderData, url } = this.buildPartnerErrorRenderData(
-            pageType,
-            pageRouting,
-            limitedPartnership,
-            limitedPartner,
-            {},
-            PartnerType.limitedPartner
-          );
-
+        if (
+          pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerCapitalContributionYesNo &&
+          !request.body.update_capital_contribution_required
+        ) {
           const errors = new UIErrors().setWebError(
             pageRouting.data?.fieldName,
             response.locals.i18n.errorMessages.partners.updateCapitalContributionRequired
           );
 
-          return response.render(super.templateName(url), super.makeProps(pageRouting, renderData, errors));
+          return await this.renderErrors(request, response, errors);
         }
 
-        const result = await super.sendData(PartnerType.limitedPartner, tokens, ids, request.body);
+        const data = {
+          ...request.body,
+          partnerType: pageRouting?.data?.partnerType,
+          partnerEntityType: pageRouting?.data?.partnerEntityType,
+          journeyTypes: response.locals.journeyTypes,
+          pageKey: pageRouting?.data?.titleKey
+        };
 
-        if (result?.errors) {
-          const { limitedPartnership, limitedPartner } = await this.getPartnershipAndPartnerEntity(tokens, ids);
+        const capitalContributionErrors = this.limitedPartnerService.validateCapitalContribution(data, response.locals?.i18n);
 
-          const { data: renderData, url } = this.buildPartnerErrorRenderData(
-            pageType,
-            pageRouting,
-            limitedPartnership,
-            limitedPartner,
-            request.body,
-            PartnerType.limitedPartner
-          );
+        if (capitalContributionErrors?.hasErrors()) {
+          return await this.renderErrors(request, response, capitalContributionErrors);
+        }
 
-          response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
+        const result = await super.sendData(PartnerType.limitedPartner, tokens, ids, data);
 
-          return;
+        if (result?.errors?.hasErrors()) {
+          return await this.renderErrors(request, response, result.errors);
         }
 
         if (request.body.update_capital_contribution_required === "true") {
@@ -160,7 +157,29 @@ class LimitedPartnerPostTransitionController extends PartnerController {
     };
   }
 
-  private async getPartnershipAndPartnerEntity(tokens: Tokens, ids: Ids): Promise<{
+  private async renderErrors(request: Request, response: Response, errors: UIErrors) {
+    const { tokens, ids } = super.extract(request);
+    const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+    const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+    const { limitedPartnership, limitedPartner } = await this.getPartnershipAndPartnerEntity(tokens, ids);
+
+    const { data: renderData, url } = this.buildPartnerErrorRenderData(
+      pageType,
+      pageRouting,
+      limitedPartnership,
+      limitedPartner,
+      request.body,
+      PartnerType.limitedPartner
+    );
+
+    response.render(super.templateName(url), super.makeProps(pageRouting, renderData, errors));
+  }
+
+  private async getPartnershipAndPartnerEntity(
+    tokens: Tokens,
+    ids: Ids
+  ): Promise<{
     limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners>;
     limitedPartner: LimitedPartner;
   }> {
@@ -226,7 +245,7 @@ class LimitedPartnerPostTransitionController extends PartnerController {
 
         const serviceName = response.locals?.serviceName;
         if (serviceName) {
-          const serviceNameQuery = serviceName.toLowerCase().replace(/\s+/g, '-');
+          const serviceNameQuery = serviceName.toLowerCase().replace(/\s+/g, "-");
           url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, serviceNameQuery);
         }
 
