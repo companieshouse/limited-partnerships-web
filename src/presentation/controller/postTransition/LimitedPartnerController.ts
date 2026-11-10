@@ -91,7 +91,7 @@ class LimitedPartnerPostTransitionController extends PartnerController {
           return;
         }
 
-        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartner }, null));
+        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartnership, limitedPartner }, null));
       } catch (error) {
         next(error);
       }
