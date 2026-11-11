@@ -572,11 +572,12 @@ class PostTransitionPartnerController extends PartnerController {
 
     let nextUrl = request.body[fieldName] === "false" ? nextNoUrl : nextYesUrl;
 
-    if (
+    const shouldRedirectToAddressExistsPage =
       isUsualResidentialAddressYesNoPage(pageType) &&
       partnerEntity.data?.usual_residential_address?.address_line_1 &&
-      request.body[fieldName] === "true"
-    ) {
+      request.body[fieldName] === "true";
+
+    if (shouldRedirectToAddressExistsPage) {
       nextUrl = addressExistsUrl;
     }
 
