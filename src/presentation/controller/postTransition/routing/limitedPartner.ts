@@ -233,7 +233,8 @@ const postTransitionRoutingUpdatePrincipalOfficeAddressYesNo = {
     partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.legalEntity,
     fieldName: "update_principal_office_address_required",
-    trackingLabel: "update-principal-office-address-yes-no"
+    trackingLabel: "update-principal-office-address-yes-no",
+    conditionalPreviousUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_YES_NO_URL
   }
 };
 
