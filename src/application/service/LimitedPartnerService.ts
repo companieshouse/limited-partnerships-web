@@ -5,6 +5,7 @@ import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
 import { Tokens } from "../../domain/types";
 import PartnerValidator from "../../domain/validator/PartnerValidator";
+import { validatePartnerCapitalContribution } from "../../domain/validator/capitalContributionValidator";
 
 class LimitedPartnerService {
   i18n: any;
@@ -138,6 +139,14 @@ class LimitedPartnerService {
         errors
       };
     }
+  }
+
+  validateCapitalContribution(data: Record<string, any>, i18n: Record<string, any>) {
+    const uiErrors = new UIErrors();
+
+    validatePartnerCapitalContribution(data, i18n?.currencies, uiErrors, i18n?.errorMessages?.capitalContribution);
+
+    return uiErrors;
   }
 }
 
