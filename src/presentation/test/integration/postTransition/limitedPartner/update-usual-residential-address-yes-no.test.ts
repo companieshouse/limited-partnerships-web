@@ -12,7 +12,7 @@ import {
 } from "../../../../../presentation/test/utils";
 
 import {
-  UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_YES_NO_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL,
   UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
   UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL
@@ -108,7 +108,7 @@ describe("Update Usual Residential Address Yes No Page", () => {
         expect(res.status).toBe(200);
 
         if (partnershipType === PartnershipType.LP || PartnershipType.SLP) {
-          expect(res.text).toContain(getUrl(UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_YES_NO_URL));
+          expect(res.text).toContain(getUrl(UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL));
         } else {
           expect(res.text).toContain(getUrl(UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL));
         }

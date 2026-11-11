@@ -13,8 +13,8 @@ import {
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 
 import {
-  UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_URL,
-  UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_YES_NO_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL,
   UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
   UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL
 } from "../../../../controller/postTransition/url";
@@ -26,8 +26,8 @@ import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import TransactionGeneralPartner from "../../../../../domain/entities/TransactionGeneralPartner";
 
 describe("Update Capital Contribution Yes No Page", () => {
-  const URL = getUrl(UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_YES_NO_URL);
-  const REDIRECT_YES = getUrl(UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_URL);
+  const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL);
+  const REDIRECT_YES = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_URL);
   const REDIRECT_NO = getUrl(UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
 
   let limitedPartner: TransactionGeneralPartner;
@@ -125,7 +125,7 @@ describe("Update Capital Contribution Yes No Page", () => {
       ['URA yes no page when "no"', "false", REDIRECT_NO]
     ])("should redirect to %s is selected", async (description: string, pageValue: string, redirectUrl: string) => {
       const res = await request(app).post(`${URL}`).send({
-        pageType: PostTransitionPageType.updateLimitedPartnerCapitalContributionYesNo,
+        pageType: PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo,
         update_capital_contribution_required: pageValue
       });
 
@@ -135,7 +135,7 @@ describe("Update Capital Contribution Yes No Page", () => {
 
     it("should return validation error when no option is selected", async () => {
       const res = await request(app).post(`${URL}`).send({
-        pageType: PostTransitionPageType.updateLimitedPartnerCapitalContributionYesNo
+        pageType: PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo
       });
 
       expect(res.status).toBe(200);
