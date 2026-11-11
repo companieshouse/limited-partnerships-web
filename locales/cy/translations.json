@@ -32,6 +32,9 @@
             "dob": "WELSH - full dates of birth of any partners who are people",
             "ura": "WELSH - usual residential addresses of any partners who are people"
         },
+        "notSupplied": "WELSH - Not supplied",
+        "printPage": "WELSH - Print or save this page for your records.",
+        "noCopyWarning": "WELSH - We will not send you or the partnership a copy of this information.",
 
         "payment" : "WELSH - Continue to payment",
         "submitFiling" : "WELSH - Submit filing",

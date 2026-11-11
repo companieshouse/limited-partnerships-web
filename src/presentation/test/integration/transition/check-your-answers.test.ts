@@ -9,7 +9,7 @@ import {
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { checkIfPartnerValuesInText, getUrl, checkYourAnswersPersonKeys, setLocalesEnabled, testTranslations, checkYourAnswersLegalEntityKeys } from "../../utils";
+import { checkIfPartnerValuesInText, getUrl, checkYourAnswersPersonKeys, setLocalesEnabled, testTranslations, checkYourAnswersLegalEntityKeys, toEscapedHtml } from "../../utils";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import { TransactionKind } from "../../../../domain/entities/TransactionTypes";
@@ -70,10 +70,15 @@ describe("Check Your Answers Page", () => {
         "update",
         "ceaseDate",
         "warningMessageUpdate",
-        "psc"
+        "psc",
+        "notSupplied",
+        "printPage",
+        "noCopyWarning"
       ]);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.checkYourAnswersPage.warningMessage.warning));
+      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.printPage);
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.generalPartners.dateEffectiveFrom);
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom);
       expect(res.text).not.toContain("WELSH -");
@@ -99,10 +104,15 @@ describe("Check Your Answers Page", () => {
         "update",
         "ceaseDate",
         "warningMessageUpdate",
-        "psc"
+        "psc",
+        "notSupplied",
+        "printPage",
+        "noCopyWarning"
       ]);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
+      expect(res.text).toContain(toEscapedHtml(cyTranslationText.checkYourAnswersPage.warningMessage.warning));
+      expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.printPage);
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.partners.generalPartners.dateEffectiveFrom);
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom);
       expect(res.text).toContain("WELSH -");

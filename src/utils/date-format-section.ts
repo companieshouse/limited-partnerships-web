@@ -5,7 +5,7 @@ import { formatDate } from "./date-format";
 export const setDateOfBirthSection = (partner: Record<string, any>, i18n: Record<string, any>, journeyTypes?: JourneyTypes, props?: Record<string, any>) => {
   let actions = {};
 
-  if (journeyTypes?.isPostTransition) {
+  if (journeyTypes?.isPostTransition && props) {
     const endURL = partner.data.kind.includes("general") ? "add-general-partner-person" : "add-limited-partner-person";
 
     actions = {
@@ -40,7 +40,9 @@ export const setDateEffectiveFromSection = (partner: Record<string, any>, type: 
   let actions = {};
 
   if (journeyTypes.isPostTransition && props) {
-    const endURL = partner.data.kind.includes("general") ? "add-general-partner-person" : "add-limited-partner-person";
+    const partnerType = type === "generalPartner" ? "general" : "limited";
+    const entityType = partner.data.kind.includes("legal-entity") ? "legal-entity" : "person";
+    const endURL = `add-${partnerType}-partner-${entityType}`;
 
     actions = {
       items: [
