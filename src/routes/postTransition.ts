@@ -687,7 +687,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
     companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+    dependencies.generalPartnerPostTransitionController.sendAddressYesNoPageData()
   );
 
   router.get(
@@ -698,7 +698,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
     companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+    dependencies.generalPartnerPostTransitionController.sendAddressYesNoPageData()
   );
 
   router.get(
@@ -764,7 +764,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
     companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+    dependencies.generalPartnerPostTransitionController.sendAddressYesNoPageData()
   );
 
   router.get(
@@ -830,7 +830,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
     companyAuthentication,
-    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
+    dependencies.limitedPartnerPostTransitionController.sendAddressYesNoPageData()
   );
 
   router.get(
@@ -896,7 +896,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
     companyAuthentication,
-    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
+    dependencies.limitedPartnerPostTransitionController.sendAddressYesNoPageData()
   );
 
   router.get(

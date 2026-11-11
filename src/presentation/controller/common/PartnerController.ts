@@ -556,16 +556,6 @@ abstract class PartnerController extends AbstractController {
       }
       return;
     }
-
-    // handle post-transition yes/no pages (URA, correspondence address, etc.)
-    const { ids } = super.extract(request);
-    const { nextYesUrl, nextNoUrl, fieldName } = pageRouting.data ?? {};
-    const isYesNoPage = nextYesUrl && nextNoUrl && fieldName;
-
-    if (isYesNoPage) {
-      const nextUrl = request.body[fieldName] === "false" ? nextNoUrl : nextYesUrl;
-      pageRouting.nextUrl = this.insertIdsInUrl(nextUrl, ids, request.url);
-    }
   }
 
   private async setGeneralPartnerNextUrl(

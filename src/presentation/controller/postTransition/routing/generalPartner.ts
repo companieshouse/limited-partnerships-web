@@ -7,7 +7,8 @@ import {
   ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+  ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
 import { YOUR_COMPANY_OFFICERS_URL } from "../../../../config";
 import { PartnerEntityType, PartnerType } from "../../../../domain/types";
@@ -140,6 +141,7 @@ const postTransitionRoutingUpdateUsualResidentialAddressYesNo = {
   data: {
     nextYesUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     nextNoUrl: url.UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+    addressExistsUrl: ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     titleKey: "usualResidentialAddress",
     fieldName: "update_usual_residential_address_required",
     trackingLabel: "update-usual-residential-address-yes-no"

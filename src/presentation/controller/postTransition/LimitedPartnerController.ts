@@ -73,6 +73,10 @@ class LimitedPartnerPostTransitionController extends PartnerController {
     return this.postTransitionPartnerController.sendPageData(PartnerType.limitedPartner);
   }
 
+  sendAddressYesNoPageData() {
+    return this.postTransitionPartnerController.sendAddressYesNoPageData(PartnerType.limitedPartner);
+  }
+
   getCeaseDate() {
     return this.postTransitionPartnerController.getCeaseDate();
   }
@@ -106,7 +110,7 @@ class LimitedPartnerPostTransitionController extends PartnerController {
 
         const serviceName = response.locals?.serviceName;
         if (serviceName) {
-          const serviceNameQuery = serviceName.toLowerCase().replace(/\s+/g, '-');
+          const serviceNameQuery = serviceName.toLowerCase().replace(/\s+/g, "-");
           url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, serviceNameQuery);
         }
 
