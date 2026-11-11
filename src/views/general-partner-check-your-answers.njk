@@ -25,7 +25,11 @@
           
           {% include "pages/checkYourAnswers/general-partner.njk" %}
 
-          {% include "pages/checkYourAnswers/warning-message.njk" %}
+          {% if journeyTypes.isPostTransition and item.data.legal_entity_name %}
+            {% include "pages/checkYourAnswers/print-message.njk" %}
+          {% else %}
+            {% include "pages/checkYourAnswers/warning-message.njk" %}
+          {% endif %}
 
           <p class="govuk-body govuk-!-font-size-20 check-your-answers-javascript-disabled-text-style">{{ i18n.print.buttonTextNoJs }}</p>
 

@@ -10,7 +10,7 @@ import {
 import { CHECK_YOUR_ANSWERS_URL, REVIEW_LIMITED_PARTNERS_URL, REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { checkIfPartnerValuesInText, contributionKeys, getUrl, checkYourAnswersLegalEntityKeys, checkYourAnswersPersonKeys, setLocalesEnabled, testTranslations, countOccurrences } from "../../utils";
+import { checkIfPartnerValuesInText, contributionKeys, getUrl, checkYourAnswersLegalEntityKeys, checkYourAnswersPersonKeys, setLocalesEnabled, testTranslations, countOccurrences, toEscapedHtml } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
@@ -134,7 +134,10 @@ describe("Check Your Answers Page", () => {
         "update",
         "ceaseDate",
         "warningMessageUpdate",
-        "psc"
+        "psc",
+        "notSupplied",
+        "printPage",
+        "noCopyWarning"
       ]);
       expect(res.text).toContain(translationText.partnership.termPage.byAgreement);
       expect(res.text).toContain(translationText.print.buttonText);
@@ -334,7 +337,10 @@ describe("Check Your Answers Page", () => {
       "update",
       "ceaseDate",
       "warningMessageUpdate",
-      "psc"
+      "psc",
+      "notSupplied",
+      "printPage",
+      "noCopyWarning"
     ]);
 
     checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, checkYourAnswersPersonKeys, translationText);
@@ -347,6 +353,9 @@ describe("Check Your Answers Page", () => {
 
     expect(res.text).toContain(translationText.nationalities.british);
     expect(res.text).toContain(countriesText.countries.unitedStates);
+
+    expect(res.text).toContain(toEscapedHtml(translationText.checkYourAnswersPage.warningMessage.warning));
+    expect(res.text).not.toContain(translationText.checkYourAnswersPage.printPage);
   });
 
   it("should load the check your answers page with capital contribution data for limited partner person", async () => {
