@@ -180,7 +180,7 @@ describe("Update Capital Contribution Yes No Page", () => {
       ]
     ])(
       "should redirect to %s is selected",
-      async (description: string, pageType, pageValue: string, url: string, redirectUrl: string) => {
+      async (description: string, pageType: PostTransitionPageType, pageValue: string, url: string, redirectUrl: string) => {
         const res = await request(app).post(`${url}`).send({
           pageType,
           update_capital_contribution_required: pageValue
@@ -191,17 +191,15 @@ describe("Update Capital Contribution Yes No Page", () => {
       }
     );
 
-    it.each([[config.person.url], [config.legalEntity.url]])(
-      "should return validation error when no option is selected",
-      async (url: string) => {
-        const res = await request(app).post(`${url}`).send({
-          pageType: PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo
-        });
+    it.each([
+      [config.person.url, PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo],
+      [config.legalEntity.url, PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo]
+    ])("should return validation error when no option is selected", async (url: string, pageType: PostTransitionPageType) => {
+      const res = await request(app).post(`${url}`).send({ pageType });
 
-        expect(res.status).toBe(200);
-        const errorMessage = enTranslationText.errorMessages.partners.updateCapitalContributionRequired;
-        expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(2);
-      }
-    );
+      expect(res.status).toBe(200);
+      const errorMessage = enTranslationText.errorMessages.partners.updateCapitalContributionRequired;
+      expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(2);
+    });
   });
 });
