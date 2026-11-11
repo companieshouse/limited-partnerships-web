@@ -62,13 +62,15 @@ enum PostTransitionPageType {
   updateGeneralPartnerStopScreenNoChange = "update-general-partner-stop-screen-no-change",
 
   updateLimitedPartnerPerson = "update-limited-partner-person",
-  updateLimitedPartnerCapitalContributionYesNo = "update-limited-partner-capital-contribution-yes-no",
-  updateLimitedPartnerCapitalContribution = "update-limited-partner-capital-contribution",
+  updateLimitedPartnerPersonCapitalContributionYesNo = "update-limited-partner-person-capital-contribution-yes-no",
+  updateLimitedPartnerPersonCapitalContribution = "update-limited-partner-person-capital-contribution",
   updateLimitedPartnerUsualResidentialAddressYesNo = `update-limited-partner-usual-residential-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
   whenDidLimitedPartnerPersonDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-limited-partner-person-details-change`,
   updateLimitedPartnerPersonCheckYourAnswers = `limited-partner-person-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
   updateLimitedPartnerLegalEntity = "update-limited-partner-legal-entity",
+  updateLimitedPartnerLegalEntityCapitalContributionYesNo = "update-limited-partner-legal-entity-capital-contribution-yes-no",
+  updateLimitedPartnerLegalEntityCapitalContribution = "update-limited-partner-legal-entity-capital-contribution",
   updateLimitedPartnerPrincipalOfficeAddressYesNo = `update-limited-partner-principal-office-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
   whenDidLimitedPartnerLegalEntityDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-limited-partner-legal-entity-details-change`,
   updateLimitedPartnerLegalEntityCheckYourAnswers = `limited-partner-legal-entity-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,

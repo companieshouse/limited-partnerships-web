@@ -243,9 +243,11 @@ class PostTransitionPartnerController extends PartnerController {
   }
 
   private conditionalPostTransitionPreviousUrl(pageRouting: PageRouting, ids: Ids, limitedPartnership: LimitedPartnership) {
-    if (pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo &&
-      limitedPartnership.data?.partnership_type === PartnershipType.LP ||
-      limitedPartnership.data?.partnership_type === PartnershipType.SLP
+    if (
+      (pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo ||
+        pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo) &&
+      (limitedPartnership.data?.partnership_type === PartnershipType.LP ||
+        limitedPartnership.data?.partnership_type === PartnershipType.SLP)
     ) {
       pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.conditionalPreviousUrl, ids);
     }

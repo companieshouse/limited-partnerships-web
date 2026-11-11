@@ -1,5 +1,5 @@
 import request from "supertest";
-import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { PartnerKind, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -12,6 +12,8 @@ import {
 } from "../../../../../presentation/test/utils";
 
 import {
+  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_YES_NO_URL,
+  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL
 } from "../../../../controller/postTransition/url";
@@ -23,6 +25,7 @@ import TransactionBuilder from "../../../builder/TransactionBuilder";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import TransactionLimitedPartner from "../../../../../domain/entities/TransactionLimitedPartner";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+
 describe("Update Principal Office Address Yes No Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
   const REDIRECT_YES = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -94,6 +97,21 @@ describe("Update Principal Office Address Yes No Page", () => {
         expect(res.status).toBe(200);
 
         expect(res.text).toContain(`value="${radioValue}" checked`);
+      }
+    );
+
+    it.each([PartnershipType.LP, PartnershipType.SLP, PartnershipType.PFLP, PartnershipType.SPFLP])(
+      "should load the update principal office address yes no page with correct back link for %s",
+      async (partnershipType: PartnershipType) => {
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+
+        if (partnershipType === PartnershipType.LP || partnershipType === PartnershipType.SLP) {
+          expect(res.text).toContain(getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_YES_NO_URL));
+        } else {
+          expect(res.text).toContain(getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL));
+        }
       }
     );
   });

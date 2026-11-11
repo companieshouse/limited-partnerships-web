@@ -15,8 +15,8 @@ import {
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 
 import {
-  UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_URL,
-  UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_YES_NO_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL,
   UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL
 } from "../../../../controller/postTransition/url";
 
@@ -28,9 +28,9 @@ import PostTransitionPageType from "../../../../controller/postTransition/pageTy
 import postTransitionRouting from "../../../../controller/postTransition/routing";
 
 describe("Update Capital Contribution Yes No Page", () => {
-  const URL = getUrl(UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_URL);
+  const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_URL);
   const REDIRECT = getUrl(UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
-  const BACK_URL = getUrl(UPDATE_LIMITED_PARTNER_CAPITAL_CONTRIBUTION_YES_NO_URL);
+  const BACK_URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL);
 
   let limitedPartner: TransactionGeneralPartner;
 
@@ -105,7 +105,7 @@ describe("Update Capital Contribution Yes No Page", () => {
       const res = await request(app)
         .post(`${URL}`)
         .send({
-          pageType: PostTransitionPageType.updateLimitedPartnerCapitalContribution,
+          pageType: PostTransitionPageType.updateLimitedPartnerPersonCapitalContribution,
           contribution_currency_type: "Pound Sterling (GBP)",
           contribution_currency_value: "100.00",
           contribution_sub_types: ["MONEY"]
@@ -119,7 +119,7 @@ describe("Update Capital Contribution Yes No Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          ...postTransitionRouting.get(PostTransitionPageType.updateLimitedPartnerCapitalContribution),
+          ...postTransitionRouting.get(PostTransitionPageType.updateLimitedPartnerPersonCapitalContribution),
           partnershipType: PartnershipType.LP
         });
 
