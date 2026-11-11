@@ -15,7 +15,10 @@ import {
   UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
   UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL
 } from "../../../../../presentation/controller/postTransition/url";
-import { TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../presentation/controller/addressLookUp/url/postTransition";
+import {
+  ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../../../../../presentation/controller/addressLookUp/url/postTransition";
 
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
@@ -103,6 +106,13 @@ describe("Update Usual Residential Address Yes No Page", () => {
       ['URA territory choice page when "yes"', "true", REDIRECT_YES],
       ['the update correspondence address yes no page when "no"', "false", REDIRECT_NO]
     ])("should redirect to %s is selected", async (description: string, pageValue: string, redirectUrl: string) => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withUsualResidentialAddress(null)
+        .build();
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
       const res = await request(app).post(`${URL}`).send({
         pageType: PostTransitionPageType.updateGeneralPartnerUsualResidentialAddressYesNo,
         update_usual_residential_address_required: pageValue
@@ -110,6 +120,16 @@ describe("Update Usual Residential Address Yes No Page", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+
+    it("should redirect to the manual entry page when there is a saved address", async () => {
+      const res = await request(app).post(`${URL}`).send({
+        pageType: PostTransitionPageType.updateGeneralPartnerUsualResidentialAddressYesNo,
+        update_usual_residential_address_required: "true"
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)}`);
     });
 
     it("should return validation error when no option is selected", async () => {
