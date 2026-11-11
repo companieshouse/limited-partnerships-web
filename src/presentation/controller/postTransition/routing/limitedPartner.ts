@@ -191,7 +191,8 @@ const postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers = {
     pageKey: UPDATE_PARTNER_KEY,
     dateChangeLink: DATE_CHANGE_LINK,
     personChangeLink: PERSON_CHANGE_LINK,
-    uraChangeLink: PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo
+    uraChangeLink: PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo,
+    capitalContributionChangeLink: PostTransitionPageType.updateLimitedPartnerCapitalContributionYesNo
   }
 };
 
