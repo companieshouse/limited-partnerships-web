@@ -497,7 +497,6 @@ class PostTransitionPartnerController extends PartnerController {
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
         const { partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
-        console.log(partnerEntity);
 
         const { uiErrors }: { uiErrors?: UIErrors } = this.validateAddress(pageType, request, response);
 
