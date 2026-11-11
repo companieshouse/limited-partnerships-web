@@ -1,3 +1,5 @@
+{% import '../../includes/macro-capital-contribution.njk' as capitalContributionMacro %}
+
 {% set notUpdated = i18n.checkYourAnswersPage.update.notUpdated %}
 {% set item = props.data.partner %}
 {% set updateFieldsMap = props.data.partnerUpdatedFieldsMap %}
@@ -17,6 +19,8 @@
   {% else %}
     {% set nationalities = notUpdated %}
   {% endif %}
+
+  {{ props.data | dump }}
 
   {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
@@ -71,6 +75,24 @@
               (props.currentUrl | replace(props.pageType, props.data.uraChangeLink)),
               term,
               "change-usual-residential-address-button"
+            )
+          ]
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+        },
+        value: {
+          text: capitalContributionMacro.formatCapticalContribution(item.data, i18n) if item.data.update_capital_contribution_required else notUpdated
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              (props.currentUrl | replace(props.pageType, props.data.capitalContributionChangeLink)),
+              term,
+              "change-capital-contribution-button"
             )
           ]
         }
