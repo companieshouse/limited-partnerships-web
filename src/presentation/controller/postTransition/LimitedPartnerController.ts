@@ -165,7 +165,8 @@ class LimitedPartnerPostTransitionController extends PartnerController {
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
         if (
-          pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo &&
+          (pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo ||
+            pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo) &&
           !request.body.update_capital_contribution_required
         ) {
           const errors = new UIErrors().setWebError(

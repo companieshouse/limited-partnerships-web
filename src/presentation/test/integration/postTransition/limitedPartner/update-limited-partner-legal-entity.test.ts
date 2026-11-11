@@ -17,7 +17,7 @@ import PostTransitionPageType from "../../../../controller/postTransition/pageTy
 import {
   UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
-  UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
+  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_YES_NO_URL
 } from "../../../../controller/postTransition/url";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
@@ -27,7 +27,7 @@ import * as cyErrors from "../../../../../../locales/cy/errors.json";
 describe("Update Limited Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL);
   const URL_WITH_IDS = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL);
-  const REDIRECT = getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
+  const REDIRECT = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_YES_NO_URL);
   const BACK_LINK = getUrl(YOUR_COMPANY_OFFICERS_URL);
 
   let companyProfile: { _id: string; data: Partial<CompanyProfile> };

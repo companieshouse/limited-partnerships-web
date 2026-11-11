@@ -69,6 +69,8 @@ enum PostTransitionPageType {
   updateLimitedPartnerPersonCheckYourAnswers = `limited-partner-person-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
   updateLimitedPartnerLegalEntity = "update-limited-partner-legal-entity",
+  updateLimitedPartnerLegalEntityCapitalContributionYesNo = "update-limited-partner-legal-entity-capital-contribution-yes-no",
+  updateLimitedPartnerLegalEntityCapitalContribution = "update-limited-partner-legal-entity-capital-contribution",
   updateLimitedPartnerPrincipalOfficeAddressYesNo = `update-limited-partner-principal-office-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
   whenDidLimitedPartnerLegalEntityDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-limited-partner-legal-entity-details-change`,
   updateLimitedPartnerLegalEntityCheckYourAnswers = `limited-partner-legal-entity-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
