@@ -192,7 +192,7 @@ const postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers = {
     dateChangeLink: DATE_CHANGE_LINK,
     personChangeLink: PERSON_CHANGE_LINK,
     uraChangeLink: PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo,
-    capitalContributionChangeLink: PostTransitionPageType.updateLimitedPartnerCapitalContributionYesNo
+    capitalContributionChangeLink: PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo
   }
 };
 
