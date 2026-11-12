@@ -27,7 +27,7 @@ import TransactionBuilder from "../../../builder/TransactionBuilder";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import postTransitionRouting from "../../../../controller/postTransition/routing";
 
-describe("Update Capital Contribution Yes No Page", () => {
+describe("Update Capital Contribution Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_URL);
   const REDIRECT = getUrl(UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
   const BACK_URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL);
@@ -52,7 +52,7 @@ describe("Update Capital Contribution Yes No Page", () => {
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
-  describe("GET Update Capital Contribution Yes No Page", () => {
+  describe("GET Update Capital Contribution Page", () => {
     it.each([
       ["English LP", PartnershipType.LP, "en", enTranslationText],
       ["Welsh LP", PartnershipType.LP, "cy", cyTranslationText],
@@ -73,9 +73,7 @@ describe("Update Capital Contribution Yes No Page", () => {
         );
 
         testTranslations(res.text, translationText.partner.capitalContribution);
-        expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateLimitedPartnerPerson))).toBe(
-          2
-        );
+        expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateLimitedPartnerPerson))).toBe(2);
 
         expect(res.text).toContain(translationText.buttons.continue);
 
