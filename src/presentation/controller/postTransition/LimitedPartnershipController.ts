@@ -315,7 +315,7 @@ class LimitedPartnershipController extends AbstractController {
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
 
         if (response.locals?.serviceName) {
-          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, "-");
+          const serviceName = response.locals?.serviceName.toLowerCase().replaceAll(/\s+/g, "-");
           redirectUrl = this.addOrAppendQueryParam(redirectUrl, JOURNEY_QUERY_PARAM, serviceName);
         }
 
@@ -412,7 +412,7 @@ class LimitedPartnershipController extends AbstractController {
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
 
         if (response.locals?.serviceName) {
-          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, "-");
+          const serviceName = response.locals?.serviceName.toLowerCase().replaceAll(/\s+/g, "-");
           redirectUrl = this.addOrAppendQueryParam(redirectUrl, JOURNEY_QUERY_PARAM, serviceName);
         }
 

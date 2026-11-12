@@ -117,7 +117,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
 
         if (response.locals?.serviceName) {
-          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, "-");
+          const serviceName = response.locals?.serviceName.toLowerCase().replaceAll(/\s+/g, "-");
           url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, serviceName);
         }
 
