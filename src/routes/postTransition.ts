@@ -74,7 +74,8 @@ import {
   LIMITED_PARTNER_CONTINUE_SAVED_FILING_URL,
   UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL,
   UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_URL,
-  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_YES_NO_URL
+  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_YES_NO_URL,
+  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -920,6 +921,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
   router.post(
     UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_YES_NO_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendCapitalContributionPagesData()
+  );
+
+  router.get(
+    UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getCapitalContributionPagesRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_URL,
     companyAuthentication,
     dependencies.limitedPartnerPostTransitionController.sendCapitalContributionPagesData()
   );
