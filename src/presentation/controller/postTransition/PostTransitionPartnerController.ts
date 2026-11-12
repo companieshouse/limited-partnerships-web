@@ -514,21 +514,19 @@ class PostTransitionPartnerController extends PartnerController {
 
         const { uiErrors }: { uiErrors?: UIErrors } = this.validateAddress(pageType, request, response);
 
+        const errorData = { [partner]: { data: { ...partnerEntity?.data, ...request.body } } };
+
         if (uiErrors?.hasErrors()) {
-          const data = {
-            [partner]: { data: { ...partnerEntity?.data, ...request.body } }
-          };
-          return response.render(UPDATE_ADDRESS_YES_NO_TEMPLATE, super.makeProps(pageRouting, data, uiErrors));
+          return response.render(UPDATE_ADDRESS_YES_NO_TEMPLATE, super.makeProps(pageRouting, errorData, uiErrors));
         }
 
         const result = await super.sendData(partner, tokens, ids, request.body);
 
         if (result?.errors) {
-          const data = {
-            [partner]: { data: { ...partnerEntity?.data, ...request.body } }
-          };
-
-          return response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, data, result.errors));
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, errorData, result.errors)
+          );
         }
 
         pageRouting.nextUrl = this.handleAddressYesNoPageRedirection(request, partnerEntity);
