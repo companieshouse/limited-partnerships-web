@@ -186,6 +186,12 @@
             "secondNationalitySelectPrompt": "WELSH - Select a second nationality",
             "secondNationalityHint" : "WELSH - Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
             "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
+        },
+        "update": {
+            "limitedPartnerCapitalContribution": {
+                "title": "WELSH - Do you need to update the capital contributions?",
+                "hint": "WELSH - This is the total value of the monetary and non-monetary contributions"
+            }
         }
     }
 }

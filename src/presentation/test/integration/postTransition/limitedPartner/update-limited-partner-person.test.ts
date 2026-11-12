@@ -6,7 +6,7 @@ import app from "../../app";
 import {
   UPDATE_LIMITED_PARTNER_PERSON_URL,
   UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
-  UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL,
 } from "../../../../controller/postTransition/url";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
@@ -21,7 +21,7 @@ import { enTranslationText, cyTranslationText } from "../../../../../test/utils/
 describe("Update Limited Partner Person Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_URL);
   const URL_WITH_IDS = getUrl(UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL);
-  const REDIRECT = getUrl(UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
+  const REDIRECT = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL);
   const BACK_LINK = getUrl(YOUR_COMPANY_OFFICERS_URL);
 
   let companyProfile;

@@ -1,14 +1,11 @@
 import request from "supertest";
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { checkIfPartnerValuesInText, countOccurrences, getUrl, checkYourAnswersLegalEntityKeys, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { checkIfPartnerValuesInText, countOccurrences, getUrl, checkYourAnswersLegalEntityKeys, setLocalesEnabled, testTranslations, expectChangeLinks, toEscapedHtml } from "../../../../utils";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL, GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
-import {
-  CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url/postTransition";
+import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL, ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
@@ -32,6 +29,7 @@ describe("Check Your Answers Page", () => {
       .isLegalEntity()
       .withDateEffectiveFrom("2024-10-10")
       .withLegalEntityRegistrationLocation("Wales")
+      .withKind(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY)
       .build();
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerLegalEntity]);
 
@@ -49,7 +47,9 @@ describe("Check Your Answers Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(translationText.checkYourAnswersPage.title);
-      testTranslations(res.text, translationText.checkYourAnswersPage.warningMessage);
+      expect(res.text).toContain(translationText.checkYourAnswersPage.printPage);
+      expect(res.text).toContain(translationText.checkYourAnswersPage.noCopyWarning);
+      expect(res.text).not.toContain(toEscapedHtml(translationText.checkYourAnswersPage.warningMessage.warning));
       expect(res.text).toContain(translationText.print.buttonText);
       expect(res.text).toContain(translationText.print.buttonTextNoJs);
       expect(res.text).toContain(countriesText.countries.wales);
@@ -137,6 +137,38 @@ describe("Check Your Answers Page", () => {
       ]);
 
       checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, cyTranslationText);
+    });
+
+    it("should contain change links for general partner legal entity", async () => {
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expectChangeLinks(res.text, [
+        `${ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#legal_entity_name`,
+        `${ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#legal_form`,
+        `${ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#governing_law`,
+        `${ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#legal_entity_registration_location`,
+        `${ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#date_effective_from-day`,
+        `${ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#entered_on_register`,
+        ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+      ]);
+    });
+
+    it("should say Not Supplied if register or registration number is not supplied", async () => {
+      generalPartnerLegalEntity = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isLegalEntity()
+        .withDateEffectiveFrom("2024-10-10")
+        .withLegalEntityRegistrationLocation("Wales")
+        .withRegistrationNumber("")
+        .withLegalEntityRegisterName("")
+        .build();
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerLegalEntity]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(countOccurrences(res.text, enTranslationText.checkYourAnswersPage.notSupplied)).toBe(2);
     });
   });
   describe("POST Check Your Answers Page", () => {

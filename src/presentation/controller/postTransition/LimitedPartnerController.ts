@@ -1,10 +1,15 @@
 import { NextFunction, Request, Response } from "express";
-import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import {
+  LimitedPartner,
+  LimitedPartnership,
+  PartnerKind,
+  PartnershipType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import CompanyService from "../../../application/service/CompanyService";
+import CompanyService, { DataIncludingPartners } from "../../../application/service/CompanyService";
 import PostTransitionPartnerController from "./PostTransitionPartnerController";
 import PartnerController from "../common/PartnerController";
 
@@ -13,14 +18,20 @@ import {
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url/postTransition";
-
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
+
 import {
   JOURNEY_QUERY_PARAM,
   JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
+
 import { getJourneyTypes } from "../../../utils/journey";
-import { PartnerType } from "../../../domain/types";
+import { Ids, PartnerType, Tokens } from "../../../domain/types";
+import UIErrors from "../../../domain/entities/UIErrors";
+
+import postTransitionRouting from "./routing";
+import PostTransitionPageType from "./pageType";
+import { PageRouting } from "../PageRouting";
 
 class LimitedPartnerPostTransitionController extends PartnerController {
   constructor(
@@ -119,6 +130,149 @@ class LimitedPartnerPostTransitionController extends PartnerController {
         next(error);
       }
     };
+  }
+
+  // Capital Contribution Pages Routing and Data Handling
+
+  getCapitalContributionPagesRouting() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids, pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const { limitedPartnership, limitedPartner } = await this.getPartnershipAndPartnerEntity(tokens, ids);
+
+        if (
+          limitedPartnership.data?.partnership_type === PartnershipType.PFLP ||
+          limitedPartnership.data?.partnership_type === PartnershipType.SPFLP
+        ) {
+          response.redirect(super.insertIdsInUrl(pageRouting.data?.nextNoUrl, ids, request.url));
+          return;
+        }
+
+        const template = this.setTemplate(pageRouting);
+
+        response.render(template, super.makeProps(pageRouting, { limitedPartnership, limitedPartner }, null));
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  sendCapitalContributionPagesData() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        if (
+          (pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo ||
+            pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo) &&
+          !request.body.update_capital_contribution_required
+        ) {
+          const errors = new UIErrors().setWebError(
+            pageRouting.data?.fieldName,
+            response.locals.i18n.errorMessages.partners.updateCapitalContributionRequired
+          );
+
+          return await this.renderErrors(request, response, errors);
+        }
+
+        const data = {
+          ...request.body,
+          partnerType: pageRouting?.data?.partnerType,
+          partnerEntityType: pageRouting?.data?.partnerEntityType,
+          journeyTypes: response.locals.journeyTypes,
+          pageKey: pageRouting?.data?.titleKey
+        };
+
+        const capitalContributionErrors = this.limitedPartnerService.validateCapitalContribution(data, response.locals?.i18n);
+
+        if (capitalContributionErrors?.hasErrors()) {
+          return await this.renderErrors(request, response, capitalContributionErrors);
+        }
+
+        const result = await super.sendData(PartnerType.limitedPartner, tokens, ids, data);
+
+        if (result?.errors?.hasErrors()) {
+          return await this.renderErrors(request, response, result.errors);
+        }
+
+        if (request.body.update_capital_contribution_required === "true") {
+          response.redirect(this.insertIdsInUrl(pageRouting.data?.nextYesUrl, ids));
+          return;
+        } else if (request.body.update_capital_contribution_required === "false") {
+          response.redirect(this.insertIdsInUrl(pageRouting.data?.nextNoUrl, ids));
+          return;
+        }
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private async getPartnershipAndPartnerEntity(
+    tokens: Tokens,
+    ids: Ids
+  ): Promise<{
+    limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners>;
+    limitedPartner: LimitedPartner;
+  }> {
+    let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> = {};
+
+    if (this.companyService) {
+      const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
+
+      limitedPartnership = {
+        ...result.limitedPartnership,
+        data: {
+          ...result.limitedPartnership.data
+        }
+      };
+    }
+
+    const limitedPartner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+
+    return {
+      limitedPartnership,
+      limitedPartner
+    };
+  }
+
+  private async renderErrors(request: Request, response: Response, errors: UIErrors) {
+    const { tokens, ids } = super.extract(request);
+    const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+    const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+    const { limitedPartnership, limitedPartner } = await this.getPartnershipAndPartnerEntity(tokens, ids);
+
+    const { data: renderData } = this.buildPartnerErrorRenderData(
+      pageType,
+      pageRouting,
+      limitedPartnership,
+      limitedPartner,
+      request.body,
+      PartnerType.limitedPartner
+    );
+
+    const template = this.setTemplate(pageRouting);
+
+    response.render(template, super.makeProps(pageRouting, renderData, errors));
+  }
+
+  private setTemplate(pageRouting: PageRouting) {
+    let template = "update-limited-partner-capital-contribution";
+
+    if (pageRouting.currentUrl.includes("yes-no")) {
+      template += "-yes-no";
+    }
+
+    return template;
   }
 }
 

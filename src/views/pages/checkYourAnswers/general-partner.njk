@@ -115,7 +115,17 @@
           },
           value: {
             text: item.data.legal_entity_name
-          }
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#legal_entity_name") | replace(props.pageType, "add-general-partner-legal-entity")),
+                i18n.checkYourAnswersPage.partners.legalEntity.name,
+                "change-name-button"
+              )
+            ]
+          } if journeyTypes.isPostTransition
         },
         {
           key: {
@@ -123,7 +133,17 @@
           },
           value: {
             text: item.data.legal_form
-          }
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#legal_form") | replace(props.pageType, "add-general-partner-legal-entity")),
+                i18n.checkYourAnswersPage.partners.legalEntity.legalForm,
+                "change-legal-form-button"
+              )
+            ]
+          } if journeyTypes.isPostTransition
         },
         {
           key: {
@@ -131,15 +151,35 @@
           },
           value: {
             text: item.data.governing_law
-          }
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#governing_law") | replace(props.pageType, "add-general-partner-legal-entity")),
+                i18n.checkYourAnswersPage.partners.legalEntity.governingLaw,
+                "change-governing-law-button"
+              )
+            ]
+          } if journeyTypes.isPostTransition
         },
         {
           key: {
             text: i18n.checkYourAnswersPage.partners.legalEntity.register
           },
           value: {
-            text: item.data.legal_entity_register_name
+            text: item.data.legal_entity_register_name if item.data.legal_entity_register_name else i18n.checkYourAnswersPage.notSupplied
           },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#entered_on_register") | replace(props.pageType, "add-general-partner-legal-entity")),
+                i18n.checkYourAnswersPage.partners.legalEntity.register,
+                "change-register-button"
+              )
+            ]
+          } if journeyTypes.isPostTransition,
           classes: "register-row"
         },
         {
@@ -148,15 +188,35 @@
           },
           value: {
             text: country
-          }
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#legal_entity_registration_location") | replace(props.pageType, "add-general-partner-legal-entity")),
+                i18n.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn,
+                "change-country-registered-in-button"
+              )
+            ]
+          } if journeyTypes.isPostTransition
         },
         {
           key: {
             text: i18n.checkYourAnswersPage.partners.legalEntity.registrationNumber
           },
           value: {
-            text: item.data.registered_company_number
+            text: item.data.registered_company_number if item.data.registered_company_number else i18n.checkYourAnswersPage.notSupplied
           },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#entered_on_register") | replace(props.pageType, "add-general-partner-legal-entity")),
+                i18n.checkYourAnswersPage.partners.legalEntity.registrationNumber,
+                "change-registration-number-button"
+              )
+            ]
+          } if journeyTypes.isPostTransition,
           classes: "registration-number-row"
         },
         {
@@ -165,10 +225,20 @@
           },
           value: {
             text: macros.formatAddress(item.data.principal_office_address, true, i18n)
-          }
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl) | replace(props.pageType, "enter-general-partner-principal-office-address")),
+                i18n.checkYourAnswersPage.partners.legalEntity.principalOfficeAddress,
+                "change-principal-office-address-button"
+              )
+            ]
+          } if journeyTypes.isPostTransition
         },
 
-        SET_DATE_EFFECTIVE_FROM_SECTION(item, "generalPartner", journeyTypes, i18n)
+        SET_DATE_EFFECTIVE_FROM_SECTION(item, "generalPartner", journeyTypes, i18n, props)
       ]
     }) }}
  {% endif %}

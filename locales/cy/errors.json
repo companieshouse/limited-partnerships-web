@@ -224,7 +224,9 @@
              },
              "removePartner":{
                 "selectRemoveChoice": "WELSH - Select if you are sure you want to remove this partner."
-             }
+             },
+             "updateCapitalContributionRequired": "WELSH - Select whether you need to update this partner's capital contributions"
+
         },
 
         "personWithSignificantControl": {

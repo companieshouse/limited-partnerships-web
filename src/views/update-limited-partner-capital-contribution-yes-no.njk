@@ -1,0 +1,31 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.partner.update.limitedPartnerCapitalContribution.title %}
+{% set titleHint = i18n.partner.update.limitedPartnerCapitalContribution.hint %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
+
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+
+        {% include "includes/csrf_token.njk" %}
+
+        {% include "includes/limited-partner-name.njk" %}
+
+        {% include "includes/yes-no-radios.njk" %}
+
+        {{ govukButton({
+          text: i18n.buttons.continue,
+          attributes: {
+              "id": "submit",
+              "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', '" + props.data.trackingLabel + "', document.querySelector('input[name=" + props.data.fieldName + "]:checked').nextElementSibling.innerHTML])"
+          }
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

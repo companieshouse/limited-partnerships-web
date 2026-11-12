@@ -116,12 +116,39 @@ const postTransitionRoutingRemoveLimitedPartnerLegalEntityCheckYourAnswers = {
 const postTransitionRoutingUpdateLimitedPartnerPerson = {
   previousUrl: YOUR_COMPANY_OFFICERS_URL,
   currentUrl: url.UPDATE_LIMITED_PARTNER_PERSON_URL,
-  nextUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  nextUrl: url.UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL,
   pageType: PostTransitionPageType.updateLimitedPartnerPerson,
   data: {
     serviceName: "updateLimitedPartnerPerson",
     partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.person
+  }
+};
+
+const postTransitionRoutingUpdateLimitedPartnerPersonCapitalContributionYesNo = {
+  previousUrl: url.UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+  currentUrl: url.UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo,
+  data: {
+    nextYesUrl: url.UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_URL,
+    nextNoUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+    titleKey: "limitedPartnerPersonCapitalContribution",
+    fieldName: "update_capital_contribution_required",
+    trackingLabel: "update-capital-contribution-yes-no"
+  }
+};
+
+const postTransitionRoutingUpdateLimitedPartnerPersonCapitalContribution = {
+  previousUrl: url.UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL,
+  currentUrl: url.UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_URL,
+  nextUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  pageType: PostTransitionPageType.updateLimitedPartnerPersonCapitalContribution,
+  data: {
+    nextNoUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+    titleKey: "limitedPartnerPersonCapitalContribution",
+    trackingLabel: "update-capital-contribution",
+    partnerType: PartnerType.limitedPartner
   }
 };
 
@@ -136,7 +163,8 @@ const postTransitionRoutingUpdateUsualResidentialAddressYesNo = {
     addressExistsUrl: ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     titleKey: "limitedPartnerUsualResidentialAddress",
     fieldName: "update_usual_residential_address_required",
-    trackingLabel: "update-usual-residential-address-yes-no"
+    trackingLabel: "update-usual-residential-address-yes-no",
+    conditionalPreviousUrl: url.UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_YES_NO_URL
   }
 };
 
@@ -172,12 +200,26 @@ const postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers = {
 const postTransitionRoutingUpdateLimitedPartnerLegalEntity = {
   previousUrl: YOUR_COMPANY_OFFICERS_URL,
   currentUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-  nextUrl: url.UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+  nextUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_YES_NO_URL,
   pageType: PostTransitionPageType.updateLimitedPartnerLegalEntity,
   data: {
     serviceName: "updateLimitedPartnerLegalEntity",
     partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.legalEntity
+  }
+};
+
+const postTransitionRoutingUpdateLimitedPartnerLegalEntityCapitalContributionYesNo = {
+  previousUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  currentUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_YES_NO_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo,
+  data: {
+    nextYesUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_URL,
+    nextNoUrl: url.UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+    titleKey: "limitedPartnerLegalEntityCapitalContribution",
+    fieldName: "update_capital_contribution_required",
+    trackingLabel: "update-capital-contribution-yes-no"
   }
 };
 
@@ -193,7 +235,8 @@ const postTransitionRoutingUpdatePrincipalOfficeAddressYesNo = {
     partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.legalEntity,
     fieldName: "update_principal_office_address_required",
-    trackingLabel: "update-principal-office-address-yes-no"
+    trackingLabel: "update-principal-office-address-yes-no",
+    conditionalPreviousUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_YES_NO_URL
   }
 };
 
@@ -245,11 +288,14 @@ const limitedPartnerRouting = [
   postTransitionRoutingRemoveLimitedPartnerLegalEntityCheckYourAnswers,
 
   postTransitionRoutingUpdateLimitedPartnerPerson,
+  postTransitionRoutingUpdateLimitedPartnerPersonCapitalContributionYesNo,
+  postTransitionRoutingUpdateLimitedPartnerPersonCapitalContribution,
   postTransitionRoutingUpdateUsualResidentialAddressYesNo,
   postTransitionRoutingWhenDidLimitedPartnerPersonChange,
   postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers,
 
   postTransitionRoutingUpdateLimitedPartnerLegalEntity,
+  postTransitionRoutingUpdateLimitedPartnerLegalEntityCapitalContributionYesNo,
   postTransitionRoutingUpdatePrincipalOfficeAddressYesNo,
   postTransitionRoutingWhenDidLimitedPartnerLegalEntityChange,
   postTransitionRoutingUpdateLimitedPartnerLegalEntityCheckYourAnswers,

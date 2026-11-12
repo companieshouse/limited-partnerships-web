@@ -32,6 +32,9 @@
             "dob": "full dates of birth of any partners who are people",
             "ura": "usual residential addresses of any partners who are people"
         },
+        "notSupplied": "Not supplied",
+        "printPage": "Print or save this page for your records.",
+        "noCopyWarning": "We will not send you or the partnership a copy of this information.",
 
         "payment" : "Continue to payment",
         "submitFiling": "Submit filing",

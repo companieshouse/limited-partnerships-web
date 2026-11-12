@@ -2,11 +2,20 @@
 
   <input type="hidden" name="partnershipType" value="{{ partnershipType }}">
 
-  <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m">
+  {% set title = i18n.partner.capitalContribution.title %}
+  {% set hint = i18n.partner.capitalContribution.hint %}
 
-  <h2 class="govuk-heading-m">{{ i18n.partner.capitalContribution.title}}</h2>
+  {% if isPageHeading %}
+    <h1 class="govuk-heading-xl">{{ title }}</h1>
 
-  <p class="govuk-hint">{{ i18n.partner.capitalContribution.hint }}</p>
+    <p class="govuk-hint govuk-!-margin-bottom-5">{{ hint }}</p>
+  {% else %}
+    <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m">
+
+    <h2 class="govuk-heading-m">{{ title }}</h2>
+
+    <p class="govuk-hint">{{ hint }}</p>
+  {% endif %}
 
   {% set contribution_currency_type = "" %}
   {% if props.data.limitedPartner.data.contribution_currency_type %}
