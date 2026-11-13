@@ -238,6 +238,25 @@ class LimitedPartnerPostTransitionController extends PartnerController {
 
     const limitedPartner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
 
+    if (this.companyService && !limitedPartner.data?.contribution_currency_type) {
+      const { partner } = await this.companyService.buildPartnerFromCompanyAppointment(
+        tokens,
+        ids.companyId,
+        limitedPartner?.data?.appointment_id ?? ""
+      );
+
+      const limitedPartnerFromAppointment = partner as LimitedPartner;
+
+      if (limitedPartnerFromAppointment?.data?.contribution_currency_type) {
+        limitedPartner.data = {
+          ...limitedPartner.data,
+          contribution_currency_type: limitedPartnerFromAppointment.data.contribution_currency_type,
+          contribution_currency_value: limitedPartnerFromAppointment.data.contribution_currency_value,
+          contribution_sub_types: limitedPartnerFromAppointment.data.contribution_sub_types
+        };
+      }
+    }
+
     return {
       limitedPartnership,
       limitedPartner

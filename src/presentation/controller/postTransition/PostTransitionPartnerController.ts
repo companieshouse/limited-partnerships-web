@@ -165,7 +165,7 @@ class PostTransitionPartnerController extends PartnerController {
     const redirectUrl =
       partnerType === PartnerType.generalPartner ?
         this.insertIdsInUrl(UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL, ids)
-      : this.insertIdsInUrl(UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL, ids);
+        : this.insertIdsInUrl(UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL, ids);
 
     return { noUpdate, redirectUrl };
   }

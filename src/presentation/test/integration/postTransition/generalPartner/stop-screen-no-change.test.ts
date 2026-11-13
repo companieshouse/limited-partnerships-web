@@ -386,7 +386,7 @@ describe("Stop screen - no change", () => {
         .withUpdateCapitalContributionRequired(true)
         .withContributionCurrencyType("GBP")
         .withContributionCurrencyValue("1000.00")
-        .withContributionSubtypes(["money", "land-or-property", "shares", "services-or-goods", "any-other-asset"])
+        .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY", "SHARES", "SERVICES_OR_GOODS", "ANY_OTHER_ASSET"])
         .build();
 
       return partnerEntity;

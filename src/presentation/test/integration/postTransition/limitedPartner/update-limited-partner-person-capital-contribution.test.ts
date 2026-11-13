@@ -26,6 +26,7 @@ import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import postTransitionRouting from "../../../../controller/postTransition/routing";
+import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
 
 describe("Update Capital Contribution Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_URL);
@@ -43,6 +44,7 @@ describe("Update Capital Contribution Page", () => {
     limitedPartner = new LimitedPartnerBuilder()
       .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
+      .withAppointmentId("AP123456")
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -80,6 +82,42 @@ describe("Update Capital Contribution Page", () => {
         expect(res.text).toContain(getUrl(BACK_URL));
       }
     );
+
+    it.each([
+      ["from appointment", "appointment"],
+      ["from partner", "partner"]
+    ])("should load the update capital contribution page with data %s", async (_description: string, source: string) => {
+      if (source === "appointment") {
+        const companyAppointment = new CompanyAppointmentBuilder()
+          .isPerson()
+          .withAppointmentId("AP123456")
+          .withOfficerRole("limited-partner-in-a-limited-partnership")
+          .build();
+        appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
+      } else {
+        const partner = new LimitedPartnerBuilder()
+          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+          .isPerson()
+          .withAppointmentId("AP123456")
+          .withContributionCurrencyType("EUR")
+          .withContributionCurrencyValue("1500.00")
+          .withContributionSubtypes(["MONEY"])
+          .build();
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([partner]);
+      }
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+
+      if (source === "appointment") {
+        expect(res.text).toContain('type="text" value="Pound Sterling (GBP)"');
+        expect(res.text).toContain("1000.00");
+      } else {
+        expect(res.text).toContain('type="text" value="Euro (EUR)"');
+        expect(res.text).toContain("1500.00");
+      }
+    });
 
     it.each([
       ["PLP", PartnershipType.PFLP],

@@ -79,23 +79,23 @@ class CompanyAppointmentBuilder {
     resignedOn: "",
 
     // capital contribution
-    contribution_currency_type: "GBP",
-    contribution_currency_value: "1000.00",
-    contribution_sub_types: [
+    contributionCurrencyType: "GBP",
+    contributionCurrencyValue: "1000.00",
+    contributionSubTypes: [
       {
-        sub_type: "money"
+        subType: "money"
       },
       {
-        sub_type: "land-or-property"
+        subType: "land-or-property"
       },
       {
-        sub_type: "shares"
+        subType: "shares"
       },
       {
-        sub_type: "services-or-goods"
+        subType: "services-or-goods"
       },
       {
-        sub_type: "any-other-asset"
+        subType: "any-other-asset"
       }
     ]
   };
