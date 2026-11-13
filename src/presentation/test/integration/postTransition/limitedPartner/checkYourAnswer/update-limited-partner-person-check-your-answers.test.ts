@@ -85,6 +85,8 @@ describe("Update limited partner check your answers page", () => {
       expect(res.text).toContain(limitedPartner.data?.surname);
       expect(res.text).toContain(limitedPartner.data?.nationality1);
       expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, England, ST6 3LJ");
+      expect(res.text).toContain("10.00 Pound Sterling (GBP)");
+      expect(res.text).toContain("Money");
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
