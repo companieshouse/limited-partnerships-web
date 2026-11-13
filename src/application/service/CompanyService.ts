@@ -107,9 +107,10 @@ class CompanyService {
           ...partner,
           data: {
             ...partner.data,
-            contribution_currency_type: companyAppointment?.contribution_currency_type ?? "",
-            contribution_currency_value: companyAppointment?.contribution_currency_value ?? "",
-            contribution_sub_types: companyAppointment?.contribution_sub_types?.map((item) => item.sub_type) ?? []
+            contribution_currency_type: companyAppointment?.contributionCurrencyType ?? "",
+            contribution_currency_value: companyAppointment?.contributionCurrencyValue ?? "",
+            contribution_sub_types:
+              companyAppointment?.contributionSubTypes?.map((item) => item.subType.toUpperCase().replace(/-/g, "_")) ?? []
           }
         };
       }
