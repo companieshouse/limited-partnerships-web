@@ -132,7 +132,7 @@ class GlobalController extends AbstractController {
         response.locals.serviceName = response.locals.i18n.serviceName[serviceNameKindMap[kind ?? ""]] ?? "";
 
         if (response.locals?.serviceName) {
-          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, "-");
+          const serviceName = response.locals?.serviceName.toLowerCase().replaceAll(/\s+/g, "-");
           nextPageUrlWithJourneyAndIds = this.addOrAppendQueryParam(
             nextPageUrlWithJourneyAndIds,
             JOURNEY_QUERY_PARAM,

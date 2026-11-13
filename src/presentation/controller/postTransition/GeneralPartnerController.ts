@@ -81,6 +81,10 @@ class GeneralPartnerPostTransitionController extends PartnerController {
     return this.postTransitionPartnerController.sendPageData(PartnerType.generalPartner);
   }
 
+  sendAddressYesNoPageData() {
+    return this.postTransitionPartnerController.sendAddressYesNoPageData(PartnerType.generalPartner);
+  }
+
   getCeaseDate() {
     return this.postTransitionPartnerController.getCeaseDate();
   }
@@ -113,7 +117,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
 
         if (response.locals?.serviceName) {
-          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, '-');
+          const serviceName = response.locals?.serviceName.toLowerCase().replaceAll(/\s+/g, "-");
           url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, serviceName);
         }
 

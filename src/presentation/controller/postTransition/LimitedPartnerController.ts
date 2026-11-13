@@ -84,6 +84,10 @@ class LimitedPartnerPostTransitionController extends PartnerController {
     return this.postTransitionPartnerController.sendPageData(PartnerType.limitedPartner);
   }
 
+  sendAddressYesNoPageData() {
+    return this.postTransitionPartnerController.sendAddressYesNoPageData(PartnerType.limitedPartner);
+  }
+
   getCeaseDate() {
     return this.postTransitionPartnerController.getCeaseDate();
   }

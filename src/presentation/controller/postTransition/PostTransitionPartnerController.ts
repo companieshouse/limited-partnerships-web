@@ -94,16 +94,12 @@ class PostTransitionPartnerController extends PartnerController {
         const selection = request.body["continue_saved_filing"];
 
         if (selection !== "YES" && selection !== "NO") {
-
           const uiErrors = new UIErrors().setWebError(
             "continue_saved_filing",
             response.locals.i18n.errorMessages.continueSavedFilingPage.selectOption
           );
 
-          return response.render(
-            this.templateName(CONTINUE_SAVED_FILING_TEMPLATE),
-            this.makeProps(pageRouting, null, uiErrors)
-          );
+          return response.render(this.templateName(CONTINUE_SAVED_FILING_TEMPLATE), this.makeProps(pageRouting, null, uiErrors));
         }
 
         if (selection === "YES") {
@@ -169,7 +165,7 @@ class PostTransitionPartnerController extends PartnerController {
     const redirectUrl =
       partnerType === PartnerType.generalPartner ?
         this.insertIdsInUrl(UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL, ids)
-        : this.insertIdsInUrl(UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL, ids);
+      : this.insertIdsInUrl(UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL, ids);
 
     return { noUpdate, redirectUrl };
   }
@@ -476,25 +472,6 @@ class PostTransitionPartnerController extends PartnerController {
           pageKey: partner
         };
 
-        const { errors, fieldToReset }: { errors?: UIErrors; fieldToReset?: Record<string, any>; } = this.validateAddress(pageType, request, response);
-
-        if (errors?.hasErrors()) {
-          const { limitedPartnership, partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
-          const { data: renderData } = this.buildPartnerErrorRenderData(
-            pageType,
-            pageRouting,
-            limitedPartnership,
-            partnerEntity,
-            fieldToReset,
-            partner
-          );
-
-          return response.render(
-            UPDATE_ADDRESS_YES_NO_TEMPLATE,
-            super.makeProps(pageRouting, renderData, errors)
-          );
-        }
-
         const result = await super.sendData(partner, tokens, ids, data);
 
         if (result?.errors) {
@@ -511,9 +488,7 @@ class PostTransitionPartnerController extends PartnerController {
             partner
           );
 
-          response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
-
-          return;
+          return response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
         }
 
         await super.conditionalPatchPartner(pageRouting, request, urls);
@@ -525,43 +500,99 @@ class PostTransitionPartnerController extends PartnerController {
     };
   }
 
-  private validateAddress(pageType: any, request: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, response: Response<any, Record<string, any>>) {
-    let errors: UIErrors | undefined;
-    let fieldToReset = {};
+  sendAddressYesNoPageData(partner: PartnerType) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const { partnerEntity } = await this.getPartnershipAndPartnerEntity(tokens, ids, partner);
+
+        const { uiErrors }: { uiErrors?: UIErrors } = this.validateAddress(pageType, request, response);
+
+        const errorData = { [partner]: { data: { ...partnerEntity?.data, ...request.body } } };
+
+        if (uiErrors?.hasErrors()) {
+          return response.render(UPDATE_ADDRESS_YES_NO_TEMPLATE, super.makeProps(pageRouting, errorData, uiErrors));
+        }
+
+        const result = await super.sendData(partner, tokens, ids, request.body);
+
+        if (result?.errors) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, errorData, result.errors)
+          );
+        }
+
+        pageRouting.nextUrl = this.handleAddressYesNoPageRedirection(request, partnerEntity);
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private validateAddress(pageType: any, request: Request, response: Response) {
+    let uiErrors: UIErrors | undefined;
 
     if (isPrincipalOfficeAddressYesNoPage(pageType)) {
       const fieldName = "update_principal_office_address_required";
 
-      errors = this.validateAddressYesNoPage(
+      uiErrors = this.validateAddressYesNoPage(
         response.locals.i18n.errorMessages.address.addressYesNoRequired.principalOfficeAddress,
         fieldName,
         request.body[fieldName]
       );
-
-      fieldToReset = { [fieldName]: null };
     } else if (isUsualResidentialAddressYesNoPage(pageType)) {
       const fieldName = "update_usual_residential_address_required";
 
-      errors = this.validateAddressYesNoPage(
+      uiErrors = this.validateAddressYesNoPage(
         response.locals.i18n.errorMessages.address.addressYesNoRequired.usualResidentialAddress,
         fieldName,
         request.body[fieldName]
       );
-
-      fieldToReset = { [fieldName]: null };
     } else if (pageType === PostTransitionPageType.updateCorrespondenceAddressYesNo) {
       const fieldName = "update_service_address_required";
 
-      errors = this.validateAddressYesNoPage(
+      uiErrors = this.validateAddressYesNoPage(
         response.locals.i18n.errorMessages.address.addressYesNoRequired.correspondenceAddress,
         fieldName,
         request.body[fieldName]
       );
-
-      fieldToReset = { [fieldName]: null };
     }
 
-    return { errors, fieldToReset };
+    return { uiErrors };
+  }
+
+  private validateAddressYesNoPage(errorMessage: string, fieldName: string, selectedValue?: string) {
+    if (selectedValue === undefined || selectedValue === null) {
+      return new UIErrors().setWebError(fieldName, errorMessage);
+    }
+  }
+
+  private handleAddressYesNoPageRedirection(request: Request, partnerEntity: Record<string, any>) {
+    const { ids, pageType } = super.extract(request);
+    const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+    const { nextYesUrl, nextNoUrl, addressExistsUrl, fieldName } = pageRouting.data ?? {};
+
+    let nextUrl = request.body[fieldName] === "false" ? nextNoUrl : nextYesUrl;
+
+    const shouldRedirectToAddressExistsPage =
+      isUsualResidentialAddressYesNoPage(pageType) &&
+      partnerEntity.data?.usual_residential_address?.address_line_1 &&
+      request.body[fieldName] === "true";
+
+    if (shouldRedirectToAddressExistsPage) {
+      nextUrl = addressExistsUrl;
+    }
+
+    return this.insertIdsInUrl(nextUrl, ids, request.url);
   }
 
   sendDateOfUpdatePageData(partner: PartnerType) {
@@ -655,12 +686,6 @@ class PostTransitionPartnerController extends PartnerController {
       limitedPartnership,
       partnerEntity
     };
-  }
-
-  private validateAddressYesNoPage(errorMessage: string, fieldName: string, selectedValue?: string) {
-    if (selectedValue === undefined || selectedValue === null) {
-      return new UIErrors().setWebError(fieldName, errorMessage);
-    }
   }
 
   private async comparePartnerDetails(partner: GeneralPartner | LimitedPartner, request: Request) {
