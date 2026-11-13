@@ -259,7 +259,8 @@ const postTransitionRoutingUpdateLimitedPartnerLegalEntityCheckYourAnswers = {
     pageKey: UPDATE_PARTNER_KEY,
     dateChangeLink: PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange,
     legalEntityChangeLink: PostTransitionPageType.updateLimitedPartnerLegalEntity,
-    principalOfficeAddressChangeLink: PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo
+    principalOfficeAddressChangeLink: PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo,
+    capitalContributionChangeLink: PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo
   }
 };
 
