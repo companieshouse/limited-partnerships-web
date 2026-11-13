@@ -36,13 +36,13 @@ export const companyAppointmentLegalEntity = {
 class CompanyAppointmentBuilder {
   constructor() {
     this.init();
-  };
+  }
 
   init() {
     this.data = {
       ...this.data
     };
-  };
+  }
 
   id = "AP123456";
   data: Record<string, any> = {
@@ -77,6 +77,27 @@ class CompanyAppointmentBuilder {
     contactDetails: { contactName: "Contact Name" },
     responsibilities: "Some responsibilities",
     resignedOn: "",
+
+    // capital contribution
+    contribution_currency_type: "GBP",
+    contribution_currency_value: "1000.00",
+    contribution_sub_types: [
+      {
+        sub_type: "money"
+      },
+      {
+        sub_type: "land-or-property"
+      },
+      {
+        sub_type: "shares"
+      },
+      {
+        sub_type: "services-or-goods"
+      },
+      {
+        sub_type: "any-other-asset"
+      }
+    ]
   };
 
   isPerson() {
@@ -85,7 +106,7 @@ class CompanyAppointmentBuilder {
       ...companyAppointmentPerson
     };
     return this;
-  };
+  }
 
   isLegalEntity() {
     this.data = {
@@ -93,48 +114,48 @@ class CompanyAppointmentBuilder {
       ...companyAppointmentLegalEntity
     };
     return this;
-  };
+  }
 
   withAppointmentId(id: string) {
     this["Id"] = id;
     return this;
-  };
+  }
 
   withCompanyNumber(companyNumber: string) {
     this.data.links = { ...this.data.links, self: `/company/${companyNumber}/appointments/${this["Id"]}` };
     return this;
-  };
+  }
 
   withOfficerRole(officerRole: string) {
     this.data.officerRole = officerRole;
     return this;
-  };
+  }
 
   withName(name: string) {
     this.data.name = name;
     return this;
-  };
+  }
 
   withNationality(nationality: string) {
     this.data.nationality = nationality;
     return this;
-  };
+  }
 
   withIdentificationDetails(identification: Identification) {
     this.data.identification = identification;
     return this;
-  };
+  }
 
   withPrincipalOfficeAddress(address: Record<string, any>) {
     this.data.principalOfficeAddress = address;
     return this;
-  };
+  }
 
   build(): Partial<CompanyOfficer> {
     return {
       ...this.data
     };
-  };
+  }
 };
 
 export default CompanyAppointmentBuilder;

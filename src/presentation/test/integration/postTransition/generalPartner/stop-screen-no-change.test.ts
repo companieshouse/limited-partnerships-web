@@ -298,4 +298,99 @@ describe("Stop screen - no change", () => {
       expect(res.text).toContain("when-did-");
     }
   );
+
+  describe("Limited Partner contribution changes", () => {
+    it.each([
+      [
+        "LP person - contribution_currency_type",
+        "person",
+        getUrl(WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL),
+        "contribution_currency_type",
+        "EUR"
+      ],
+      [
+        "LP legal entity - contribution_currency_value",
+        "legal entity",
+        getUrl(WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL),
+        "contribution_currency_value",
+        "2000.00"
+      ],
+      [
+        "LP person - contribution_sub_types",
+        "person",
+        getUrl(WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL),
+        "contribution_sub_types",
+        ["money", "land-or-property", "shares", "services-or-goods"]
+      ]
+    ])(
+      "should render the when did page if there is at least one detail changed - %s",
+      async (_description: string, partner: string, whenDidUrl: string, key: string, value: string | string[]) => {
+        const partnerEntity = feedPartnerWithContribution(partner);
+
+        (partnerEntity as any).data[key] = value;
+
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([partnerEntity]);
+
+        const res = await request(app).get(whenDidUrl);
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain("when-did-");
+      }
+    );
+
+    it.each([
+      ["person", getUrl(WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL), LIMITED_PARTNER_PERSON_STOP_URL],
+      ["legal entity", getUrl(WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL), LIMITED_PARTNER_PERSON_STOP_URL]
+    ])(
+      "should show the stop screen if there are no changes to the partner details - %s",
+      async (partner: string, whenDidUrl: string, stopUrl) => {
+        const partnerEntity = feedPartnerWithContribution(partner);
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([partnerEntity]);
+
+        const res = await request(app).get(whenDidUrl);
+
+        expect(res.status).toBe(302);
+
+        expect(res.text).toContain(stopUrl);
+      }
+    );
+
+    const feedPartnerWithContribution = (partner: string): TransactionLimitedPartner => {
+      let partnerEntityBuilder;
+
+      if (partner === "person") {
+        partnerEntityBuilder = new LimitedPartnerBuilder()
+          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+          .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON)
+          .withAppointmentId("AP123456P")
+          .withForename("John")
+          .withSurname("Doe")
+          .withAppointmentId("AP123456P")
+          .withNationality1("British");
+      } else {
+        partnerEntityBuilder = new LimitedPartnerBuilder()
+          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+          .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY)
+          .withAppointmentId("AP123456LE")
+          .withPrincipalOfficeAddressUpdateRequired(false)
+          .withLegalEntityName("Partner Appointment")
+          .withLegalForm("CA Limited Company")
+          .withGoverningLaw("CA Act of law")
+          .withLegalEntityRegisterName("CA US Register")
+          .withLegalEntityRegistrationLocation("United Kingdom")
+          .withRegistrationNumber("CA 12345678");
+      }
+
+      const partnerEntity = partnerEntityBuilder
+        .withUpdateCapitalContributionRequired(true)
+        .withContributionCurrencyType("GBP")
+        .withContributionCurrencyValue("1000.00")
+        .withContributionSubtypes(["money", "land-or-property", "shares", "services-or-goods", "any-other-asset"])
+        .build();
+
+      return partnerEntity;
+    };
+  });
 });
+

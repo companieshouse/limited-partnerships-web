@@ -61,6 +61,11 @@ class LimitedPartnerBuilder extends AbstractPartnerBuilder {
     return this;
   }
 
+  withUpdateCapitalContributionRequired(updateCapitalContributionRequired: boolean) {
+    this.data.update_capital_contribution_required = updateCapitalContributionRequired;
+    return this;
+  }
+
   isPerson() {
     this.data = {
       ...this.data,

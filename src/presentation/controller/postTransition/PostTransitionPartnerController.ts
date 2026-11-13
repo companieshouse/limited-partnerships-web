@@ -723,6 +723,10 @@ class PostTransitionPartnerController extends PartnerController {
           partnerUpdatedFieldsMap[field] = true;
         }
       }
+
+      if (partner.data?.kind?.includes("limited-partner")) {
+        this.setCapitalContributionChanges(partner, appointment, partnerUpdatedFieldsMap);
+      }
     }
 
     if (partner.data?.update_usual_residential_address_required) {
@@ -734,6 +738,31 @@ class PostTransitionPartnerController extends PartnerController {
     }
 
     return partnerUpdatedFieldsMap;
+  }
+
+  private setCapitalContributionChanges(limitedPartner: LimitedPartner, appointment: { partner: LimitedPartner; errors?: UIErrors; } | undefined, partnerUpdatedFieldsMap: Record<string, boolean>) {
+    const appointmentPartner = appointment?.partner as LimitedPartner;
+
+    if (limitedPartner.data?.update_capital_contribution_required) {
+      if (limitedPartner.data.contribution_currency_type !== appointmentPartner?.data?.contribution_currency_type ||
+        limitedPartner.data.contribution_currency_value !== appointmentPartner?.data?.contribution_currency_value ||
+        this.haveNotSameValues(
+          limitedPartner.data.contribution_sub_types,
+          appointmentPartner?.data?.contribution_sub_types
+        )) {
+        partnerUpdatedFieldsMap.update_capital_contribution_required = true;
+      }
+    }
+  }
+
+  private haveNotSameValues(partnerSubTypes?: string[], appointmentSubTypes?: string[]): boolean {
+    const sortedPartnerSubTypes = [...(partnerSubTypes ?? [])].sort((x, y) => x.localeCompare(y));
+    const sortedAppointmentSubTypes = [...(appointmentSubTypes ?? [])].sort((x, y) => x.localeCompare(y));
+
+    return !(
+      sortedPartnerSubTypes.length === sortedAppointmentSubTypes.length &&
+      sortedPartnerSubTypes.every((value, index) => value === sortedAppointmentSubTypes[index])
+    );
   }
 }
 
