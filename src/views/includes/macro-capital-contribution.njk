@@ -1,9 +1,9 @@
-{% macro formatCapticalContribution(item, i18n) %}
+{% macro formatCapitalContribution(item, i18n) %}
   <p class="govuk-body">
-    {{ item.contribution_currency_value }} {{ i18n.currencies[item.contribution_currency_type] }}
+    {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
   </p>
   <p class="govuk-body">
-    {{ buildFormattedListFromArray(item.contribution_sub_types, i18n) }}
+    {{ buildFormattedListFromArray(item.data.contribution_sub_types, i18n) }}
   </p>
 {% endmacro %}
 

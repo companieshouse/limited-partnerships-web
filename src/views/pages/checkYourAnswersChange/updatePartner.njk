@@ -100,7 +100,7 @@
           text: i18n.checkYourAnswersPage.partners.limitedPartners.capitalContribution
         },
         value: {
-          text: capitalContributionMacro.formatCapticalContribution(item.data, i18n) if item.data.update_capital_contribution_required else notUpdated
+          text: capitalContributionMacro.formatCapitalContribution(item, i18n) if item.data.update_capital_contribution_required else notUpdated
         },
         actions: {
           items: [
