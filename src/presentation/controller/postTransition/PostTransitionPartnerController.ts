@@ -699,7 +699,9 @@ class PostTransitionPartnerController extends PartnerController {
         }
       }
 
-      this.setCapitalContributionChanges(partner, appointment, partnerUpdatedFieldsMap);
+      if (partner.data?.kind?.includes("limited-partner")) {
+        this.setCapitalContributionChanges(partner, appointment, partnerUpdatedFieldsMap);
+      }
     }
 
     if (partner.data?.update_usual_residential_address_required) {
@@ -713,8 +715,7 @@ class PostTransitionPartnerController extends PartnerController {
     return partnerUpdatedFieldsMap;
   }
 
-  private setCapitalContributionChanges(partner: GeneralPartner | LimitedPartner, appointment: { partner: GeneralPartner | LimitedPartner; errors?: UIErrors; } | undefined, partnerUpdatedFieldsMap: Record<string, boolean>) {
-    const limitedPartner = partner as LimitedPartner;
+  private setCapitalContributionChanges(limitedPartner: LimitedPartner, appointment: { partner: LimitedPartner; errors?: UIErrors; } | undefined, partnerUpdatedFieldsMap: Record<string, boolean>) {
     const appointmentPartner = appointment?.partner as LimitedPartner;
 
     if (limitedPartner.data?.update_capital_contribution_required) {
