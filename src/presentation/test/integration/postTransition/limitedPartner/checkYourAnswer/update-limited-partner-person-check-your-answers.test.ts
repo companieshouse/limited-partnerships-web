@@ -38,6 +38,10 @@ describe("Update limited partner check your answers page", () => {
       })
       .withUsualResidentialAddressUpdateRequired(true)
       .withAppointmentId("AP123456")
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("10.00")
+      .withContributionSubtypes(["MONEY"])
+      .withUpdateCapitalContributionRequired(true)
       .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON)
       .withDateOfUpdate("2025-01-01")
       .build();
@@ -119,6 +123,7 @@ describe("Update limited partner check your answers page", () => {
         .withForename("John ")
         .withSurname(" Doe ")
         .withUsualResidentialAddressUpdateRequired(false)
+        .withUpdateCapitalContributionRequired(false)
         .withAppointmentId("AP123456")
         .withDateOfUpdate("2025-01-01")
         .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON)
@@ -135,6 +140,8 @@ describe("Update limited partner check your answers page", () => {
       expect(res.text).not.toContain(limitedPartner.data?.surname);
       expect(res.text).not.toContain(limitedPartner.data?.nationality1);
       expect(res.text).not.toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
+      expect(res.text).not.toContain("10.00 Pound Sterling (GBP)");
+      expect(res.text).not.toContain("Money");
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
     });
 

@@ -20,8 +20,6 @@
     {% set nationalities = notUpdated %}
   {% endif %}
 
-  {{ props.data | dump }}
-
   {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
     rows: [
@@ -81,24 +79,6 @@
       },
       {
         key: {
-          text: i18n.checkYourAnswersPage.partners.limitedPartners.capitalContribution
-        },
-        value: {
-          text: capitalContributionMacro.formatCapticalContribution(item.data, i18n) if item.data.update_capital_contribution_required else notUpdated
-        },
-        actions: {
-          items: [
-            CREATE_CHANGE_LINK(
-              i18n.checkYourAnswersPage.change,
-              (props.currentUrl | replace(props.pageType, props.data.capitalContributionChangeLink)),
-              term,
-              "change-capital-contribution-button"
-            )
-          ]
-        }
-      },
-      {
-        key: {
           text: i18n.checkYourAnswersPage.partners.person.correspondenceAddress
         },
         value: {
@@ -115,6 +95,24 @@
           ]
         }
       } if item.data.kind == "limited-partnership#update-general-partner-person",
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+        },
+        value: {
+          text: capitalContributionMacro.formatCapticalContribution(item.data, i18n) if item.data.update_capital_contribution_required else notUpdated
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              (props.currentUrl | replace(props.pageType, props.data.capitalContributionChangeLink)),
+              term,
+              "change-capital-contribution-button"
+            )
+          ]
+        }
+      } if item.data.kind === "limited-partnership#update-limited-partner-person",
       SET_DATE_OF_UPDATE_SECTION(props, i18n, props.data.dateChangeLink)
     ]
   }) }}
