@@ -106,14 +106,6 @@
   {{- result.join(' ') -}}
 {%- endmacro -%}
 
-{%- macro buildFormattedListFromArray(capitalContributionSubTypesMap, array) -%}
-  {%- set returnValue = [] -%}  
-    {%- for item in array -%}
-    {%- set returnValue = returnValue.concat(capitalContributionSubTypesMap[item]) -%}
-  {%- endfor -%}
-  {{- returnValue.join(' / ') -}}
-{%- endmacro -%}
-
 {% macro mapTerm(term, i18n) %}
   {% set termMap = {
     "BY_AGREEMENT": i18n.partnership.termPage.byAgreement,

@@ -36,6 +36,10 @@ describe("Update limited partner legal entity check your answers page", () => {
         "region": ""
       })
       .withPrincipalOfficeAddressUpdateRequired(true)
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("10.00")
+      .withContributionSubtypes(["MONEY"])
+      .withUpdateCapitalContributionRequired(true)
       .withAppointmentId("AP123456")
       .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY)
       .withDateOfUpdate("2025-01-01")
@@ -77,6 +81,8 @@ describe("Update limited partner legal entity check your answers page", () => {
       expect(res.text).toContain(limitedPartner.data?.legal_entity_registration_location);
       expect(res.text).toContain(limitedPartner.data?.registered_company_number);
       expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, England, ST6 3LJ");
+      expect(res.text).toContain("10.00 Pound Sterling (GBP)");
+      expect(res.text).toContain("Money");
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
       expect(res.text).toContain("1 January 2025");
       expect(res.text).toContain(enTranslationText.print.buttonText);
@@ -113,6 +119,7 @@ describe("Update limited partner legal entity check your answers page", () => {
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .isLegalEntity()
         .withPrincipalOfficeAddressUpdateRequired(false)
+        .withUpdateCapitalContributionRequired(false)
         .withLegalEntityName(companyAppointment.name + " ")
         .withLegalForm(companyAppointment.identification?.legalForm + " ")
         .withGoverningLaw(companyAppointment.identification?.legalAuthority + " ")
@@ -132,6 +139,8 @@ describe("Update limited partner legal entity check your answers page", () => {
 
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
       expect(res.text).not.toContain("6 Duncalf Street, Stoke-On-Trent, England, ST6 3LJ");
+      expect(res.text).not.toContain("10.00 Pound Sterling (GBP)");
+      expect(res.text).not.toContain("Money");
       expect(res.text).not.toContain(limitedPartner.data?.legal_entity_name);
       expect(res.text).not.toContain(limitedPartner.data?.legal_form);
       expect(res.text).not.toContain(limitedPartner.data?.governing_law);
