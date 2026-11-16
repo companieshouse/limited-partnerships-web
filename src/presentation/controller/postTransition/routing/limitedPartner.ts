@@ -193,7 +193,8 @@ const postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers = {
     pageKey: UPDATE_PARTNER_KEY,
     dateChangeLink: DATE_CHANGE_LINK,
     personChangeLink: PERSON_CHANGE_LINK,
-    uraChangeLink: PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo
+    uraChangeLink: PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo,
+    capitalContributionChangeLink: PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo
   }
 };
 
@@ -273,7 +274,8 @@ const postTransitionRoutingUpdateLimitedPartnerLegalEntityCheckYourAnswers = {
     pageKey: UPDATE_PARTNER_KEY,
     dateChangeLink: PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange,
     legalEntityChangeLink: PostTransitionPageType.updateLimitedPartnerLegalEntity,
-    principalOfficeAddressChangeLink: PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo
+    principalOfficeAddressChangeLink: PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo,
+    capitalContributionChangeLink: PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo
   }
 };
 
