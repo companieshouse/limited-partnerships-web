@@ -3,11 +3,11 @@
     {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
   </p>
   <p class="govuk-body">
-    {{ buildFormattedListFromArray(item.data.contribution_sub_types, i18n) }}
+    {{ buildFormattedContributionsList(item.data.contribution_sub_types, i18n) }}
   </p>
 {% endmacro %}
 
-{%- macro buildFormattedListFromArray(array, i18n) -%}
+{%- macro buildFormattedContributionsList(array, i18n) -%}
   {% set capitalContributionSubTypesMap = {
     "MONEY": i18n.partner.capitalContribution.money,
     "LAND_OR_PROPERTY": i18n.partner.capitalContribution.landOrProperty,
