@@ -3,12 +3,13 @@ import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
-import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
-import { checkIfPartnerValuesInText, countOccurrences, getUrl, checkYourAnswersLegalEntityKeys, setLocalesEnabled } from "../../../../utils";
+import { ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { checkIfPartnerValuesInText, countOccurrences, getUrl, checkYourAnswersLegalEntityKeys, setLocalesEnabled, toEscapedHtml, expectChangeLinks } from "../../../../utils";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import {
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+  CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
@@ -31,6 +32,10 @@ describe("Limited Partner Check Your Answers Page", () => {
       .isLegalEntity()
       .withDateEffectiveFrom("2024-10-10")
       .withLegalEntityRegistrationLocation("Wales")
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("10000.00")
+      .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
+      .withKind(PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY)
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
@@ -49,6 +54,10 @@ describe("Limited Partner Check Your Answers Page", () => {
     expect(res.status).toBe(200);
 
     expect(res.text).toContain(translationText.checkYourAnswersPage.update.title);
+    expect(res.text).toContain(translationText.checkYourAnswersPage.title);
+    expect(res.text).toContain(translationText.checkYourAnswersPage.printPage);
+    expect(res.text).toContain(translationText.checkYourAnswersPage.noCopyWarning);
+    expect(res.text).not.toContain(toEscapedHtml(translationText.checkYourAnswersPage.warningMessage.warning));
     expect(res.text).toContain(translationText.print.buttonText);
     expect(res.text).toContain(translationText.print.buttonTextNoJs);
     expect(res.text).toContain(countriesText.countries.wales);
@@ -59,6 +68,39 @@ describe("Limited Partner Check Your Answers Page", () => {
     }
     expect(countOccurrences(res.text, translationText.serviceName.addLimitedPartner)).toBe(2);
     expect(res.text).toContain(`data-event-id="check-your-answers-add-limited-partner-submit-button"`);
+  });
+
+  it("should contain change links for limited partner legal entity", async () => {
+    const res = await request(app).get(URL);
+
+    expect(res.status).toBe(200);
+    expectChangeLinks(res.text, [
+      `${ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#legal_entity_name`,
+      `${ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#legal_form`,
+      `${ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#governing_law`,
+      `${ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#legal_entity_registration_location`,
+      `${ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#date_effective_from-day`,
+      `${ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#entered_on_register`,
+      `${ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL}#contribution_currency_type`,
+      ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+    ]);
+  });
+
+  it("should say Not Supplied if register or registration number is not supplied", async () => {
+    limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isLegalEntity()
+      .withDateEffectiveFrom("2024-10-10")
+      .withLegalEntityRegistrationLocation("Wales")
+      .withRegistrationNumber("")
+      .withLegalEntityRegisterName("")
+      .build();
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
+
+    const res = await request(app).get(URL);
+
+    expect(res.status).toBe(200);
+    expect(countOccurrences(res.text, enTranslationText.checkYourAnswersPage.notSupplied)).toBe(2);
   });
 
   it.each([
@@ -93,18 +135,6 @@ describe("Limited Partner Check Your Answers Page", () => {
     { lang: "CY", testUrl: URL + "?lang=cy", translationText: cyTranslationText }
   ])("should display capital contribution on check your answers page - $lang", async ({ testUrl, translationText }) => {
     setLocalesEnabled(true);
-
-    limitedPartnerLegalEntity = new LimitedPartnerBuilder()
-      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-      .isLegalEntity()
-      .withDateEffectiveFrom("2024-10-10")
-      .withLegalEntityRegistrationLocation("Wales")
-      .withContributionCurrencyType("GBP")
-      .withContributionCurrencyValue("10000.00")
-      .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
-      .build();
-
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
 
     const res = await request(app).get(testUrl);
 
