@@ -21,7 +21,7 @@ const mapCountryCodeToCountry = (countryCode: string): string => {
     border: ""
   };
 
-  return countryMap[countryCode] || countryCode;
+  return countryMap[countryCode] ?? countryCode;
 };
 
 export default postcodeLookUpAddressToAddress;
