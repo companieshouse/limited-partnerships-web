@@ -101,6 +101,35 @@ export const runPostcodeRegisteredOfficeAddressTests = (config: PostcodeRegister
         });
       });
 
+      it("should map a border postcode address to an empty country then redirect to the confirm page", async () => {
+        const borderAddress = appDevDependencies.addressLookUpGateway.borderAddresses[0];
+
+        const res = await request(app).post(URL).send({
+          pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+          premises: borderAddress.premise,
+          postal_code: borderAddress.postcode
+        });
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${getUrl(config.confirmRedirectUrl)}`);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual({
+          [APPLICATION_CACHE_KEY]: {
+            [appDevDependencies.transactionGateway.transactionId]: {
+              roa_postcode: "SY1 1EB",
+              registered_office_address: {
+                postal_code: "SY1 1EB",
+                premises: "10",
+                address_line_1: "ST MARYS STREET",
+                address_line_2: "",
+                locality: "SHREWSBURY",
+                country: ""
+              }
+            }
+          }
+        });
+      });
+
       it("should validate the post code and find a matching address - premises and postcode uppercase", async () => {
         const res = await request(app).post(URL).send({
           pageType: AddressPageType.postcodeRegisteredOfficeAddress,

@@ -1,6 +1,7 @@
 import {
   CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+  ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/registration";
 
@@ -18,6 +19,7 @@ runConfirmRegisteredOfficeAddressTests({
   url: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   redirectUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   confirmRedirectUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  enterAddressUrl: ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   translateExclude: [],
   serviceTitleTranslationKey: SERVICE_NAME_KEY_REGISTRATION,
   customerFeedbackUrl: customerFeedbackUrlMap.registration

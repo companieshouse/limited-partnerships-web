@@ -169,7 +169,7 @@ const borderAddressList: UKAddress[] = [
     addressLine1: "ST MARYS STREET",
     addressLine2: "",
     postTown: "SHREWSBURY",
-    country: ""
+    country: "border"
   },
   {
     postcode: "SY1 1EB",
@@ -177,7 +177,7 @@ const borderAddressList: UKAddress[] = [
     addressLine1: "ST MARYS STREET",
     addressLine2: "",
     postTown: "SHREWSBURY",
-    country: ""
+    country: "border"
   }
 ];
 
