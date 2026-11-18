@@ -1,4 +1,7 @@
-import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/transition";
+import {
+  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+  ENTER_REGISTERED_OFFICE_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url/transition";
 import { GENERAL_PARTNERS_URL } from "../../../../../controller/transition/url";
 
 import { SERVICE_NAME_KEY_TRANSITION } from "../../../../../../config";
@@ -14,6 +17,7 @@ it("should run confirm registered office address tests for transition journey", 
 runConfirmRegisteredOfficeAddressTests({
   url: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   redirectUrl: GENERAL_PARTNERS_URL,
+  enterAddressUrl: ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   translateExclude: [],
   serviceTitleTranslationKey: SERVICE_NAME_KEY_TRANSITION,
   customerFeedbackUrl: customerFeedbackUrlMap.transition

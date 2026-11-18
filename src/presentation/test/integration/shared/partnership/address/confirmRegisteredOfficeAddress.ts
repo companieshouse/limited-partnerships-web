@@ -13,6 +13,7 @@ type ConfirmRegisteredOfficeAddressTestConfig = {
   url: string;
   redirectUrl: string;
   confirmRedirectUrl?: string;
+  enterAddressUrl: string;
   translateExclude: string[];
   serviceTitleTranslationKey: string | { serviceName: string };
   customerFeedbackUrl: string;
@@ -179,6 +180,17 @@ export const runConfirmRegisteredOfficeAddressTests = (config: ConfirmRegistered
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(enTranslationText.errorMessages.address.confirm.countryMissing);
+      });
+
+      it("should show change link to manual entry page if country is missing", async () => {
+        const res = await request(app).post(URL).send({
+          pageType: AddressPageType.confirmRegisteredOfficeAddress,
+          address: `{"postal_code": "SY1 1EB","premises": "10","address_line_1": "ST MARYS STREET","address_line_2": "","locality": "SHREWSBURY","country": ""}`
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.confirm.countryMissing);
+        expect(res.text).toContain(`href="${getUrl(config.enterAddressUrl)}"`);
       });
     });
   });

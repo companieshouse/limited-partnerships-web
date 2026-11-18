@@ -74,32 +74,40 @@ export const runPostcodeRegisteredOfficeAddressTests = (config: PostcodeRegister
         });
       });
 
-      it("should validate the post code and find a matching address then redirect to the next page", async () => {
-        const res = await request(app).post(URL).send({
-          pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-          premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise,
-          postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
-        });
+      it.each([
+        ["an england", "englandAddresses" as const, "England"],
+        ["a border", "borderAddresses" as const, ""]
+      ])(
+        "should validate the post code and find a matching address for %s postcode then redirect to the confirm page",
+        async (_description: string, addressListKey: "englandAddresses" | "borderAddresses", expectedCountry: string) => {
+          const ukAddress = appDevDependencies.addressLookUpGateway[addressListKey][0];
 
-        expect(res.status).toBe(302);
-        expect(res.text).toContain(`Redirecting to ${getUrl(config.confirmRedirectUrl)}`);
+          const res = await request(app).post(URL).send({
+            pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+            premises: ukAddress.premise,
+            postal_code: ukAddress.postcode
+          });
 
-        expect(appDevDependencies.cacheRepository.cache).toEqual({
-          [APPLICATION_CACHE_KEY]: {
-            [appDevDependencies.transactionGateway.transactionId]: {
-              roa_postcode: "ST6 3LJ",
-              registered_office_address: {
-                postal_code: "ST6 3LJ",
-                premises: "2",
-                address_line_1: "DUNCALF STREET",
-                address_line_2: "",
-                locality: "STOKE-ON-TRENT",
-                country: "England"
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(`Redirecting to ${getUrl(config.confirmRedirectUrl)}`);
+
+          expect(appDevDependencies.cacheRepository.cache).toEqual({
+            [APPLICATION_CACHE_KEY]: {
+              [appDevDependencies.transactionGateway.transactionId]: {
+                roa_postcode: ukAddress.postcode,
+                registered_office_address: {
+                  postal_code: ukAddress.postcode,
+                  premises: ukAddress.premise,
+                  address_line_1: ukAddress.addressLine1,
+                  address_line_2: ukAddress.addressLine2,
+                  locality: ukAddress.postTown,
+                  country: expectedCountry
+                }
               }
             }
-          }
-        });
-      });
+          });
+        }
+      );
 
       it("should validate the post code and find a matching address - premises and postcode uppercase", async () => {
         const res = await request(app).post(URL).send({
