@@ -11,7 +11,14 @@ import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 import { createSummaryListLink } from "../utils/change-link";
 import { setCeaseDateSection, setDateEffectiveFromSection, setDateOfBirthSection, setDateOfUpdateSection } from "../utils/date-format-section";
 import * as config from "./constants";
-import { acspAuthentication, authentication, languageMiddleware, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
+import {
+  acspAuthentication,
+  authentication,
+  languageMiddleware,
+  localisationMiddleware,
+  trailingSlashMiddleware,
+  trimBodyMiddleware
+} from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
 import { journeyDetectionMiddleware } from "../middlewares/journey.detection.middleware";
 import { TRANSITION_START_URL } from "../presentation/controller/transition/url";
@@ -77,6 +84,7 @@ export const appConfig = (app: express.Application) => {
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.use(trimBodyMiddleware);
   app.use(cookieParser(config.COOKIE_SECRET));
 
   app.set("view engine", "njk");

@@ -6,3 +6,4 @@ export * from "./language.middleware";
 export * from "./company-authentication.middleware";
 export * from "./trailing-slash.middleware";
 export * from "./transition-filing.middleware";
+export * from "./trim-body.middleware";
