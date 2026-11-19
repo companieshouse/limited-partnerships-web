@@ -134,6 +134,7 @@ class CompanyService {
     }
   }
 
+  // Returns false when the company cannot be found, so the existing "not found" handling still applies
   public async isNotLimitedPartnership(opt: Tokens, company_number: string): Promise<boolean> {
     const { companyProfile } = await this.getCompanyProfile(opt, company_number);
 
