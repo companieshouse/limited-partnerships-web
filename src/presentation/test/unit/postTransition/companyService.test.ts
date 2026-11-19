@@ -80,6 +80,36 @@ describe("CompanyService", () => {
     });
   });
 
+  describe("isNotLimitedPartnership", () => {
+    const tokens = { access_token: "token", refresh_token: "token" };
+
+    it("should return false when the company is a limited partnership", async () => {
+      const result = await appDevDependencies.companyService.isNotLimitedPartnership(
+        tokens,
+        companyProfile.data.companyNumber
+      );
+
+      expect(result).toBe(false);
+    });
+
+    it("should return true when the company is not a limited partnership", async () => {
+      appDevDependencies.companyGateway.feedCompanyProfile(new CompanyProfileBuilder().withType("ltd").build().data);
+
+      const result = await appDevDependencies.companyService.isNotLimitedPartnership(
+        tokens,
+        companyProfile.data.companyNumber
+      );
+
+      expect(result).toBe(true);
+    });
+
+    it("should return false when the company cannot be found", async () => {
+      const result = await appDevDependencies.companyService.isNotLimitedPartnership(tokens, "UNKNOWN1");
+
+      expect(result).toBe(false);
+    });
+  });
+
   describe("Company appointment", () => {
     it("should map the company appointment to General partner Person", async () => {
       const appointment = new CompanyAppointmentBuilder().isPerson().build();

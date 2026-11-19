@@ -23,6 +23,8 @@ export type DataIncludingPartners = {
   };
 };
 
+const LIMITED_PARTNERSHIP_COMPANY_TYPE = "limited-partnership";
+
 class CompanyService {
   constructor(private readonly companyGateway: ICompanyGateway) {}
 
@@ -130,6 +132,12 @@ class CompanyService {
         errors
       };
     }
+  }
+
+  public async isNotLimitedPartnership(opt: Tokens, company_number: string): Promise<boolean> {
+    const { companyProfile } = await this.getCompanyProfile(opt, company_number);
+
+    return Boolean(companyProfile.type) && companyProfile.type !== LIMITED_PARTNERSHIP_COMPANY_TYPE;
   }
 
   public async getCompanyIncorporationDate(opt: Tokens, company_number: string): Promise<string> {

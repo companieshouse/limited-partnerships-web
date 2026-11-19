@@ -6,43 +6,56 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import sdkMock, { getCompanyProfile } from "../../mock/sdkMock";
 
 import { getUrl } from "../../../utils";
-import { COMPANY_NUMBER_URL, CONFIRM_LIMITED_PARTNERSHIP_URL } from "../../../../controller/transition/url";
-import TransitionPageType from "../../../../controller/transition/PageType";
+import { CONFIRM_LIMITED_PARTNERSHIP_URL } from "../../../../controller/transition/url";
+import FilingHistoryBuilder from "../../../builder/FilingHistoryBuilder";
+import { enTranslationText } from "../../../../../test/utils/locales";
 
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
-mockCreateApiClient.mockReturnValue(sdkMock);
 
-describe("Comapny Profile", () => {
-  const URL = getUrl(COMPANY_NUMBER_URL);
+// Filing history without a transition form, so the confirm page is not redirected to "already filed"
+const sdkMockNotFiled = {
+  ...sdkMock,
+  companyFilingHistory: {
+    ...sdkMock.companyFilingHistory,
+    getCompanyFilingHistory: () => ({
+      httpStatusCode: 200,
+      resource: {
+        filing_history_status: "filing-history-available-limited-partnership-from-2014",
+        items: [new FilingHistoryBuilder().withType("LP6D").build()],
+        items_per_page: 25,
+        start_index: 0,
+        total_count: 1
+      }
+    })
+  }
+};
+
+describe("Company Profile", () => {
+  const URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
 
   beforeEach(() => {
-    mockCreateApiClient.mockReturnValue(sdkMock);
+    mockCreateApiClient.mockReturnValue(sdkMockNotFiled);
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
   describe("getCompanyProfile", () => {
-    it("should find the company then redirect to the next page", async () => {
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: TransitionPageType.companyNumber,
-        company_number: "LP123456"
-      });
+    it("should find the company and load the confirm limited partnership page", async () => {
+      const res = await request(appRealDependencies).get(URL);
 
       expect(getCompanyProfile).toHaveBeenCalled();
 
-      expect(res.status).toBe(302);
-
-      const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
-
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.partnership.confirmLimitedPartnership.title);
+      expect(res.text).toContain("TEST LP");
     });
 
-    it("should load error page when error thrown from getCompanyProfile", async () => {
+    it("should show an error when the company cannot be found", async () => {
       mockCreateApiClient.mockReturnValue({
-        ...sdkMock,
+        ...sdkMockNotFiled,
         companyProfile: {
-          ...sdkMock.companyProfile,
+          ...sdkMockNotFiled.companyProfile,
           getCompanyProfile: () => ({
             httpStatusCode: 404,
             resource: null
@@ -50,10 +63,7 @@ describe("Comapny Profile", () => {
         }
       });
 
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: TransitionPageType.companyNumber,
-        company_number: "wrong"
-      });
+      const res = await request(appRealDependencies).get(URL);
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("The partnership cannot be found");

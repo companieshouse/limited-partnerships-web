@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { companyAuthentication, transitionFiling } from "../middlewares";
+import { companyAuthentication, requireLimitedPartnership, transitionFiling } from "../middlewares";
 
 import { IDependencies } from "../config/IDependencies";
 
@@ -54,23 +54,17 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     dependencies.limitedPartnershipTransitionController.getPageRouting()
   );
 
-  router.get(
-    COMPANY_NUMBER_URL,
-    dependencies.limitedPartnershipTransitionController.getPageRouting()
-  );
-  router.post(
-    COMPANY_NUMBER_URL,
-    dependencies.limitedPartnershipTransitionController.checkCompanyNumber()
-  );
+  router.get(COMPANY_NUMBER_URL, dependencies.limitedPartnershipTransitionController.getCompanyLookup());
 
   router.get(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
+    requireLimitedPartnership(dependencies),
     transitionFiling(dependencies),
-    companyAuthentication,
     dependencies.limitedPartnershipTransitionController.getConfirmPage()
   );
   router.post(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
+    requireLimitedPartnership(dependencies),
     transitionFiling(dependencies),
     companyAuthentication,
     dependencies.limitedPartnershipTransitionController.limitedPartnershipConfirm()

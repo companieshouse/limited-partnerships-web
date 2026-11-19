@@ -1,5 +1,6 @@
 import * as template from "./template";
 import {
+  COMPANY_ID,
   GENERAL_PARTNER_WITH_ID_URL,
   LIMITED_PARTNER_WITH_ID_URL,
   TRANSITION_BASE_URL,
@@ -13,6 +14,9 @@ export const CONTINUE_SAVED_FILING_URL = `${TRANSITION_BASE_URL}/${template.CONT
 export const COMPANY_NUMBER_URL = `${TRANSITION_BASE_URL}/${template.COMPANY_NUMBER_TEMPLATE}`;
 export const TRANSITION_ALREADY_FILED_URL = `${TRANSITION_WITH_ID_URL}/${template.TRANSITION_ALREADY_FILED_TEMPLATE}`;
 export const CONFIRM_LIMITED_PARTNERSHIP_URL = `${TRANSITION_WITH_ID_URL}/${template.CONFIRM_LIMITED_PARTNERSHIP_TEMPLATE}`;
+const companyLookupForwardUrl = CONFIRM_LIMITED_PARTNERSHIP_URL.replace(`:${COMPANY_ID}`, "{companyNumber}");
+export const COMPANY_LOOKUP_URL =
+  `/company-lookup/search?forward=${encodeURIComponent(companyLookupForwardUrl)}&backLink=${CONTINUE_SAVED_FILING_URL}`;
 export const EMAIL_URL = `${TRANSITION_WITH_IDS_URL}/${template.EMAIL_TEMPLATE}`;
 
 // general partner
