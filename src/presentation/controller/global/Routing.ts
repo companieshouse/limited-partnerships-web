@@ -37,7 +37,21 @@ const globalRoutingNotEligible = {
   pageType: GlobalPageType.notEligible
 };
 
-const list = [globalRoutingSignOut, globalRoutingConfirmation, globalRoutingConfirmationPostTransition, globalRoutingPaymentFailed, globalRoutingNotEligible];
+const globalRoutingCompanyNotLimitedPartnership = {
+  previousUrl: "/",
+  currentUrl: url.COMPANY_NOT_LIMITED_PARTNERSHIP_URL,
+  nextUrl: "/",
+  pageType: GlobalPageType.companyNotLimitedPartnership
+};
+
+const list = [
+  globalRoutingSignOut,
+  globalRoutingConfirmation,
+  globalRoutingConfirmationPostTransition,
+  globalRoutingPaymentFailed,
+  globalRoutingNotEligible,
+  globalRoutingCompanyNotLimitedPartnership
+];
 
 export const globalsRouting: PagesRouting = new Map<GlobalPageType, PageRouting>();
 

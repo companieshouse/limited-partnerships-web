@@ -16,7 +16,7 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 import PartnershipController from "../common/PartnershipController";
 
 import { CONFIRMATION_URL } from "../global/url";
-import UIErrors from "../../../domain/entities/UIErrors";
+import { COMPANY_LOOKUP_URL } from "./url";
 
 class LimitedPartnershipController extends PartnershipController {
   constructor(
@@ -27,6 +27,35 @@ class LimitedPartnershipController extends PartnershipController {
     private readonly limitedPartnerService: LimitedPartnerService
   ) {
     super();
+  }
+
+  getCompanyLookup() {
+    return (_request: Request, response: Response) => {
+      response.redirect(COMPANY_LOOKUP_URL);
+    };
+  }
+
+  getConfirmPage() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { pageType, tokens, ids } = super.extract(request);
+        const pageRouting = super.getRouting(transitionRouting, pageType, request);
+
+        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
+
+        if (result.errors?.hasErrors()) {
+          response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, null, result.errors));
+          return;
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership: result.limitedPartnership }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 
   getPageRouting() {
@@ -86,34 +115,6 @@ class LimitedPartnershipController extends PartnershipController {
     return { generalPartners: [], limitedPartners: [] };
   }
 
-  getConfirmPage() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens } = super.extract(request);
-        const { ids, pageType } = super.extract(request);
-        const pageRouting = super.getRouting(transitionRouting, pageType, request);
-
-        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
-
-        if (result.errors) {
-          response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, null, result.errors)
-          );
-
-          return;
-        }
-
-        response.render(
-          super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership: result.limitedPartnership }, null)
-        );
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
   limitedPartnershipConfirm() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -155,34 +156,6 @@ class LimitedPartnershipController extends PartnershipController {
           submissionId: result.submissionId
         } as Ids;
         const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds, request.url);
-
-        response.redirect(url);
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  checkCompanyNumber() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { ids, tokens } = super.extract(request);
-        const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
-        const pageRouting = super.getRouting(transitionRouting, pageType, request);
-        const { company_number } = request.body;
-
-        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, company_number.trim());
-
-        if (result.errors) {
-          response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { company_number: company_number.trim() }, result.errors)
-          );
-
-          return;
-        }
-
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, { ...ids, companyId: company_number.trim() }, request.url);
 
         response.redirect(url);
       } catch (error) {
@@ -240,34 +213,6 @@ class LimitedPartnershipController extends PartnershipController {
         next(error);
       }
     };
-  }
-
-  private async handlePageRerenderWithPartnershipAndError(uiErrors: UIErrors, request: Request, response: Response) {
-    const { tokens, pageType, ids } = super.extract(request);
-    const pageRouting = super.getRouting(transitionRouting, pageType, request);
-
-    const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-      tokens,
-      ids.transactionId,
-      ids.submissionId
-    );
-
-    return response.render(
-      super.templateName(pageRouting.currentUrl),
-      super.makeProps(
-        pageRouting,
-        {
-          limitedPartnership: {
-            ...limitedPartnership,
-            data: {
-              ...limitedPartnership.data,
-              ...request.body
-            }
-          }
-        },
-        uiErrors
-      )
-    );
   }
 
   private async conditionalNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {

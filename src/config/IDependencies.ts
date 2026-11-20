@@ -1,3 +1,4 @@
+import CompanyService from "../application/service/CompanyService";
 import FilingHistoryService from "../application/service/FilingHistoryService";
 import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
 import TransactionService from "../application/service/TransactionService";
@@ -19,6 +20,7 @@ import LimitedPartnerPostTransitionController from "../presentation/controller/p
 import PersonWithSignificantControlRegistrationController from "../presentation/controller/registration/PersonWithSignificantControlController";
 
 export type IDependencies = {
+  companyService: CompanyService;
   filingHistoryService: FilingHistoryService;
   limitedPartnershipService: LimitedPartnershipService;
   transactionService: TransactionService;

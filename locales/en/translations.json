@@ -357,6 +357,11 @@
         "acceptedInformationLink": "Companies House register"
     },
 
+    "companyNotLimitedPartnership": {
+        "title": "The company is not a limited partnership",
+        "message": "You can only use this service to provide information for a limited partnership."
+    },
+
     "yesAndNo": {
         "yes": "Yes",
         "no": "No"

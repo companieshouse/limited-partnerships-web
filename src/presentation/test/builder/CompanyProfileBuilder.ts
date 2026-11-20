@@ -107,6 +107,11 @@ class CompanyProfileBuilder {
     return this;
   }
 
+  withType(type: string) {
+    this.data.type = type;
+    return this;
+  }
+
   withJurisdiction(jurisdiction: Jurisdiction) {
     this.data.jurisdiction = jurisdiction;
     return this;

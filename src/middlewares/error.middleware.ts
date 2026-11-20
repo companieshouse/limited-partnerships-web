@@ -84,4 +84,4 @@ const getHeaderData = (req: Request) => {
 };
 
 const errorHandler = [pageNotFound, csrfErrorHandler, invalidAcspNumberErrorHandler, globalErrorHandler];
-export { errorHandler, invalidAcspNumberErrorHandler };
+export { errorHandler, invalidAcspNumberErrorHandler, pageNotFound };
