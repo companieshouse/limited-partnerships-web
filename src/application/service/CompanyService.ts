@@ -41,6 +41,13 @@ class CompanyService {
 
     const { companyProfile, errors } = await this.getCompanyProfile(opt, company_number);
 
+    const allowedType = "limited-partnership";
+    if (companyProfile.type !== allowedType) {
+      const errors: UIErrors = new UIErrors();
+      errors?.setWebError("company_result", `Invalid company type. Expected a limited partnership.`);
+      return { limitedPartnership, errors };
+    }
+
     if (companyProfile.companyName) {
       const partners = await this.getPartners(errors, opt, company_number);
 

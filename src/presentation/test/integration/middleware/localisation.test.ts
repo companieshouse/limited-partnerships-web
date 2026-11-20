@@ -45,6 +45,14 @@ describe("Localisation tests", () => {
     expect(resp.text).toContain("Cymraeg");
   });
 
+  test("appends lang to existing query params in the language switcher links", async () => {
+    setLocalesEnabled(true);
+
+    const resp = await request(app).get(PARTNERSHIP_TYPE_URL + "?companyNumber=LP123456&lang=en");
+
+    expect(resp.text).toContain(PARTNERSHIP_TYPE_URL + "?companyNumber=LP123456&amp;lang=cy");
+  });
+
   test("renders the start page with English text as default when localisation is switched off", async () => {
     setLocalesEnabled(false);
 
