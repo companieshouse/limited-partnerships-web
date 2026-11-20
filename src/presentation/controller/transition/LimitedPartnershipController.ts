@@ -30,12 +30,8 @@ class LimitedPartnershipController extends PartnershipController {
   }
 
   getCompanyLookup() {
-    return (request: Request, response: Response, next: NextFunction) => {
-      try {
-        response.redirect(COMPANY_LOOKUP_URL);
-      } catch (error) {
-        next(error);
-      }
+    return (_request: Request, response: Response) => {
+      response.redirect(COMPANY_LOOKUP_URL);
     };
   }
 
