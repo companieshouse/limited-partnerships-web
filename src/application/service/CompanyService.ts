@@ -25,6 +25,12 @@ export type DataIncludingPartners = {
 
 const LIMITED_PARTNERSHIP_COMPANY_TYPE = "limited-partnership";
 
+export enum LimitedPartnershipStatus {
+  LIMITED_PARTNERSHIP = "LIMITED_PARTNERSHIP",
+  NOT_LIMITED_PARTNERSHIP = "NOT_LIMITED_PARTNERSHIP",
+  NOT_FOUND = "NOT_FOUND"
+}
+
 class CompanyService {
   constructor(private readonly companyGateway: ICompanyGateway) {}
 
@@ -134,11 +140,16 @@ class CompanyService {
     }
   }
 
-  // Returns false when the company cannot be found, so the existing "not found" handling still applies
-  public async isNotLimitedPartnership(opt: Tokens, company_number: string): Promise<boolean> {
+  public async getLimitedPartnershipStatus(opt: Tokens, company_number: string): Promise<LimitedPartnershipStatus> {
     const { companyProfile } = await this.getCompanyProfile(opt, company_number);
 
-    return Boolean(companyProfile.type) && companyProfile.type !== LIMITED_PARTNERSHIP_COMPANY_TYPE;
+    if (!companyProfile.type) {
+      return LimitedPartnershipStatus.NOT_FOUND;
+    }
+
+    return companyProfile.type === LIMITED_PARTNERSHIP_COMPANY_TYPE
+      ? LimitedPartnershipStatus.LIMITED_PARTNERSHIP
+      : LimitedPartnershipStatus.NOT_LIMITED_PARTNERSHIP;
   }
 
   public async getCompanyIncorporationDate(opt: Tokens, company_number: string): Promise<string> {

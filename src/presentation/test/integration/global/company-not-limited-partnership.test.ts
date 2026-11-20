@@ -77,13 +77,17 @@ describe("Company not a limited partnership", () => {
   });
 
   describe("when the company cannot be found", () => {
-    it("should not redirect from the confirm page", async () => {
+    it.each([
+      ["GET", () => request(app).get(CONFIRM_URL)],
+      ["POST", () => request(app).post(CONFIRM_URL)]
+    ])("should render page not found from the confirm page %s", async (_method, makeRequest) => {
       appDevDependencies.companyGateway.setError(true);
 
-      const res = await request(app).get(CONFIRM_URL);
+      const res = await makeRequest();
 
-      expect(res.status).toBe(200);
-      expect(res.text).not.toContain(`Redirecting to ${URL}`);
+      expect(res.status).toBe(404);
+      expect(res.text).toContain(enTranslationText.pageNotFound.title);
+      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
     });
   });
 });

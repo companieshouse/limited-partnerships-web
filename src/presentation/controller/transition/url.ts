@@ -16,7 +16,7 @@ export const TRANSITION_ALREADY_FILED_URL = `${TRANSITION_WITH_ID_URL}/${templat
 export const CONFIRM_LIMITED_PARTNERSHIP_URL = `${TRANSITION_WITH_ID_URL}/${template.CONFIRM_LIMITED_PARTNERSHIP_TEMPLATE}`;
 const companyLookupForwardUrl = CONFIRM_LIMITED_PARTNERSHIP_URL.replace(`:${COMPANY_ID}`, "{companyNumber}");
 export const COMPANY_LOOKUP_URL =
-  `/company-lookup/search?forward=${encodeURIComponent(companyLookupForwardUrl)}&backLink=${CONTINUE_SAVED_FILING_URL}`;
+  `/company-lookup/search?forward=${encodeURIComponent(companyLookupForwardUrl)}&backLink=${encodeURIComponent(CONTINUE_SAVED_FILING_URL)}`;
 export const EMAIL_URL = `${TRANSITION_WITH_IDS_URL}/${template.EMAIL_TEMPLATE}`;
 
 // general partner

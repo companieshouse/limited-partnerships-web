@@ -51,7 +51,7 @@ describe("Company Profile", () => {
       expect(res.text).toContain("TEST LP");
     });
 
-    it("should show an error when the company cannot be found", async () => {
+    it("should render page not found when the company cannot be found", async () => {
       mockCreateApiClient.mockReturnValue({
         ...sdkMockNotFiled,
         companyProfile: {
@@ -65,8 +65,8 @@ describe("Company Profile", () => {
 
       const res = await request(appRealDependencies).get(URL);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("The partnership cannot be found");
+      expect(res.status).toBe(404);
+      expect(res.text).toContain(enTranslationText.pageNotFound.title);
     });
   });
 });

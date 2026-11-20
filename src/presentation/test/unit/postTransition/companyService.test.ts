@@ -2,6 +2,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import CompanyAppointmentBuilder from "../../builder/CompanyAppointmentBuilder";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../config";
+import { LimitedPartnershipStatus } from "../../../../application/service/CompanyService";
 
 describe("CompanyService", () => {
   let companyProfile;
@@ -80,33 +81,33 @@ describe("CompanyService", () => {
     });
   });
 
-  describe("isNotLimitedPartnership", () => {
+  describe("getLimitedPartnershipStatus", () => {
     const tokens = { access_token: "token", refresh_token: "token" };
 
-    it("should return false when the company is a limited partnership", async () => {
-      const result = await appDevDependencies.companyService.isNotLimitedPartnership(
+    it("should return LIMITED_PARTNERSHIP when the company is a limited partnership", async () => {
+      const result = await appDevDependencies.companyService.getLimitedPartnershipStatus(
         tokens,
         companyProfile.data.companyNumber
       );
 
-      expect(result).toBe(false);
+      expect(result).toBe(LimitedPartnershipStatus.LIMITED_PARTNERSHIP);
     });
 
-    it("should return true when the company is not a limited partnership", async () => {
+    it("should return NOT_LIMITED_PARTNERSHIP when the company is not a limited partnership", async () => {
       appDevDependencies.companyGateway.feedCompanyProfile(new CompanyProfileBuilder().withType("ltd").build().data);
 
-      const result = await appDevDependencies.companyService.isNotLimitedPartnership(
+      const result = await appDevDependencies.companyService.getLimitedPartnershipStatus(
         tokens,
         companyProfile.data.companyNumber
       );
 
-      expect(result).toBe(true);
+      expect(result).toBe(LimitedPartnershipStatus.NOT_LIMITED_PARTNERSHIP);
     });
 
-    it("should return false when the company cannot be found", async () => {
-      const result = await appDevDependencies.companyService.isNotLimitedPartnership(tokens, "UNKNOWN1");
+    it("should return NOT_FOUND when the company cannot be found", async () => {
+      const result = await appDevDependencies.companyService.getLimitedPartnershipStatus(tokens, "UNKNOWN1");
 
-      expect(result).toBe(false);
+      expect(result).toBe(LimitedPartnershipStatus.NOT_FOUND);
     });
   });
 

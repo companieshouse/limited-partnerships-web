@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from "express";
 import { getJourneyTypes, logger } from "../utils";
 import { COMPANY_NOT_LIMITED_PARTNERSHIP_URL } from "../presentation/controller/global/url";
 import { IDependencies, JOURNEY_TYPE_PARAM } from "../config";
+import { LimitedPartnershipStatus } from "../application/service/CompanyService";
+import { pageNotFound } from "./error.middleware";
 
 export const requireLimitedPartnership =
   (dependencies: IDependencies) => async (req: Request, res: Response, next: NextFunction) => {
@@ -10,13 +12,16 @@ export const requireLimitedPartnership =
     const { tokens, ids } = dependencies.globalController.extract(req);
 
     try {
-      const isNotLimitedPartnership = await dependencies.companyService.isNotLimitedPartnership(
-        tokens,
-        ids.companyId
-      );
+      const status = await dependencies.companyService.getLimitedPartnershipStatus(tokens, ids.companyId);
 
-      if (isNotLimitedPartnership) {
-        logger.infoRequest(req, "Company is not a limited partnership, redirecting to company not limited partnership page");
+      if (status === LimitedPartnershipStatus.NOT_FOUND) {
+        logger.infoRequest(req, `Company ${ids.companyId} cannot be found, rendering page not found`);
+
+        return pageNotFound(req, res);
+      }
+
+      if (status === LimitedPartnershipStatus.NOT_LIMITED_PARTNERSHIP) {
+        logger.infoRequest(req, `Company ${ids.companyId} is not a limited partnership, redirecting to company not limited partnership page`);
 
         let redirectUrl = dependencies.globalController
           .insertCompanyId(COMPANY_NOT_LIMITED_PARTNERSHIP_URL, ids.companyId)
