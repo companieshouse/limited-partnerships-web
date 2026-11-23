@@ -9,6 +9,7 @@ import {
   CONFIRMATION_URL,
   CONFIRMATION_POST_TRANSITION_URL,
   NOT_ELIGIBLE_URL,
+  COMPANY_NOT_LIMITED_PARTNERSHIP_URL,
   RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL,
   RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL,
   RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL,
@@ -78,6 +79,11 @@ export const globalEndpoints = (
 
   router.get(
     NOT_ELIGIBLE_URL,
+    dependencies.globalController.getPageRouting()
+  );
+
+  router.get(
+    COMPANY_NOT_LIMITED_PARTNERSHIP_URL,
     dependencies.globalController.getPageRouting()
   );
 };

@@ -23,6 +23,14 @@ export type DataIncludingPartners = {
   };
 };
 
+const LIMITED_PARTNERSHIP_COMPANY_TYPE = "limited-partnership";
+
+export enum LimitedPartnershipCheckResult {
+  LIMITED_PARTNERSHIP = "LIMITED_PARTNERSHIP",
+  NOT_LIMITED_PARTNERSHIP = "NOT_LIMITED_PARTNERSHIP",
+  NOT_FOUND = "NOT_FOUND"
+}
+
 class CompanyService {
   constructor(private readonly companyGateway: ICompanyGateway) {}
 
@@ -130,6 +138,18 @@ class CompanyService {
         errors
       };
     }
+  }
+
+  public async checkIsLimitedPartnership(opt: Tokens, company_number: string): Promise<LimitedPartnershipCheckResult> {
+    const { companyProfile } = await this.getCompanyProfile(opt, company_number);
+
+    if (!companyProfile.type) {
+      return LimitedPartnershipCheckResult.NOT_FOUND;
+    }
+
+    return companyProfile.type === LIMITED_PARTNERSHIP_COMPANY_TYPE
+      ? LimitedPartnershipCheckResult.LIMITED_PARTNERSHIP
+      : LimitedPartnershipCheckResult.NOT_LIMITED_PARTNERSHIP;
   }
 
   public async getCompanyIncorporationDate(opt: Tokens, company_number: string): Promise<string> {

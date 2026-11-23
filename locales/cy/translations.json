@@ -357,6 +357,11 @@
         "acceptedInformationLink": "WELSH - Companies House register"
     },
 
+    "companyNotLimitedPartnership": {
+        "title": "WELSH - The company is not a limited partnership",
+        "message": "WELSH - You can only use this service to provide information for a limited partnership."
+    },
+
     "yesAndNo": {
         "yes": "WELSH - Yes",
         "no": "WELSH - No"

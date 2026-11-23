@@ -55,13 +55,13 @@ describe("Confirm correct limited partnership page", () => {
       expect(res.text).toContain("LP123456");
     });
 
-    it("should return an error if company_number is not valid", async () => {
+    it("should render page not found if the company cannot be found", async () => {
       appDevDependencies.companyGateway.setError(true);
 
       const res = await request(app).get(URL);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("The partnership cannot be found");
+      expect(res.status).toBe(404);
+      expect(res.text).toContain(enTranslationText.pageNotFound.title);
     });
   });
 
