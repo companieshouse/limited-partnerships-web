@@ -10,10 +10,16 @@ import { Journey } from "../../../../domain/entities/journey";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
-import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
+import {
+  enTranslationText,
+  cyTranslationText,
+} from "../../../../test/utils/locales";
 
 describe("Company not a limited partnership", () => {
-  const URL = getUrl(COMPANY_NOT_LIMITED_PARTNERSHIP_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
+  const URL = getUrl(COMPANY_NOT_LIMITED_PARTNERSHIP_URL).replace(
+    JOURNEY_TYPE_PARAM,
+    Journey.transition,
+  );
   const CONFIRM_URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
 
   beforeEach(() => {
@@ -22,72 +28,107 @@ describe("Company not a limited partnership", () => {
     appDevDependencies.companyGateway.setError(false);
   });
 
-  describe("when the company is not a limited partnership", () => {
-    beforeEach(() => {
-      const companyProfile = new CompanyProfileBuilder().withType("ltd").build();
-      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+  const feedNonLimitedPartnershipCompany = () => {
+    const companyProfile = new CompanyProfileBuilder().withType("ltd").build();
+    appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+  };
+
+  const feedLimitedPartnershipCompany = () => {
+    const companyProfile = new CompanyProfileBuilder().build();
+    appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+  };
+
+  describe("GET", () => {
+    describe("when the company is not a limited partnership", () => {
+      beforeEach(() => {
+        feedNonLimitedPartnershipCompany();
+      });
+
+      it.each([
+        ["English", "en", enTranslationText],
+        ["Welsh", "cy", cyTranslationText],
+      ])(
+        "should render the page with %s text",
+        async (_description, lang, translationText) => {
+          setLocalesEnabled(true);
+
+          const res = await request(app).get(URL + `?lang=${lang}`);
+
+          expect(res.status).toBe(200);
+          testTranslations(
+            res.text,
+            translationText.companyNotLimitedPartnership,
+          );
+          expect(res.text).not.toContain("govuk-back-link");
+        },
+      );
+
+      it("should redirect from the confirm page and keep the query string", async () => {
+        const res = await request(app).get(CONFIRM_URL + "?lang=cy");
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${URL}?lang=cy`);
+      });
     });
 
-    it("should render the page with English text", async () => {
-      setLocalesEnabled(true);
+    describe("when the company is a limited partnership", () => {
+      beforeEach(() => {
+        feedLimitedPartnershipCompany();
+      });
 
-      const res = await request(app).get(URL + "?lang=en");
+      it("should not redirect from the confirm page", async () => {
+        const res = await request(app).get(CONFIRM_URL);
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.companyNotLimitedPartnership);
-      expect(res.text).not.toContain("govuk-back-link");
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(
+          enTranslationText.partnership.confirmLimitedPartnership.title,
+        );
+      });
     });
 
-    it("should render the page with Welsh text", async () => {
-      setLocalesEnabled(true);
+    describe("when the company cannot be found", () => {
+      it("should render page not found from the confirm page", async () => {
+        appDevDependencies.companyGateway.setError(true);
 
-      const res = await request(app).get(URL + "?lang=cy");
+        const res = await request(app).get(CONFIRM_URL);
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.companyNotLimitedPartnership);
-    });
-
-    it("should redirect from the confirm page GET and keep the query string", async () => {
-      const res = await request(app).get(CONFIRM_URL + "?lang=cy");
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${URL}?lang=cy`);
-    });
-
-    it("should redirect from the confirm page POST", async () => {
-      const res = await request(app).post(CONFIRM_URL);
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${URL}`);
+        expect(res.status).toBe(404);
+        expect(res.text).toContain(enTranslationText.pageNotFound.title);
+        expect(
+          appDevDependencies.limitedPartnershipGateway.limitedPartnerships
+            .length,
+        ).toEqual(0);
+      });
     });
   });
 
-  describe("when the company is a limited partnership", () => {
-    beforeEach(() => {
-      const companyProfile = new CompanyProfileBuilder().build();
-      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+  describe("POST", () => {
+    describe("when the company is not a limited partnership", () => {
+      beforeEach(() => {
+        feedNonLimitedPartnershipCompany();
+      });
+
+      it("should redirect from the confirm page", async () => {
+        const res = await request(app).post(CONFIRM_URL);
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${URL}`);
+      });
     });
 
-    it("should not redirect from the confirm page", async () => {
-      const res = await request(app).get(CONFIRM_URL);
+    describe("when the company cannot be found", () => {
+      it("should render page not found from the confirm page", async () => {
+        appDevDependencies.companyGateway.setError(true);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.partnership.confirmLimitedPartnership.title);
-    });
-  });
+        const res = await request(app).post(CONFIRM_URL);
 
-  describe("when the company cannot be found", () => {
-    it.each([
-      ["GET", () => request(app).get(CONFIRM_URL)],
-      ["POST", () => request(app).post(CONFIRM_URL)]
-    ])("should render page not found from the confirm page %s", async (_method, makeRequest) => {
-      appDevDependencies.companyGateway.setError(true);
-
-      const res = await makeRequest();
-
-      expect(res.status).toBe(404);
-      expect(res.text).toContain(enTranslationText.pageNotFound.title);
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
+        expect(res.status).toBe(404);
+        expect(res.text).toContain(enTranslationText.pageNotFound.title);
+        expect(
+          appDevDependencies.limitedPartnershipGateway.limitedPartnerships
+            .length,
+        ).toEqual(0);
+      });
     });
   });
 });
