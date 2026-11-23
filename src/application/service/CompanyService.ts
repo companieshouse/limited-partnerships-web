@@ -25,7 +25,7 @@ export type DataIncludingPartners = {
 
 const LIMITED_PARTNERSHIP_COMPANY_TYPE = "limited-partnership";
 
-export enum CompanyTypeCheckResult {
+export enum LimitedPartnershipCheckResult {
   LIMITED_PARTNERSHIP = "LIMITED_PARTNERSHIP",
   NOT_LIMITED_PARTNERSHIP = "NOT_LIMITED_PARTNERSHIP",
   NOT_FOUND = "NOT_FOUND"
@@ -140,16 +140,16 @@ class CompanyService {
     }
   }
 
-  public async checkCompanyType(opt: Tokens, company_number: string): Promise<CompanyTypeCheckResult> {
+  public async checkIsLimitedPartnership(opt: Tokens, company_number: string): Promise<LimitedPartnershipCheckResult> {
     const { companyProfile } = await this.getCompanyProfile(opt, company_number);
 
     if (!companyProfile.type) {
-      return CompanyTypeCheckResult.NOT_FOUND;
+      return LimitedPartnershipCheckResult.NOT_FOUND;
     }
 
     return companyProfile.type === LIMITED_PARTNERSHIP_COMPANY_TYPE
-      ? CompanyTypeCheckResult.LIMITED_PARTNERSHIP
-      : CompanyTypeCheckResult.NOT_LIMITED_PARTNERSHIP;
+      ? LimitedPartnershipCheckResult.LIMITED_PARTNERSHIP
+      : LimitedPartnershipCheckResult.NOT_LIMITED_PARTNERSHIP;
   }
 
   public async getCompanyIncorporationDate(opt: Tokens, company_number: string): Promise<string> {

@@ -2,7 +2,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import CompanyAppointmentBuilder from "../../builder/CompanyAppointmentBuilder";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../config";
-import { CompanyTypeCheckResult } from "../../../../application/service/CompanyService";
+import { LimitedPartnershipCheckResult } from "../../../../application/service/CompanyService";
 
 describe("CompanyService", () => {
   let companyProfile;
@@ -85,29 +85,29 @@ describe("CompanyService", () => {
     const tokens = { access_token: "token", refresh_token: "token" };
 
     it("should return LIMITED_PARTNERSHIP when the company is a limited partnership", async () => {
-      const result = await appDevDependencies.companyService.checkCompanyType(
+      const result = await appDevDependencies.companyService.checkIsLimitedPartnership(
         tokens,
         companyProfile.data.companyNumber
       );
 
-      expect(result).toBe(CompanyTypeCheckResult.LIMITED_PARTNERSHIP);
+      expect(result).toBe(LimitedPartnershipCheckResult.LIMITED_PARTNERSHIP);
     });
 
     it("should return NOT_LIMITED_PARTNERSHIP when the company is not a limited partnership", async () => {
       appDevDependencies.companyGateway.feedCompanyProfile(new CompanyProfileBuilder().withType("ltd").build().data);
 
-      const result = await appDevDependencies.companyService.checkCompanyType(
+      const result = await appDevDependencies.companyService.checkIsLimitedPartnership(
         tokens,
         companyProfile.data.companyNumber
       );
 
-      expect(result).toBe(CompanyTypeCheckResult.NOT_LIMITED_PARTNERSHIP);
+      expect(result).toBe(LimitedPartnershipCheckResult.NOT_LIMITED_PARTNERSHIP);
     });
 
     it("should return NOT_FOUND when the company cannot be found", async () => {
-      const result = await appDevDependencies.companyService.checkCompanyType(tokens, "UNKNOWN1");
+      const result = await appDevDependencies.companyService.checkIsLimitedPartnership(tokens, "UNKNOWN1");
 
-      expect(result).toBe(CompanyTypeCheckResult.NOT_FOUND);
+      expect(result).toBe(LimitedPartnershipCheckResult.NOT_FOUND);
     });
   });
 
