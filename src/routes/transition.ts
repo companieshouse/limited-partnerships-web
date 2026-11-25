@@ -60,6 +60,7 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     requireLimitedPartnership(dependencies),
     transitionFiling(dependencies),
+    companyAuthentication,
     dependencies.limitedPartnershipTransitionController.getConfirmPage()
   );
   router.post(
