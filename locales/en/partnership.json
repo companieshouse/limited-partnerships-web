@@ -2,8 +2,11 @@
     "partnership": {
         "confirmLimitedPartnership": {
             "title": "Confirm this is the correct limited partnership",
-            "name": "Name",
-            "number": "Number"
+            "partnershipName": "Partnership name",
+            "partnershipNumber": "Partnership number",
+            "status": "Status",
+            "registeredOn": "Registered on",
+            "principalPlaceOfBusiness": "Principal place of business"
         },
         "emailPage" : {
             "title" : "What is the registered email address for the partnership?",

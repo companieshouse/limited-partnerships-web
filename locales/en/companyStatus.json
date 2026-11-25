@@ -1,0 +1,16 @@
+{
+    "companyStatus": {
+        "active" : "Active",
+        "dissolved" : "Dissolved",
+        "liquidation" : "Liquidation",
+        "receivership" : "Receiver Action",
+        "converted-closed" : "Converted / Closed",
+        "voluntary-arrangement" : "Voluntary Arrangement",
+        "insolvency-proceedings" : "Insolvency Proceedings",
+        "administration" : "In Administration",
+        "open" : "Open",
+        "closed" : "Closed",
+        "registered" : "Registered",
+        "removed" : "Removed"
+    }
+}

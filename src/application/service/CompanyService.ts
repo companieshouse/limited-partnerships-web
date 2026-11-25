@@ -20,6 +20,7 @@ export type DataIncludingPartners = {
     registration_date?: string;
     partners?: CompanyOfficer[];
     limitedPartners?: CompanyOfficer[];
+    company_status?: string;
   };
 };
 
@@ -49,12 +50,11 @@ class CompanyService {
 
     const { companyProfile, errors } = await this.getCompanyProfile(opt, company_number);
 
+    console.log("/////////////////////////////");
+    console.log(companyProfile);
+
     if (companyProfile.companyName) {
       const partners = await this.getPartners(errors, opt, company_number);
-
-      const roa = companyProfile.registeredOfficeAddress;
-      const ppob = companyProfile.serviceAddress;
-      const registrationDate = companyProfile.dateOfCreation;
 
       limitedPartnership = {
         data: {
@@ -63,10 +63,11 @@ class CompanyService {
           partnership_type: this.calculatePartnershipType(companyProfile),
           jurisdiction: companyProfile.jurisdiction as Jurisdiction,
           term: this.mapPartnershipTerm(companyProfile),
-          registered_office_address: this.mapAddress(roa),
-          principal_place_of_business_address: this.mapAddress(ppob),
+          registered_office_address: this.mapAddress(companyProfile.registeredOfficeAddress),
+          principal_place_of_business_address: this.mapAddress(companyProfile.serviceAddress),
           ...partners,
-          registration_date: registrationDate
+          registration_date: companyProfile.dateOfCreation,
+          company_status: companyProfile.companyStatus
         }
       };
     }

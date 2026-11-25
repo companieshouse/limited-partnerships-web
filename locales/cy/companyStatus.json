@@ -1,0 +1,16 @@
+{
+    "companyStatus": {
+        "active" : "Gweithredol",
+        "dissolved" : "Diddymwyd",
+        "liquidation" : "Datodiad",
+        "receivership" : "Gweithred Derbynnydd",
+        "converted-closed" : "Wedi ei throsi/Wedi cau",
+        "voluntary-arrangement" : "Trefniant Gwirfoddol",
+        "insolvency-proceedings" : "Trafodion Ansolfedd",
+        "administration" : "Yn nwylo gweinyddwyr",
+        "open" : "Ar agor",
+        "closed" : "Wedi cau",
+        "registered" : "Wedi cofrestru",
+        "removed" : "Wedi ei ddileu"
+    }
+}

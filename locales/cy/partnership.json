@@ -2,8 +2,11 @@
     "partnership": {
         "confirmLimitedPartnership": {
             "title": "WELSH - Confirm this is the correct limited partnership",
-            "name": "WELSH - Name",
-            "number": "WELSH - Number"
+            "partnershipName": "WELSH - Partnership name",
+            "partnershipNumber": "WELSH - Partnership number",
+            "status": "WELSH - Status",
+            "registeredOn": "WELSH - Registered on",
+            "principalPlaceOfBusiness": "WELSH - Principal place of business"
         },
         "emailPage" : {
             "title" : "WELSH - What is the registered email address for the partnership?",

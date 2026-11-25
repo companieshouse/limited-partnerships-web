@@ -3,6 +3,7 @@
 {% set pageTitle = i18n.partnership.confirmLimitedPartnership.title %}
 
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% import 'includes/macros.njk' as macros %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -20,7 +21,7 @@
             rows: [
               {
                 key: {
-                  text: i18n.partnership.confirmLimitedPartnership.name
+                  text: i18n.partnership.confirmLimitedPartnership.partnershipName
                 },
                 value: {
                   text: props.data.limitedPartnership.data.partnership_name
@@ -28,20 +29,35 @@
               },
               {
                 key: {
-                  text: i18n.partnership.confirmLimitedPartnership.number
+                  text: i18n.partnership.confirmLimitedPartnership.partnershipNumber
                 },
                 value: {
                   text: props.data.limitedPartnership.data.partnership_number
+                }
+              },
+              {
+                key: {
+                  text: i18n.partnership.confirmLimitedPartnership.status
+                },
+                value: {
+                  text: i18n.companyStatus[props.data.limitedPartnership.data.company_status]
+                }
+              },
+              SET_REGISTRATION_DATE_SECTION(props.data.limitedPartnership, i18n),
+              {
+                key: {
+                  text: i18n.partnership.confirmLimitedPartnership.principalPlaceOfBusiness
+                },
+                value: {
+                  html: macros.formatAddressMultiLine(props.data.limitedPartnership.data.principal_place_of_business_address, true, i18n)
                 }
               }
             ]
         }) }}
 
-        {% if journeyTypes.isPostTransition %}
-          {% include "includes/continue-button.njk" %}
-        {% else %}
-          {% include "includes/save-and-continue-button.njk" %}
-        {% endif %}
+        {% include "includes/continue-button.njk" %}
+
+        
       </form>
     </div>
   </div>

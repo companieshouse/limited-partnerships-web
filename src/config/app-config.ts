@@ -9,7 +9,13 @@ import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 
 import { createSummaryListLink } from "../utils/change-link";
-import { setCeaseDateSection, setDateEffectiveFromSection, setDateOfBirthSection, setDateOfUpdateSection } from "../utils/date-format-section";
+import {
+  setCeaseDateSection,
+  setDateEffectiveFromSection,
+  setDateOfBirthSection,
+  setDateOfUpdateSection,
+  setRegistrationDateSection
+} from "../utils/date-format-section";
 import * as config from "./constants";
 import { acspAuthentication, authentication, languageMiddleware, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
@@ -69,6 +75,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("SET_DATE_EFFECTIVE_FROM_SECTION", setDateEffectiveFromSection);
   nunjucksEnv.addGlobal("SET_DATE_OF_UPDATE_SECTION", setDateOfUpdateSection);
   nunjucksEnv.addGlobal("SET_CEASE_DATE_SECTION", setCeaseDateSection);
+  nunjucksEnv.addGlobal("SET_REGISTRATION_DATE_SECTION", setRegistrationDateSection);
   nunjucksEnv.addGlobal("SET_COUNTRIES_DROPDOWN", setCountriesDropdown);
   nunjucksEnv.addGlobal("SET_NATIONALITIES_DROPDOWN", setNationalitiesDropdown);
   nunjucksEnv.addGlobal("SET_CURRENCIES_DROPDOWN", setCurrenciesDropdown);
