@@ -50,9 +50,6 @@ class CompanyService {
 
     const { companyProfile, errors } = await this.getCompanyProfile(opt, company_number);
 
-    console.log("/////////////////////////////");
-    console.log(companyProfile);
-
     if (companyProfile.companyName) {
       const partners = await this.getPartners(errors, opt, company_number);
 

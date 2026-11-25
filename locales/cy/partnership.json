@@ -6,7 +6,8 @@
             "partnershipNumber": "WELSH - Partnership number",
             "status": "WELSH - Status",
             "registeredOn": "WELSH - Registered on",
-            "principalPlaceOfBusiness": "WELSH - Principal place of business"
+            "principalPlaceOfBusiness": "WELSH - Principal place of business",
+            "chooseDifferentPartnership": "WELSH - Choose a different partnership"
         },
         "emailPage" : {
             "title" : "WELSH - What is the registered email address for the partnership?",

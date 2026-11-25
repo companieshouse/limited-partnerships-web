@@ -40,7 +40,7 @@
                   text: i18n.partnership.confirmLimitedPartnership.status
                 },
                 value: {
-                  text: i18n.companyStatus[props.data.limitedPartnership.data.company_status]
+                  text: i18n.companyStatus[props.data.limitedPartnership.data.company_status] or props.data.limitedPartnership.data.company_status
                 }
               },
               SET_REGISTRATION_DATE_SECTION(props.data.limitedPartnership, i18n),
@@ -57,7 +57,9 @@
 
         {% include "includes/continue-button.njk" %}
 
-        
+        <p class="govuk-body">
+          <a href="{{ props.previousUrl }}" class="govuk-link" data-event-id="choose-different-partnership-link">{{ i18n.partnership.confirmLimitedPartnership.chooseDifferentPartnership }}</a>
+        </p>
       </form>
     </div>
   </div>

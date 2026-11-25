@@ -6,7 +6,8 @@
             "partnershipNumber": "Partnership number",
             "status": "Status",
             "registeredOn": "Registered on",
-            "principalPlaceOfBusiness": "Principal place of business"
+            "principalPlaceOfBusiness": "Principal place of business",
+            "chooseDifferentPartnership": "Choose a different partnership"
         },
         "emailPage" : {
             "title" : "What is the registered email address for the partnership?",

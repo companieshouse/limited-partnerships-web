@@ -24,7 +24,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { SERVICE_NAME_TRANSITION } from "../../../../../config";
 
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { CONFIRM_LIMITED_PARTNERSHIP_URL, EMAIL_URL } from "../../../../controller/transition/url";
+import { COMPANY_NUMBER_URL, CONFIRM_LIMITED_PARTNERSHIP_URL, EMAIL_URL } from "../../../../controller/transition/url";
 import GlobalPageType from "../../../../controller/global/PageType";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Confirm correct limited partnership page", () => {
@@ -57,7 +57,9 @@ describe("Confirm correct limited partnership page", () => {
       expect(res.text).toContain("TEST LP");
       expect(res.text).toContain("LP123456");
       expect(res.text).toContain(`11 ${enTranslationText.months.january} 2019`);
+      expect(res.text).toContain(enTranslationText.companyStatus.active);
       expect(res.text).toContain("4 Duncalf Street<br>Stroke-On-Trent<br>ST6 3LJ<br>England");
+      expect(res.text).toContain(`href="${COMPANY_NUMBER_URL}?lang=en"`);
     });
 
     it("should load confirm correct limited partnership page with welsh text", async () => {
@@ -76,6 +78,15 @@ describe("Confirm correct limited partnership page", () => {
       expect(res.text).toContain("TEST LP");
       expect(res.text).toContain("LP123456");
       expect(res.text).toContain(`11 ${cyTranslationText.months.january} 2019`);
+    });
+
+    it("should display the raw company status when there is no translation for it", async () => {
+      appDevDependencies.companyGateway.companyProfile.companyStatus = "unknown-status";
+
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("unknown-status");
     });
 
     it("should render page not found if the company cannot be found", async () => {
