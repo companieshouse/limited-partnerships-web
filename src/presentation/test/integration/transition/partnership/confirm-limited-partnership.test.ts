@@ -80,6 +80,19 @@ describe("Confirm correct limited partnership page", () => {
       expect(res.text).toContain(`11 ${cyTranslationText.months.january} 2019`);
     });
 
+    it("should display an empty registered on value when the company has no date of creation", async () => {
+      appDevDependencies.companyGateway.companyProfile.dateOfCreation = undefined;
+
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+
+      const registeredOnRow = res.text.split(enTranslationText.partnership.confirmLimitedPartnership.registeredOn)[1].split("</dd>")[0];
+      const registeredOnValue = registeredOnRow.substring(registeredOnRow.lastIndexOf(">") + 1).trim();
+
+      expect(registeredOnValue).toEqual("");
+    });
+
     it("should display the raw company status when there is no translation for it", async () => {
       appDevDependencies.companyGateway.companyProfile.companyStatus = "unknown-status";
 
