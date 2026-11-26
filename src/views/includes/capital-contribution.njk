@@ -6,7 +6,7 @@
   {% set hint = i18n.partner.capitalContribution.hint %}
 
   {% if isPageHeading %}
-    <h1 class="govuk-heading-xl">{{ title }}</h1>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">{{ title }}</h1>
 
     <p class="govuk-hint govuk-!-margin-bottom-5">{{ hint }}</p>
   {% else %}
@@ -140,5 +140,7 @@
     ]
   }) }}
 
-  <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m">
+  {% if not hideTrailingSectionBreak %}
+    <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m">
+  {% endif %}
 {% endif %}

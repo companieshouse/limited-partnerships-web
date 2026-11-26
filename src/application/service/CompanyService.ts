@@ -114,7 +114,7 @@ class CompanyService {
           data: {
             ...partner.data,
             contribution_currency_type: companyAppointment?.contributionCurrencyType ?? "",
-            contribution_currency_value: companyAppointment?.contributionCurrencyValue ?? "",
+            contribution_currency_value: this.formatContributionCurrencyValue(companyAppointment?.contributionCurrencyValue),
             contribution_sub_types:
               companyAppointment?.contributionSubTypes?.map((item) => item.subType.toUpperCase().replace(/-/g, "_")) ?? []
           }
@@ -154,6 +154,30 @@ class CompanyService {
     const companyProfile = await this.companyGateway.getCompanyProfile(opt, company_number);
     const incorporationDate = companyProfile.dateOfCreation;
     return incorporationDate ?? "";
+  }
+
+  private formatContributionCurrencyValue(value?: string): string {
+    if (!value) {
+      return "";
+    }
+
+    const [wholeNumber, decimalPlaces, ...extraParts] = value.split(".");
+
+    const isNumeric = (text: string) => text.length > 0 && [...text].every((char) => char >= "0" && char <= "9");
+
+    if (extraParts.length > 0 || !isNumeric(wholeNumber)) {
+      return value;
+    }
+
+    if (decimalPlaces === undefined) {
+      return `${value}.00`;
+    }
+
+    if (decimalPlaces.length === 1 && isNumeric(decimalPlaces)) {
+      return `${value}0`;
+    }
+
+    return value;
   }
 
   private buildPersonPartner(

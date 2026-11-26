@@ -21,6 +21,7 @@ import {
 } from "../../../../controller/postTransition/url";
 
 import TransactionGeneralPartner from "../../../../../domain/entities/TransactionGeneralPartner";
+import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
@@ -78,6 +79,36 @@ describe("Update Capital Contribution Page", () => {
         expect(res.text).toContain(translationText.buttons.continue);
 
         expect(res.text).toContain(getUrl(BACK_URL));
+      }
+    );
+
+    it.each([
+      ["without decimal places", "1000", "1000.00"],
+      ["with one decimal place", "1000.5", "1000.50"],
+      ["with two decimal places", "1000.50", "1000.50"]
+    ])(
+      "should load the capital contribution value from the appointment %s",
+      async (_description: string, appointmentValue: string, expectedValue: string) => {
+        const partner = new LimitedPartnerBuilder()
+          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+          .isLegalEntity()
+          .withAppointmentId("AP123456")
+          .build();
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([partner]);
+
+        const companyAppointment = new CompanyAppointmentBuilder()
+          .isLegalEntity()
+          .withAppointmentId("AP123456")
+          .withOfficerRole("corporate-limited-partner-in-a-limited-partnership")
+          .build();
+        appDevDependencies.companyGateway.feedCompanyAppointments([
+          { ...companyAppointment, contributionCurrencyValue: appointmentValue }
+        ]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`value="${expectedValue}"`);
       }
     );
 
