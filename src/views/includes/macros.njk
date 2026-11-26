@@ -54,7 +54,10 @@
     {%- set lines = lines.concat(address.postal_code | upper) -%}
   {%- endif -%}
   {%- if address.country and isIncludingCountry -%}
-    {%- set lines = lines.concat(i18n.countries[makeCamelCase(address.country)]) -%}
+    {%- set country = i18n.countries[makeCamelCase(address.country)] -%}
+    {%- if country -%}
+      {%- set lines = lines.concat(country) -%}
+    {%- endif -%}
   {%- endif -%}
   {%- for line in lines -%}
     {{- line -}}

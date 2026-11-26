@@ -7,7 +7,7 @@ class CompanyProfileBuilder {
   data = {
     subtype: "",
     companyStatus: "active",
-    dateOfCreation: "2023-12-29T11:47:59.193Z",
+    dateOfCreation: "2023-12-29",
     type: "limited-partnership",
     hasInsolvencyHistory: false,
     companyName: "TEST LP",
@@ -119,6 +119,21 @@ class CompanyProfileBuilder {
 
   withRegisteredOfficeAddress(address: Address | null) {
     this.data.registeredOfficeAddress = address as any;
+    return this;
+  }
+
+  withServiceAddress(address: Partial<typeof this.data.serviceAddress>) {
+    this.data.serviceAddress = { ...this.data.serviceAddress, ...address };
+    return this;
+  }
+
+  withDateOfCreation(dateOfCreation: string | undefined) {
+    this.data.dateOfCreation = dateOfCreation as any;
+    return this;
+  }
+
+  withCompanyStatus(companyStatus: string) {
+    this.data.companyStatus = companyStatus;
     return this;
   }
 

@@ -44,7 +44,8 @@ describe("Confirm correct limited partnership page", () => {
     it("should load confirm correct limited partnership page with english text", async () => {
       setLocalesEnabled(true);
 
-      appDevDependencies.companyGateway.companyProfile.dateOfCreation = "2019-01-11";
+      const companyProfile = new CompanyProfileBuilder().withDateOfCreation("2019-01-11").build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
       const res = await request(app).get(URL + "?lang=en");
 
@@ -65,7 +66,8 @@ describe("Confirm correct limited partnership page", () => {
     it("should load confirm correct limited partnership page with welsh text", async () => {
       setLocalesEnabled(true);
 
-      appDevDependencies.companyGateway.companyProfile.dateOfCreation = "2019-01-11";
+      const companyProfile = new CompanyProfileBuilder().withDateOfCreation("2019-01-11").build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
       const res = await request(app).get(URL + "?lang=cy");
 
@@ -81,20 +83,32 @@ describe("Confirm correct limited partnership page", () => {
     });
 
     it("should display an empty registered on value when the company has no date of creation", async () => {
-      appDevDependencies.companyGateway.companyProfile.dateOfCreation = undefined;
+      const companyProfile = new CompanyProfileBuilder().withDateOfCreation(undefined).build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.partnership.confirmLimitedPartnership.registeredOn);
 
-      const registeredOnRow = res.text.split(enTranslationText.partnership.confirmLimitedPartnership.registeredOn)[1].split("</dd>")[0];
-      const registeredOnValue = registeredOnRow.substring(registeredOnRow.lastIndexOf(">") + 1).trim();
+      const months = Object.values(enTranslationText.months).join("|");
+      expect(res.text).not.toMatch(new RegExp(`\\d{1,2} (${months}) \\d{4}`));
+    });
 
-      expect(registeredOnValue).toEqual("");
+    it("should not add a trailing line break when the country has no translation", async () => {
+      const companyProfile = new CompanyProfileBuilder().withServiceAddress({ country: "Narnia" }).build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("4 Duncalf Street<br>Stroke-On-Trent<br>ST6 3LJ");
+      expect(res.text).not.toContain("ST6 3LJ<br>");
     });
 
     it("should display the raw company status when there is no translation for it", async () => {
-      appDevDependencies.companyGateway.companyProfile.companyStatus = "unknown-status";
+      const companyProfile = new CompanyProfileBuilder().withCompanyStatus("unknown-status").build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
       const res = await request(app).get(URL + "?lang=en");
 

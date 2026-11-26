@@ -90,19 +90,6 @@ export const setDateOfUpdateSection = (props: Record<string, any>, i18n: Record<
   };
 };
 
-export const setRegistrationDateSection = (limitedPartnership: Record<string, any>, i18n: Record<string, any>) => {
-  const registrationDate = limitedPartnership?.data?.registration_date;
-
-  return {
-    key: {
-      text: i18n.partnership.confirmLimitedPartnership.registeredOn
-    },
-    value: {
-      text: registrationDate ? formatDate(registrationDate, i18n) : ""
-    }
-  };
-};
-
 export const setCeaseDateSection = (props: Record<string, any>, type: string, i18n: Record<string, any>, dateChangeUrl: string) => {
   const text =
     type === "generalPartner" ?

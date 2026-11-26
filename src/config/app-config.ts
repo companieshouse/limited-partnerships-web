@@ -13,9 +13,9 @@ import {
   setCeaseDateSection,
   setDateEffectiveFromSection,
   setDateOfBirthSection,
-  setDateOfUpdateSection,
-  setRegistrationDateSection
+  setDateOfUpdateSection
 } from "../utils/date-format-section";
+import { formatDate } from "../utils/date-format";
 import * as config from "./constants";
 import { acspAuthentication, authentication, languageMiddleware, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
@@ -75,7 +75,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("SET_DATE_EFFECTIVE_FROM_SECTION", setDateEffectiveFromSection);
   nunjucksEnv.addGlobal("SET_DATE_OF_UPDATE_SECTION", setDateOfUpdateSection);
   nunjucksEnv.addGlobal("SET_CEASE_DATE_SECTION", setCeaseDateSection);
-  nunjucksEnv.addGlobal("SET_REGISTRATION_DATE_SECTION", setRegistrationDateSection);
+  nunjucksEnv.addGlobal("FORMAT_DATE", formatDate);
   nunjucksEnv.addGlobal("SET_COUNTRIES_DROPDOWN", setCountriesDropdown);
   nunjucksEnv.addGlobal("SET_NATIONALITIES_DROPDOWN", setNationalitiesDropdown);
   nunjucksEnv.addGlobal("SET_CURRENCIES_DROPDOWN", setCurrenciesDropdown);

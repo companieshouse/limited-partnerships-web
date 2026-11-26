@@ -43,7 +43,14 @@
                   text: i18n.companyStatus[props.data.limitedPartnership.data.company_status] or props.data.limitedPartnership.data.company_status
                 }
               },
-              SET_REGISTRATION_DATE_SECTION(props.data.limitedPartnership, i18n),
+              {
+                key: {
+                  text: i18n.partnership.confirmLimitedPartnership.registeredOn
+                },
+                value: {
+                  text: FORMAT_DATE(props.data.limitedPartnership.data.registration_date, i18n) if props.data.limitedPartnership.data.registration_date else ""
+                }
+              },
               {
                 key: {
                   text: i18n.partnership.confirmLimitedPartnership.principalPlaceOfBusiness
