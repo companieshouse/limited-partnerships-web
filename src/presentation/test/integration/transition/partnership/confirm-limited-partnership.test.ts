@@ -24,7 +24,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { SERVICE_NAME_TRANSITION } from "../../../../../config";
 
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { CONFIRM_LIMITED_PARTNERSHIP_URL, EMAIL_URL } from "../../../../controller/transition/url";
+import { COMPANY_NUMBER_URL, CONFIRM_LIMITED_PARTNERSHIP_URL, EMAIL_URL } from "../../../../controller/transition/url";
 import GlobalPageType from "../../../../controller/global/PageType";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Confirm correct limited partnership page", () => {
@@ -44,6 +44,9 @@ describe("Confirm correct limited partnership page", () => {
     it("should load confirm correct limited partnership page with english text", async () => {
       setLocalesEnabled(true);
 
+      const companyProfile = new CompanyProfileBuilder().withDateOfCreation("2019-01-11").build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
@@ -54,12 +57,17 @@ describe("Confirm correct limited partnership page", () => {
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).toContain("TEST LP");
       expect(res.text).toContain("LP123456");
+      expect(res.text).toContain(`11 ${enTranslationText.months.january} 2019`);
+      expect(res.text).toContain(enTranslationText.companyStatus.active);
+      expect(res.text).toContain("4 Duncalf Street<br>Stroke-On-Trent<br>ST6 3LJ<br>England");
+      expect(res.text).toContain(`href="${COMPANY_NUMBER_URL}?lang=en"`);
     });
 
     it("should load confirm correct limited partnership page with welsh text", async () => {
       setLocalesEnabled(true);
 
-      appDevDependencies.companyGateway.companyProfile.dateOfCreation = "2019-01-11";
+      const companyProfile = new CompanyProfileBuilder().withDateOfCreation("2019-01-11").build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
       const res = await request(app).get(URL + "?lang=cy");
 
@@ -71,6 +79,41 @@ describe("Confirm correct limited partnership page", () => {
       expect(res.text).toContain("WELSH -");
       expect(res.text).toContain("TEST LP");
       expect(res.text).toContain("LP123456");
+      expect(res.text).toContain(`11 ${cyTranslationText.months.january} 2019`);
+    });
+
+    it("should display an empty registered on value when the company has no date of creation", async () => {
+      const companyProfile = new CompanyProfileBuilder().withDateOfCreation(undefined).build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.partnership.confirmLimitedPartnership.registeredOn);
+
+      const months = Object.values(enTranslationText.months).join("|");
+      expect(res.text).not.toMatch(new RegExp(`\\d{1,2} (${months}) \\d{4}`));
+    });
+
+    it("should not add a trailing line break when the country has no translation", async () => {
+      const companyProfile = new CompanyProfileBuilder().withServiceAddress({ country: "Narnia" }).build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("4 Duncalf Street<br>Stroke-On-Trent<br>ST6 3LJ");
+      expect(res.text).not.toContain("ST6 3LJ<br>");
+    });
+
+    it("should display the raw company status when there is no translation for it", async () => {
+      const companyProfile = new CompanyProfileBuilder().withCompanyStatus("unknown-status").build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("unknown-status");
     });
 
     it("should render page not found if the company cannot be found", async () => {

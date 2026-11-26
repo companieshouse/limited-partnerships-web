@@ -35,6 +35,38 @@
   {{ premises }} {% if address_line_1 %}{{ address_line_1 }}, {% endif %}{% if address_line_2 %}{{ address_line_2 }}, {% endif %}{% if locality %}{{ locality }}, {% endif %}{% if region %}{{ region }}, {% endif %}{% if country %}{{ country }}, {% endif %}{{ address.postal_code }}
 {% endmacro %}
 
+{%- macro formatAddressMultiLine(address, isIncludingCountry, i18n) -%}
+  {%- set lines = [] -%}
+  {%- set firstLine = [address.premises, address.address_line_1] | select | join(" ") -%}
+  {%- if firstLine -%}
+    {%- set lines = lines.concat(capitalizeEachWord(firstLine)) -%}
+  {%- endif -%}
+  {%- if address.address_line_2 -%}
+    {%- set lines = lines.concat(capitalizeEachWord(address.address_line_2)) -%}
+  {%- endif -%}
+  {%- if address.locality -%}
+    {%- set lines = lines.concat(capitalizeEachWord(address.locality)) -%}
+  {%- endif -%}
+  {%- if address.region -%}
+    {%- set lines = lines.concat(capitalizeEachWord(address.region)) -%}
+  {%- endif -%}
+  {%- if address.postal_code -%}
+    {%- set lines = lines.concat(address.postal_code | upper) -%}
+  {%- endif -%}
+  {%- if address.country and isIncludingCountry -%}
+    {%- set country = i18n.countries[makeCamelCase(address.country)] -%}
+    {%- if country -%}
+      {%- set lines = lines.concat(country) -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- for line in lines -%}
+    {{- line -}}
+    {%- if not loop.last -%}
+      <br>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endmacro -%}
+
 {%- macro capitalizeEachWord(str) -%}
   {%- set words = str.split(' ') -%}
   {%- set capitalizedWords = [] -%}
