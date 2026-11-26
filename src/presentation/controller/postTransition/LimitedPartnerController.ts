@@ -26,6 +26,7 @@ import {
 } from "../../../config/constants";
 
 import { getJourneyTypes } from "../../../utils/journey";
+import { hasCapitalContributionChanged } from "../../../utils/capital-contribution";
 import { Ids, PartnerType, Tokens } from "../../../domain/types";
 import UIErrors from "../../../domain/entities/UIErrors";
 
@@ -196,6 +197,15 @@ class LimitedPartnerPostTransitionController extends PartnerController {
           if (capitalContributionErrors?.hasErrors()) {
             return await this.renderErrors(request, response, capitalContributionErrors);
           }
+
+          if (!(await this.hasCapitalContributionChangedFromAppointment(tokens, ids, data))) {
+            const errors = new UIErrors().setSummaryOnlyError(
+              "contribution_currency_type",
+              response.locals.i18n.errorMessages.capitalContribution.notChanged
+            );
+
+            return await this.renderErrors(request, response, errors);
+          }
         }
 
         const result = await super.sendData(PartnerType.limitedPartner, tokens, ids, data);
@@ -216,6 +226,26 @@ class LimitedPartnerPostTransitionController extends PartnerController {
         next(error);
       }
     };
+  }
+
+  private async hasCapitalContributionChangedFromAppointment(
+    tokens: Tokens,
+    ids: Ids,
+    submittedCapitalContribution: Record<string, any>
+  ): Promise<boolean> {
+    if (!this.companyService) {
+      return true;
+    }
+
+    const limitedPartner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+
+    const { partner: appointment } = await this.companyService.buildPartnerFromCompanyAppointment(
+      tokens,
+      ids.companyId,
+      limitedPartner?.data?.appointment_id ?? ""
+    );
+
+    return hasCapitalContributionChanged(submittedCapitalContribution, (appointment as LimitedPartner)?.data);
   }
 
   private async getPartnershipAndPartnerEntity(

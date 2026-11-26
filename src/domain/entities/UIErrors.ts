@@ -42,6 +42,15 @@ class UIErrors {
     return this;
   }
 
+  public setSummaryOnlyError(field: string, message: string): this {
+    this.errors.errorList.push({
+      href: `#${this.formatHrefValue(field)}`,
+      text: message
+    });
+
+    return this;
+  }
+
   public hasErrors(): boolean {
     return this.errors.errorList.length > 0;
   }

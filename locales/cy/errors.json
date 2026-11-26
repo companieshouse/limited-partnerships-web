@@ -9,7 +9,8 @@
             "noComma": "WELSH - Value must not include a comma",
             "atLeastOneType": "WELSH - Select at least one type of contribution",
             "currencyRequired": "WELSH - Select the currency of the capital contribution",
-            "invalidCurrency": "WELSH - The currency you've entered cannot be found. You must select a currency from the list"
+            "invalidCurrency": "WELSH - The currency you've entered cannot be found. You must select a currency from the list",
+            "notChanged": "WELSH - The capital contribution details have not been changed. Update the details or go back and select that you do not want to make changes."
         },
 
         "choosePartnerType":{
