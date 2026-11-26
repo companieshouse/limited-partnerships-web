@@ -7,7 +7,7 @@ class CompanyProfileBuilder {
   data = {
     subtype: "",
     companyStatus: "active",
-    dateOfCreation: "2023-12-29" as string | undefined,
+    dateOfCreation: "2023-12-29",
     type: "limited-partnership",
     hasInsolvencyHistory: false,
     companyName: "TEST LP",
@@ -128,7 +128,7 @@ class CompanyProfileBuilder {
   }
 
   withDateOfCreation(dateOfCreation: string | undefined) {
-    this.data.dateOfCreation = dateOfCreation;
+    this.data.dateOfCreation = dateOfCreation as string;
     return this;
   }
 
