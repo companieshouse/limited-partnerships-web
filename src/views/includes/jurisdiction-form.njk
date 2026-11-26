@@ -1,5 +1,6 @@
 <form class="form" method="post">
   <input type="hidden" name="pageType" value={{ props.pageType }}>  
+  <input type="hidden" name="name_ending" value="{{ props.data.limitedPartnership.data.name_ending }}">
  
   {% include "includes/csrf_token.njk" %}
       
