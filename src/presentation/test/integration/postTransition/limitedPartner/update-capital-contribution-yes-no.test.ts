@@ -192,6 +192,22 @@ describe("Update Capital Contribution Yes No Page", () => {
     );
 
     it.each([
+      ["true", config.legalEntity.redirectYes],
+      ["false", config.legalEntity.redirectNo]
+    ])(
+      "should keep the lang query parameter when %s is selected",
+      async (pageValue: string, redirectUrl: string) => {
+        const res = await request(app).post(`${config.legalEntity.url}?lang=cy`).send({
+          pageType: PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo,
+          update_capital_contribution_required: pageValue
+        });
+
+        expect(res.status).toBe(302);
+        expect(res.headers.location).toBe(`${redirectUrl}?lang=cy`);
+      }
+    );
+
+    it.each([
       [config.person.url, PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo],
       [config.legalEntity.url, PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo]
     ])("should return validation error when no option is selected", async (url: string, pageType: PostTransitionPageType) => {

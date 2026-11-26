@@ -30,7 +30,7 @@ import { Ids, PartnerType, Tokens } from "../../../domain/types";
 import UIErrors from "../../../domain/entities/UIErrors";
 
 import postTransitionRouting from "./routing";
-import PostTransitionPageType from "./pageType";
+import PostTransitionPageType, { isCapitalContributionYesNoPage } from "./pageType";
 import { PageRouting } from "../PageRouting";
 
 class LimitedPartnerPostTransitionController extends PartnerController {
@@ -167,14 +167,12 @@ class LimitedPartnerPostTransitionController extends PartnerController {
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+        const { fieldName, nextYesUrl, nextNoUrl } = pageRouting.data ?? {};
+        const isYesNoPage = isCapitalContributionYesNoPage(pageType);
 
-        if (
-          (pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo ||
-            pageRouting.pageType === PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo) &&
-          !request.body.update_capital_contribution_required
-        ) {
+        if (isYesNoPage && !request.body[fieldName]) {
           const errors = new UIErrors().setWebError(
-            pageRouting.data?.fieldName,
+            fieldName,
             response.locals.i18n.errorMessages.partners.updateCapitalContributionRequired
           );
 
@@ -189,10 +187,15 @@ class LimitedPartnerPostTransitionController extends PartnerController {
           pageKey: pageRouting?.data?.titleKey
         };
 
-        const capitalContributionErrors = this.limitedPartnerService.validateCapitalContribution(data, response.locals?.i18n);
+        if (!isYesNoPage) {
+          const capitalContributionErrors = this.limitedPartnerService.validateCapitalContribution(
+            data,
+            response.locals?.i18n
+          );
 
-        if (capitalContributionErrors?.hasErrors()) {
-          return await this.renderErrors(request, response, capitalContributionErrors);
+          if (capitalContributionErrors?.hasErrors()) {
+            return await this.renderErrors(request, response, capitalContributionErrors);
+          }
         }
 
         const result = await super.sendData(PartnerType.limitedPartner, tokens, ids, data);
@@ -201,11 +204,10 @@ class LimitedPartnerPostTransitionController extends PartnerController {
           return await this.renderErrors(request, response, result.errors);
         }
 
-        if (request.body.update_capital_contribution_required === "true") {
-          response.redirect(this.insertIdsInUrl(pageRouting.data?.nextYesUrl, ids));
-          return;
-        } else if (request.body.update_capital_contribution_required === "false") {
-          response.redirect(this.insertIdsInUrl(pageRouting.data?.nextNoUrl, ids));
+        if (isYesNoPage) {
+          const nextUrl = request.body[fieldName] === "false" ? nextNoUrl : nextYesUrl;
+
+          response.redirect(this.insertIdsInUrl(nextUrl, ids, request.url));
           return;
         }
 

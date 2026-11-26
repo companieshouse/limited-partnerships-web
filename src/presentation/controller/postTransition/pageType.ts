@@ -147,6 +147,14 @@ export const isPrincipalOfficeAddressYesNoPage = (pageType: string): boolean => 
   return principalOfficeAddressYesNoPageTypes.includes(pageType);
 };
 
+export const isCapitalContributionYesNoPage = (pageType: string): boolean => {
+  const capitalContributionYesNoPageTypes: string[] = [
+    PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo,
+    PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo
+  ];
+  return capitalContributionYesNoPageTypes.includes(pageType);
+};
+
 export const isUsualResidentialAddressYesNoPage = (pageType: string): boolean => {
   const usualResidentialAddressYesNoPageTypes: string[] = [
     PostTransitionPageType.updateGeneralPartnerUsualResidentialAddressYesNo,
