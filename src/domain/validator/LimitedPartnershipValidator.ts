@@ -84,10 +84,10 @@ class LimitedPartnershipValidator {
 
   // Jurisdiction
   private runJurisdictionValidation(uiErrors: UIErrors): UIErrors {
-    const WELSH_NAME_ENDINGS = [NameEndingType.PARTNERIAETH_CYFYNGEDIG, NameEndingType.PC, NameEndingType.P_DOT_C_DOT];
+    const welshNameEndings = [NameEndingType.PARTNERIAETH_CYFYNGEDIG, NameEndingType.PC, NameEndingType.P_DOT_C_DOT];
     if (!this.data.jurisdiction || !Object.values(Jurisdiction).includes(this.data.jurisdiction)) {
       uiErrors.setWebError("jurisdiction", this.errorMessages?.jurisdiction?.required);
-    } else if (WELSH_NAME_ENDINGS.includes(this.data.name_ending) && this.data.jurisdiction !== Jurisdiction.ENGLAND_AND_WALES) {
+    } else if (welshNameEndings.includes(this.data.name_ending) && this.data.jurisdiction !== Jurisdiction.ENGLAND_AND_WALES) {
       uiErrors.setWebError("jurisdiction", this.errorMessages?.jurisdiction?.welshNameEnding);
     }
 
