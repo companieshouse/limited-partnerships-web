@@ -25,7 +25,9 @@ import TransactionBuilder from "../../../builder/TransactionBuilder";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
 import {
   OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY,
-  OFFICER_ROLE_GENERAL_PARTNER_PERSON
+  OFFICER_ROLE_GENERAL_PARTNER_PERSON,
+  OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY,
+  OFFICER_ROLE_LIMITED_PARTNER_PERSON
 } from "../../../../../config/constants";
 import TransactionGeneralPartner from "../../../../../domain/entities/TransactionGeneralPartner";
 import TransactionLimitedPartner from "../../../../../domain/entities/TransactionLimitedPartner";
@@ -353,6 +355,34 @@ describe("Stop screen - no change", () => {
         expect(res.status).toBe(302);
 
         expect(res.text).toContain(stopUrl);
+      }
+    );
+
+    it.each([
+      ["person", "1000", "1000.00", getUrl(WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL)],
+      ["legal entity", "1000.5", "1000.50", getUrl(WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL)]
+    ])(
+      "should show the stop screen for a %s when the appointment contribution value %s is only missing decimal places",
+      async (partner: string, appointmentValue: string, partnerValue: string, whenDidUrl: string) => {
+        const isPerson = partner === "person";
+        const companyAppointmentBuilder = new CompanyAppointmentBuilder()
+          .withOfficerRole(isPerson ? OFFICER_ROLE_LIMITED_PARTNER_PERSON : OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY)
+          .withAppointmentId(isPerson ? "AP123456P" : "AP123456LE")
+          .withCompanyNumber(new CompanyProfileBuilder().build().data?.companyNumber ?? "");
+        const companyAppointment = (isPerson ? companyAppointmentBuilder.isPerson() : companyAppointmentBuilder.isLegalEntity()).build();
+
+        appDevDependencies.companyGateway.feedCompanyAppointments([
+          { ...companyAppointment, contributionCurrencyValue: appointmentValue }
+        ]);
+
+        const partnerEntity = feedPartnerWithContribution(partner);
+        (partnerEntity as any).data.contribution_currency_value = partnerValue;
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([partnerEntity]);
+
+        const res = await request(app).get(whenDidUrl);
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(LIMITED_PARTNER_PERSON_STOP_URL);
       }
     );
 

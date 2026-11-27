@@ -48,6 +48,7 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { PageRouting } from "../PageRouting";
 import { resetFormerNamesIfPreviousNameIsFalse } from "../../../infrastructure/gateway/utils";
+import { hasCapitalContributionChanged } from "../../../utils/capital-contribution";
 
 type PartnerData = {
   person: {
@@ -744,25 +745,10 @@ class PostTransitionPartnerController extends PartnerController {
     const appointmentPartner = appointment?.partner as LimitedPartner;
 
     if (limitedPartner.data?.update_capital_contribution_required) {
-      if (limitedPartner.data.contribution_currency_type !== appointmentPartner?.data?.contribution_currency_type ||
-        limitedPartner.data.contribution_currency_value !== appointmentPartner?.data?.contribution_currency_value ||
-        this.haveNotSameValues(
-          limitedPartner.data.contribution_sub_types,
-          appointmentPartner?.data?.contribution_sub_types
-        )) {
+      if (hasCapitalContributionChanged(limitedPartner.data, appointmentPartner?.data)) {
         partnerUpdatedFieldsMap.update_capital_contribution_required = true;
       }
     }
-  }
-
-  private haveNotSameValues(partnerSubTypes?: string[], appointmentSubTypes?: string[]): boolean {
-    const sortedPartnerSubTypes = [...(partnerSubTypes ?? [])].sort((x, y) => x.localeCompare(y));
-    const sortedAppointmentSubTypes = [...(appointmentSubTypes ?? [])].sort((x, y) => x.localeCompare(y));
-
-    return !(
-      sortedPartnerSubTypes.length === sortedAppointmentSubTypes.length &&
-      sortedPartnerSubTypes.every((value, index) => value === sortedAppointmentSubTypes[index])
-    );
   }
 }
 

@@ -4,6 +4,7 @@ import UIErrors from "../entities/UIErrors";
 import { symbols } from "../../application/service/utils/currencies";
 import { PartnerType } from "../types";
 import { isAddLimitedPartnerPage } from "../../presentation/controller/transition/PageType";
+import { toCurrencyCode } from "../../utils/capital-contribution";
 
 const MAX_DIGITS = 10;
 
@@ -37,7 +38,7 @@ const capitalContributionValidation = (data: Record<string, any>, currencies: Re
   if (!data.contribution_currency_type) {
     uiErrors.setWebError("contribution_currency_type", errorMessages?.currencyRequired);
   } else {
-    const currencyCode = data?.contribution_currency_type?.match(/\([A-Z]{3}\)/g)?.[0]?.replace(/[()]/g, "");
+    const currencyCode = toCurrencyCode(String(data.contribution_currency_type)) as string;
     if (currencies[currencyCode] !== data.contribution_currency_type) {
       uiErrors.setWebError("contribution_currency_type", errorMessages?.invalidCurrency);
     } else {

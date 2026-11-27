@@ -14,6 +14,7 @@ import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors } from "./utils";
 import { CompanyOfficer } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
 import { Tokens } from "../../domain/types";
+import { formatContributionCurrencyValue } from "../../utils/capital-contribution";
 
 export type DataIncludingPartners = {
   data: LimitedPartnership["data"] & {
@@ -114,7 +115,7 @@ class CompanyService {
           data: {
             ...partner.data,
             contribution_currency_type: companyAppointment?.contributionCurrencyType ?? "",
-            contribution_currency_value: companyAppointment?.contributionCurrencyValue ?? "",
+            contribution_currency_value: formatContributionCurrencyValue(companyAppointment?.contributionCurrencyValue),
             contribution_sub_types:
               companyAppointment?.contributionSubTypes?.map((item) => item.subType.toUpperCase().replace(/-/g, "_")) ?? []
           }

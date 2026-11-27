@@ -27,6 +27,7 @@ import TransactionBuilder from "../../../builder/TransactionBuilder";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import postTransitionRouting from "../../../../controller/postTransition/routing";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
+import { runUpdateCapitalContributionNotChangedTests } from "../../shared/updateCapitalContributionNotChangedTestSuite";
 
 describe("Update Capital Contribution Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_URL);
@@ -120,6 +121,28 @@ describe("Update Capital Contribution Page", () => {
     });
 
     it.each([
+      ["without decimal places", "1000", "1000.00"],
+      ["with one decimal place", "1000.5", "1000.50"]
+    ])(
+      "should format the capital contribution value from the appointment %s",
+      async (_description: string, appointmentValue: string, expectedValue: string) => {
+        const companyAppointment = new CompanyAppointmentBuilder()
+          .isPerson()
+          .withAppointmentId("AP123456")
+          .withOfficerRole("limited-partner-in-a-limited-partnership")
+          .build();
+        appDevDependencies.companyGateway.feedCompanyAppointments([
+          { ...companyAppointment, contributionCurrencyValue: appointmentValue }
+        ]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`value="${expectedValue}"`);
+      }
+    );
+
+    it.each([
       ["PLP", PartnershipType.PFLP],
       ["SPFLP", PartnershipType.SPFLP]
     ])(
@@ -164,6 +187,13 @@ describe("Update Capital Contribution Page", () => {
       expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.currencyRequired);
       expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.valueRequired);
       expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.atLeastOneType);
+    });
+
+    runUpdateCapitalContributionNotChangedTests({
+      url: URL,
+      redirectUrl: REDIRECT,
+      pageType: PostTransitionPageType.updateLimitedPartnerPersonCapitalContribution,
+      isPerson: true
     });
   });
 });

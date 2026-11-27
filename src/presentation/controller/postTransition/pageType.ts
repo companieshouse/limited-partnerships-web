@@ -147,6 +147,15 @@ export const isPrincipalOfficeAddressYesNoPage = (pageType: string): boolean => 
   return principalOfficeAddressYesNoPageTypes.includes(pageType);
 };
 
+const capitalContributionYesNoPageTypes: ReadonlySet<string> = new Set<string>([
+  PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo,
+  PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo
+]);
+
+export const isCapitalContributionYesNoPage = (pageType: string): boolean => {
+  return capitalContributionYesNoPageTypes.has(pageType);
+};
+
 export const isUsualResidentialAddressYesNoPage = (pageType: string): boolean => {
   const usualResidentialAddressYesNoPageTypes: string[] = [
     PostTransitionPageType.updateGeneralPartnerUsualResidentialAddressYesNo,

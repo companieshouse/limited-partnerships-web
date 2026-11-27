@@ -7,6 +7,7 @@ import {
 } from "../../../../domain/validator/capitalContributionValidator";
 
 import { PartnerType } from "../../../../domain/types";
+import { formatContributionCurrencyValue, hasCapitalContributionChanged } from "../../../../utils/capital-contribution";
 import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 
 describe("Gateway capital contribition validation test suite", () => {
@@ -234,5 +235,57 @@ describe("validatePartnerCapitalContribution", () => {
 
     expect(uiErrors.hasErrors()).toBe(false);
     expect(data.contribution_currency_type).toEqual("GBP");
+  });
+});
+
+describe("hasCapitalContributionChanged", () => {
+  const appointment = {
+    contribution_currency_type: "GBP",
+    contribution_currency_value: "100.00",
+    contribution_sub_types: ["MONEY"]
+  };
+
+  it.each([
+    ["currency code", "GBP", false],
+    ["unconverted currency label", "Pound Sterling (GBP)", false],
+    ["different currency label", "Euro (EUR)", true]
+  ])("should compare currency by code when submitted with a %s", (_description, currency, expected) => {
+    expect(hasCapitalContributionChanged({ ...appointment, contribution_currency_type: currency }, appointment)).toBe(
+      expected
+    );
+  });
+
+  it.each([
+    ["a leading zero", "0100.00", false],
+    ["no decimal places", "100", false],
+    ["a different amount", "100.01", true],
+    ["an empty value", "", true],
+    ["a non-numeric value", "abc", true]
+  ])("should compare the value numerically when submitted with %s", (_description, value, expected) => {
+    expect(hasCapitalContributionChanged({ ...appointment, contribution_currency_value: value }, appointment)).toBe(
+      expected
+    );
+  });
+
+  it("should treat a missing value on both sides as unchanged", () => {
+    const withoutValue = { ...appointment, contribution_currency_value: undefined };
+
+    expect(hasCapitalContributionChanged(withoutValue, withoutValue)).toBe(false);
+  });
+});
+
+describe("formatContributionCurrencyValue", () => {
+  it.each([
+    ["missing", undefined, ""],
+    ["empty", "", ""],
+    ["a whole number", "1000", "1000.00"],
+    ["one decimal place", "1000.5", "1000.50"],
+    ["two decimal places", "1000.55", "1000.55"],
+    ["a non-numeric decimal part", "1000.a", "1000.a"],
+    ["a non-numeric whole number", "abc", "abc"],
+    ["an empty whole number", ".5", ".5"],
+    ["more than one decimal point", "1.2.3", "1.2.3"]
+  ])("should format the value when it is %s", (_description: string, value: string | undefined, expected: string) => {
+    expect(formatContributionCurrencyValue(value)).toEqual(expected);
   });
 });

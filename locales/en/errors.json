@@ -9,7 +9,8 @@
             "noComma": "Value must not include a comma",
             "atLeastOneType": "Select at least one type of contribution",
             "currencyRequired": "Select the currency of the capital contribution",
-            "invalidCurrency": "The currency you've entered cannot be found. You must select a currency from the list"
+            "invalidCurrency": "The currency you've entered cannot be found. You must select a currency from the list",
+            "notChanged": "The capital contribution details have not been changed. Update the details or go back and select that you do not want to make changes."
         },
 
         "choosePartnerType":{
