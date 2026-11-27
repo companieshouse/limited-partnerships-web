@@ -9,6 +9,32 @@ type CapitalContribution = {
 export const toCurrencyCode = (currency?: string): string | undefined =>
   currency?.match(/\(([A-Z]{3})\)/)?.[1] ?? currency;
 
+const isNumeric = (text: string): boolean => text.length > 0 && [...text].every((char) => char >= "0" && char <= "9");
+
+// Pads a contribution value to two decimal places (e.g. "1000" -> "1000.00", "1000.5" -> "1000.50").
+// Values that are not simple numbers are returned unchanged.
+export const formatContributionCurrencyValue = (value?: string): string => {
+  if (!value) {
+    return "";
+  }
+
+  const [wholeNumber, decimalPlaces, ...extraParts] = value.split(".");
+
+  if (extraParts.length > 0 || !isNumeric(wholeNumber)) {
+    return value;
+  }
+
+  if (decimalPlaces === undefined) {
+    return `${value}.00`;
+  }
+
+  if (decimalPlaces.length === 1 && isNumeric(decimalPlaces)) {
+    return `${value}0`;
+  }
+
+  return value;
+};
+
 const toSortedList = (subTypes?: string[] | string): string[] =>
   [subTypes ?? []].flat().sort((x, y) => x.localeCompare(y));
 

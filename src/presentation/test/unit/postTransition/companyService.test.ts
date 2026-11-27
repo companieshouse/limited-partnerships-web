@@ -1,7 +1,7 @@
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import CompanyAppointmentBuilder from "../../builder/CompanyAppointmentBuilder";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
-import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../config";
+import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY, OFFICER_ROLE_LIMITED_PARTNER_PERSON } from "../../../../config";
 import { LimitedPartnershipCheckResult } from "../../../../application/service/CompanyService";
 
 describe("CompanyService", () => {
@@ -198,6 +198,23 @@ describe("CompanyService", () => {
         country: appointment.principalOfficeAddress?.country,
         postal_code: appointment.principalOfficeAddress?.postalCode
       });
+    });
+
+    it("should format the limited partner contribution currency value from the appointment", async () => {
+      const appointment = new CompanyAppointmentBuilder()
+        .isPerson()
+        .withOfficerRole(OFFICER_ROLE_LIMITED_PARTNER_PERSON)
+        .build();
+      appointment.contributionCurrencyValue = "1000.5";
+      appDevDependencies.companyGateway.feedCompanyAppointments([appointment]);
+
+      const result = await appDevDependencies.companyService.buildPartnerFromCompanyAppointment(
+        { access_token: "token", refresh_token: "token" },
+        companyProfile.data.companyNumber,
+        "AP123456"
+      );
+
+      expect((result.partner.data as any)?.contribution_currency_value).toEqual("1000.50");
     });
   });
 });
