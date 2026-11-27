@@ -1,11 +1,14 @@
+import escape from "escape-html";
+
 export type UIValidationErrors = {
   [key: string]: {
     text: string;
   };
 } & {
   errorList: {
-    href: string;
+    href?: string;
     text: string;
+    html?: string;
   }[];
 };
 
@@ -42,10 +45,14 @@ class UIErrors {
     return this;
   }
 
-  public setSummaryOnlyError(field: string, message: string): this {
+  /**
+   * Adds an error to the summary only, without a link to a field. It is styled red
+   * to match the linked summary errors.
+   */
+  public setSummaryOnlyError(message: string): this {
     this.errors.errorList.push({
-      href: `#${this.formatHrefValue(field)}`,
-      text: message
+      text: message,
+      html: `<span class="govuk-error-message govuk-!-margin-bottom-0">${escape(message)}</span>`
     });
 
     return this;

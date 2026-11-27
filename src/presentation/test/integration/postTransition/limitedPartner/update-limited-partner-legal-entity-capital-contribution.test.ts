@@ -196,8 +196,14 @@ describe("Update Capital Contribution Page", () => {
         expect(res.status).toBe(200);
         const notChangedMessage = toEscapedHtml(translationText.errorMessages.capitalContribution.notChanged);
         expect(countOccurrences(res.text, notChangedMessage)).toBe(1);
-        expect(countOccurrences(res.text, 'href="#contribution_currency_type"')).toBe(1);
-        expect(res.text).not.toContain("govuk-error-message");
+        expect(res.text).toContain(
+          `<span class="govuk-error-message govuk-!-margin-bottom-0">${notChangedMessage}</span>`
+        );
+        expect(res.text).not.toContain('href="#contribution_');
+        expect(res.text).not.toContain("govuk-form-group--error");
+        expect(res.text).not.toContain('id="contribution_currency_type-error"');
+        expect(res.text).not.toContain('id="contribution_currency_value-error"');
+        expect(res.text).not.toContain('id="contribution_sub_types-error"');
       });
 
       it.each([

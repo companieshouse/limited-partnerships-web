@@ -200,7 +200,6 @@ class LimitedPartnerPostTransitionController extends PartnerController {
 
           if (!(await this.hasCapitalContributionChangedFromAppointment(tokens, ids, data))) {
             const errors = new UIErrors().setSummaryOnlyError(
-              "contribution_currency_type",
               response.locals.i18n.errorMessages.capitalContribution.notChanged
             );
 
