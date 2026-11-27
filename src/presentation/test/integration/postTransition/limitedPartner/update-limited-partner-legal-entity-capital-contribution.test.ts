@@ -27,6 +27,7 @@ import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import postTransitionRouting from "../../../../controller/postTransition/routing";
+import { runUpdateCapitalContributionNotChangedTests } from "../../shared/updateCapitalContributionNotChangedTestSuite";
 
 describe("Update Capital Contribution Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CAPITAL_CONTRIBUTION_URL);
@@ -44,6 +45,7 @@ describe("Update Capital Contribution Page", () => {
     limitedPartner = new LimitedPartnerBuilder()
       .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isLegalEntity()
+      .withAppointmentId("AP123456")
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -159,66 +161,11 @@ describe("Update Capital Contribution Page", () => {
       expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.atLeastOneType);
     });
 
-    describe("when the capital contribution is compared with the appointment", () => {
-      const appointmentSubTypes = ["MONEY", "LAND_OR_PROPERTY", "SHARES", "SERVICES_OR_GOODS", "ANY_OTHER_ASSET"];
-      const unchangedData = {
-        pageType: PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContribution,
-        partnershipType: PartnershipType.LP,
-        contribution_currency_type: "Pound Sterling (GBP)",
-        contribution_currency_value: "1000.00",
-        // different order to the appointment, to check order is ignored
-        contribution_sub_types: [...appointmentSubTypes].reverse()
-      };
-
-      beforeEach(() => {
-        const partner = new LimitedPartnerBuilder()
-          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-          .isLegalEntity()
-          .withAppointmentId("AP123456")
-          .build();
-        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([partner]);
-
-        const companyAppointment = new CompanyAppointmentBuilder()
-          .isLegalEntity()
-          .withAppointmentId("AP123456")
-          .withOfficerRole("corporate-limited-partner-in-a-limited-partnership")
-          .build();
-        appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
-      });
-
-      it.each([
-        ["en", enTranslationText],
-        ["cy", cyTranslationText]
-      ])("should return a validation error when no details have changed - %s", async (lang: string, translationText: any) => {
-        const res = await request(app)
-          .post(`${URL}?lang=${lang}`)
-          .send({ ...unchangedData, contribution_currency_type: translationText.currencies.GBP });
-
-        expect(res.status).toBe(200);
-        const notChangedMessage = toEscapedHtml(translationText.errorMessages.capitalContribution.notChanged);
-        expect(countOccurrences(res.text, notChangedMessage)).toBe(1);
-        expect(res.text).toContain(
-          `<span class="govuk-error-message govuk-!-margin-bottom-0">${notChangedMessage}</span>`
-        );
-        expect(res.text).not.toContain('href="#contribution_');
-        expect(res.text).not.toContain("govuk-form-group--error");
-        expect(res.text).not.toContain('id="contribution_currency_type-error"');
-        expect(res.text).not.toContain('id="contribution_currency_value-error"');
-        expect(res.text).not.toContain('id="contribution_sub_types-error"');
-      });
-
-      it.each([
-        ["currency", { contribution_currency_type: "Euro (EUR)" }],
-        ["value", { contribution_currency_value: "2000.00" }],
-        ["types", { contribution_sub_types: ["MONEY"] }]
-      ])("should redirect to the next page when the %s has changed", async (_field: string, change: Record<string, any>) => {
-        const res = await request(app)
-          .post(URL)
-          .send({ ...unchangedData, ...change });
-
-        expect(res.status).toBe(302);
-        expect(res.text).toContain(`Redirecting to ${REDIRECT}`);
-      });
+    runUpdateCapitalContributionNotChangedTests({
+      url: URL,
+      redirectUrl: REDIRECT,
+      pageType: PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContribution,
+      isPerson: false
     });
   });
 });

@@ -48,13 +48,26 @@ const haveSameSubTypes = (partnerSubTypes?: string[] | string, appointmentSubTyp
   );
 };
 
+// Compares numerically so that equivalent values such as "01000.00" and "1000.00" match.
+// Falls back to a text comparison when either value is missing or not a number.
+const haveSameValue = (partnerValue?: string, appointmentValue?: string): boolean => {
+  const partnerNumber = partnerValue?.trim() ? Number(partnerValue) : Number.NaN;
+  const appointmentNumber = appointmentValue?.trim() ? Number(appointmentValue) : Number.NaN;
+
+  if (Number.isFinite(partnerNumber) && Number.isFinite(appointmentNumber)) {
+    return partnerNumber === appointmentNumber;
+  }
+
+  return partnerValue === appointmentValue;
+};
+
 export const hasCapitalContributionChanged = (
   partner?: CapitalContribution,
   appointment?: CapitalContribution
 ): boolean => {
   return (
     toCurrencyCode(partner?.contribution_currency_type) !== toCurrencyCode(appointment?.contribution_currency_type) ||
-    partner?.contribution_currency_value !== appointment?.contribution_currency_value ||
+    !haveSameValue(partner?.contribution_currency_value, appointment?.contribution_currency_value) ||
     !haveSameSubTypes(partner?.contribution_sub_types, appointment?.contribution_sub_types)
   );
 };

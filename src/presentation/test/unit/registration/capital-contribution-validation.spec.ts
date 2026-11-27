@@ -254,6 +254,24 @@ describe("hasCapitalContributionChanged", () => {
       expected
     );
   });
+
+  it.each([
+    ["a leading zero", "0100.00", false],
+    ["no decimal places", "100", false],
+    ["a different amount", "100.01", true],
+    ["an empty value", "", true],
+    ["a non-numeric value", "abc", true]
+  ])("should compare the value numerically when submitted with %s", (_description, value, expected) => {
+    expect(hasCapitalContributionChanged({ ...appointment, contribution_currency_value: value }, appointment)).toBe(
+      expected
+    );
+  });
+
+  it("should treat a missing value on both sides as unchanged", () => {
+    const withoutValue = { ...appointment, contribution_currency_value: undefined };
+
+    expect(hasCapitalContributionChanged(withoutValue, withoutValue)).toBe(false);
+  });
 });
 
 describe("formatContributionCurrencyValue", () => {

@@ -201,7 +201,8 @@ class LimitedPartnerPostTransitionController extends PartnerController {
           }
 
           if (!(await this.hasCapitalContributionChangedFromAppointment(tokens, ids, data))) {
-            const errors = new UIErrors().setSummaryOnlyError(
+            const errors = new UIErrors().setWebError(
+              "contribution_currency_type",
               response.locals.i18n.errorMessages.capitalContribution.notChanged
             );
 
@@ -239,11 +240,16 @@ class LimitedPartnerPostTransitionController extends PartnerController {
     }
 
     const limitedPartner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+    const appointmentId = limitedPartner?.data?.appointment_id;
+
+    if (!appointmentId) {
+      throw new Error("Appointment id is required to compare capital contribution with the appointment");
+    }
 
     const { partner: appointment } = await this.companyService.buildPartnerFromCompanyAppointment(
       tokens,
       ids.companyId,
-      limitedPartner?.data?.appointment_id ?? ""
+      appointmentId
     );
 
     return hasCapitalContributionChanged(submittedCapitalContribution, (appointment as LimitedPartner)?.data);

@@ -27,6 +27,7 @@ import TransactionBuilder from "../../../builder/TransactionBuilder";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import postTransitionRouting from "../../../../controller/postTransition/routing";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
+import { runUpdateCapitalContributionNotChangedTests } from "../../shared/updateCapitalContributionNotChangedTestSuite";
 
 describe("Update Capital Contribution Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CAPITAL_CONTRIBUTION_URL);
@@ -186,6 +187,13 @@ describe("Update Capital Contribution Page", () => {
       expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.currencyRequired);
       expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.valueRequired);
       expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.atLeastOneType);
+    });
+
+    runUpdateCapitalContributionNotChangedTests({
+      url: URL,
+      redirectUrl: REDIRECT,
+      pageType: PostTransitionPageType.updateLimitedPartnerPersonCapitalContribution,
+      isPerson: true
     });
   });
 });
