@@ -131,7 +131,7 @@ describe("Where is the jurisdiction page", () => {
       [NameEndingType.PARTNERIAETH_CYFYNGEDIG],
       [NameEndingType.PC],
       [NameEndingType.P_DOT_C_DOT]
-    ])("should return validation error when a Welsh name ending %s is used with a non-England and Wales jurisdiction", async (nameEnding: NameEndingType) => {
+    ])("should return validation error when a Welsh name ending %s is used with a Northern Irish jurisdiction", async (nameEnding: NameEndingType) => {
       const translationText = enTranslationText;
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withPartnershipType(PartnershipType.LP)
@@ -144,8 +144,7 @@ describe("Where is the jurisdiction page", () => {
         .post(URL)
         .send({
           pageType: RegistrationPageType.jurisdiction,
-          jurisdiction: Jurisdiction.NORTHERN_IRELAND,
-          name_ending: nameEnding
+          jurisdiction: Jurisdiction.NORTHERN_IRELAND
         });
 
       expect(res.status).toBe(200);
