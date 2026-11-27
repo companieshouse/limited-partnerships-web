@@ -1,5 +1,5 @@
 import request from "supertest";
-import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Jurisdiction, NameEndingType, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../../app";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -79,6 +79,33 @@ describe("Where is the jurisdiction page", () => {
     });
 
     it.each([
+      [NameEndingType.PARTNERIAETH_CYFYNGEDIG],
+      [NameEndingType.PC],
+      [NameEndingType.P_DOT_C_DOT]
+    ])(
+      "should redirect to the postcode registered office address page for Welsh name ending %s when england-wales jurisdiction is selected",
+      async (nameEnding: NameEndingType) => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withPartnershipType(PartnershipType.LP)
+          .withNameEnding(nameEnding)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app)
+          .post(URL)
+          .send({
+            pageType: RegistrationPageType.jurisdiction,
+            jurisdiction: Jurisdiction.ENGLAND_AND_WALES,
+            name_ending: nameEnding
+          });
+
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(REDIRECT_URL);
+      }
+    );
+
+    it.each([
       ["en", PartnershipType.LP],
       ["cy", PartnershipType.LP],
       ["en", PartnershipType.PFLP],
@@ -99,5 +126,29 @@ describe("Where is the jurisdiction page", () => {
         expect(countOccurrences(res.text, translationText.errorMessages.limitedPartnership.jurisdiction.required)).toBe(2);
       }
     );
+
+    it.each([
+      [NameEndingType.PARTNERIAETH_CYFYNGEDIG],
+      [NameEndingType.PC],
+      [NameEndingType.P_DOT_C_DOT]
+    ])("should return validation error when a Welsh name ending %s is used with a Northern Irish jurisdiction", async (nameEnding: NameEndingType) => {
+      const translationText = enTranslationText;
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withPartnershipType(PartnershipType.LP)
+        .withNameEnding(nameEnding)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: RegistrationPageType.jurisdiction,
+          jurisdiction: Jurisdiction.NORTHERN_IRELAND
+        });
+
+      expect(res.status).toBe(200);
+      expect(countOccurrences(res.text, translationText.errorMessages.limitedPartnership.jurisdiction.welshNameEnding)).toBe(2);
+    });
   });
 });

@@ -30,7 +30,11 @@ class LimitedPartnershipService {
   }
 
   runValidation(data: Record<string, any>): UIErrors {
-    return this.limitedPartnershipValidator.set(data, this.i18n).runValidation();
+    return this.limitedPartnershipValidator.set(data, {}, this.i18n).runValidation();
+  }
+
+  runValidationWithExisting(data: Record<string, any>, limitedPartnership: Record<string, any>): UIErrors {
+    return this.limitedPartnershipValidator.set(data, limitedPartnership, this.i18n).runValidation();
   }
 
   runAddSicCodeValidation(sicCodes: Array<{ code: string; description: string }>, sicCode: string): UIErrors {
@@ -151,12 +155,19 @@ class LimitedPartnershipService {
     transactionId: string,
     submissionId: string,
     registrationType: RegistrationPageType,
-    data: Record<string, any>
+    data: Record<string, any>,
+    limitedPartnership?: Record<string, any>,
   ): Promise<void | {
     errors?: UIErrors;
   }> {
     try {
-      const validationErrors = this.runValidation(data);
+      let validationErrors;
+      if (limitedPartnership) {
+        validationErrors = this.runValidationWithExisting(data, limitedPartnership);
+      } else {
+        validationErrors = this.runValidation(data);
+      }
+
       if (validationErrors.hasErrors()) {
         return { errors: validationErrors };
       }

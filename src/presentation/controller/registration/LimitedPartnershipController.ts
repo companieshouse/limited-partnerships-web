@@ -367,21 +367,22 @@ class LimitedPartnershipController extends PartnershipController {
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
+        const limitedPartnership: LimitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+          tokens,
+          ids.transactionId,
+          ids.submissionId
+        );
+
         const result = await this.limitedPartnershipService.sendPageData(
           tokens,
           ids.transactionId,
           ids.submissionId,
           pageType,
-          request.body
+          request.body,
+          limitedPartnership
         );
 
         if (result?.errors) {
-          const limitedPartnership: LimitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
-
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(

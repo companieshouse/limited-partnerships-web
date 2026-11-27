@@ -8,6 +8,7 @@ describe("Limited Partnership Validation", () => {
     it("should not return an error if partnership type is valid", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.partnershipType, partnership_type: PartnershipType.LP },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -19,6 +20,7 @@ describe("Limited Partnership Validation", () => {
     it("should return an error if partnership type is empty", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.partnershipType },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -40,6 +42,7 @@ describe("Limited Partnership Validation", () => {
     it("should return an error if partnership type is invalid", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.partnershipType, partnership_type: "invalid" },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -66,6 +69,7 @@ describe("Limited Partnership Validation", () => {
     ])("should not return an error if name is valid", (name, nameEnding) => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.partnershipName, partnership_name: name, name_ending: nameEnding },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -77,6 +81,7 @@ describe("Limited Partnership Validation", () => {
     it("should return an error if name or name ending is empty", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.partnershipName, partnership_name: " ", name_ending: "" },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -105,6 +110,7 @@ describe("Limited Partnership Validation", () => {
     it("should return an error if name contains invalid characters", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.partnershipName, partnership_name: "Invalid_Name", name_ending: NameEndingType.LP },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -126,6 +132,7 @@ describe("Limited Partnership Validation", () => {
     it("should return an error if name with ending is too long", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.partnershipName, partnership_name: "A".repeat(158), name_ending: NameEndingType.LP },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -149,6 +156,7 @@ describe("Limited Partnership Validation", () => {
     it("should not return an error if jurisdiction is valid", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.jurisdiction, jurisdiction: Jurisdiction.ENGLAND_AND_WALES },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -160,6 +168,7 @@ describe("Limited Partnership Validation", () => {
     it("should return an error if jurisdiction is empty", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.jurisdiction },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -181,6 +190,7 @@ describe("Limited Partnership Validation", () => {
     it("should return an error if jurisdiction is invalid", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.jurisdiction, jurisdiction: "invalid" },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -198,12 +208,35 @@ describe("Limited Partnership Validation", () => {
         ]
       });
     });
+
+    it("should return an error if the jurisdiction cannot be used with a Welsh name ending", () => {
+      const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
+        { pageType: RegistrationPageType.jurisdiction, jurisdiction: Jurisdiction.NORTHERN_IRELAND },
+        { data: { name_ending: NameEndingType.PARTNERIAETH_CYFYNGEDIG } },
+        enTranslationText
+      );
+      const errors = limitedPartnershipValidator.runValidation();
+
+      expect(errors.hasErrors()).toBe(true);
+      expect(errors.getErrors()).toEqual({
+        jurisdiction: {
+          text: enTranslationText.errorMessages.limitedPartnership.jurisdiction.welshNameEnding
+        },
+        errorList: [
+          {
+            href: "#jurisdiction",
+            text: enTranslationText.errorMessages.limitedPartnership.jurisdiction.welshNameEnding
+          }
+        ]
+      });
+    });
   });
 
   describe("Term validation", () => {
     it("should not return an error if term is valid", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.term, term: Term.BY_AGREEMENT },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -215,6 +248,7 @@ describe("Limited Partnership Validation", () => {
     it("should return an error if term is invalid", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.term, term: "invalid" },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -236,6 +270,7 @@ describe("Limited Partnership Validation", () => {
     it("should return an error if term is empty", () => {
       const limitedPartnershipValidator = new LimitedPartnershipValidator().set(
         { pageType: RegistrationPageType.term },
+        {},
         enTranslationText
       );
       const errors = limitedPartnershipValidator.runValidation();
@@ -263,7 +298,7 @@ describe("Limited Partnership Validation", () => {
       [`${"a".repeat(64)}@example.com`],
       [`test@${"a".repeat(63)}.com`]
     ])("should not return an error if email is valid: %s", (email) => {
-      const limitedPartnershipValidator = new LimitedPartnershipValidator().set({ pageType: RegistrationPageType.email, email }, enTranslationText);
+      const limitedPartnershipValidator = new LimitedPartnershipValidator().set({ pageType: RegistrationPageType.email, email }, {}, enTranslationText);
       const errors = limitedPartnershipValidator.runValidation();
 
       expect(errors.hasErrors()).toBe(false);
@@ -274,7 +309,7 @@ describe("Limited Partnership Validation", () => {
       ["", "empty"],
       ["   ", "whitespace"]
     ])("should return an error if email is %s", (email) => {
-      const limitedPartnershipValidator = new LimitedPartnershipValidator().set({ pageType: RegistrationPageType.email, email }, enTranslationText);
+      const limitedPartnershipValidator = new LimitedPartnershipValidator().set({ pageType: RegistrationPageType.email, email }, {}, enTranslationText);
       const errors = limitedPartnershipValidator.runValidation();
 
       expect(errors.hasErrors()).toBe(true);
@@ -302,7 +337,7 @@ describe("Limited Partnership Validation", () => {
       [`test@${"a".repeat(64)}.com`, "domain label longer than 63 characters"],
       [`${"a".repeat(250)}@${"b".repeat(60)}.com`, "longer than 255 characters"]
     ])("should return an error if email is invalid: %s", (email) => {
-      const limitedPartnershipValidator = new LimitedPartnershipValidator().set({ pageType: RegistrationPageType.email, email }, enTranslationText);
+      const limitedPartnershipValidator = new LimitedPartnershipValidator().set({ pageType: RegistrationPageType.email, email }, {}, enTranslationText);
       const errors = limitedPartnershipValidator.runValidation();
 
       expect(errors.hasErrors()).toBe(true);

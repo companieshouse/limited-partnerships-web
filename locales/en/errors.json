@@ -114,7 +114,8 @@
                 "nameEndingRequired": "Select the name ending to go on the public record"
             },
             "jurisdiction": {
-                "required": "Select the jurisdiction"
+                "required": "Select the jurisdiction",
+                "welshNameEnding": "Northern Ireland partnerships cannot use a Welsh name ending. Change the name ending or select a different jurisdiction."
             },
             "term": {
                 "termRequired": "Select the term of the partnership"
