@@ -11,14 +11,17 @@ import { buildDateOfUpdateErrorMessages } from "./dateOfUpdateErrorMessages";
 import { isWhenDidChangeUpdatePage } from "../../presentation/controller/postTransition/pageType";
 import RegistrationPageType from "../../presentation/controller/registration/PageType";
 
+const WELSH_NAME_ENDINGS = [
+  NameEndingType.PARTNERIAETH_CYFYNGEDIG,
+  NameEndingType.PC,
+  NameEndingType.P_DOT_C_DOT
+];
 class LimitedPartnershipValidator {
   private data: Record<string, any> = {};
   private limitedPartnership: Record<string, any> = {};
 
   private errorMessages: Record<string, any> = {};
   private dateOfUpdateErrorMessages: Record<string, any> = {};
-
-  private readonly WELSH_NAME_ENDINGS = [NameEndingType.PARTNERIAETH_CYFYNGEDIG, NameEndingType.PC, NameEndingType.P_DOT_C_DOT];
 
   set(data: Record<string, any>, limitedPartnership: Record<string, any>, i18n: any): this {
     this.data = data;
@@ -90,7 +93,7 @@ class LimitedPartnershipValidator {
   private runJurisdictionValidation(uiErrors: UIErrors): UIErrors {
     if (!this.data.jurisdiction || !Object.values(Jurisdiction).includes(this.data.jurisdiction)) {
       uiErrors.setWebError("jurisdiction", this.errorMessages?.jurisdiction?.required);
-    } else if (this.WELSH_NAME_ENDINGS.includes(this.limitedPartnership?.data?.name_ending) && this.data.jurisdiction === Jurisdiction.NORTHERN_IRELAND) {
+    } else if (WELSH_NAME_ENDINGS.includes(this.limitedPartnership?.data?.name_ending) && this.data.jurisdiction === Jurisdiction.NORTHERN_IRELAND) {
       uiErrors.setWebError("jurisdiction", this.errorMessages?.jurisdiction?.welshNameEnding);
     }
 
