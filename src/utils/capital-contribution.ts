@@ -4,6 +4,11 @@ type CapitalContribution = {
   contribution_sub_types?: string[] | string;
 };
 
+// Extracts the ISO code from a currency label such as "Pound Sterling (GBP)".
+// Values without a bracketed code (e.g. an existing code "GBP") are returned unchanged.
+export const toCurrencyCode = (currency?: string): string | undefined =>
+  currency?.match(/\(([A-Z]{3})\)/)?.[1] ?? currency;
+
 const toSortedList = (subTypes?: string[] | string): string[] =>
   [subTypes ?? []].flat().sort((x, y) => x.localeCompare(y));
 
@@ -22,7 +27,7 @@ export const hasCapitalContributionChanged = (
   appointment?: CapitalContribution
 ): boolean => {
   return (
-    partner?.contribution_currency_type !== appointment?.contribution_currency_type ||
+    toCurrencyCode(partner?.contribution_currency_type) !== toCurrencyCode(appointment?.contribution_currency_type) ||
     partner?.contribution_currency_value !== appointment?.contribution_currency_value ||
     !haveSameSubTypes(partner?.contribution_sub_types, appointment?.contribution_sub_types)
   );

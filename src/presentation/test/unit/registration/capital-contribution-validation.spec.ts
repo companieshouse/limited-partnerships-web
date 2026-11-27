@@ -7,6 +7,7 @@ import {
 } from "../../../../domain/validator/capitalContributionValidator";
 
 import { PartnerType } from "../../../../domain/types";
+import { hasCapitalContributionChanged } from "../../../../utils/capital-contribution";
 import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 
 describe("Gateway capital contribition validation test suite", () => {
@@ -234,5 +235,23 @@ describe("validatePartnerCapitalContribution", () => {
 
     expect(uiErrors.hasErrors()).toBe(false);
     expect(data.contribution_currency_type).toEqual("GBP");
+  });
+});
+
+describe("hasCapitalContributionChanged", () => {
+  const appointment = {
+    contribution_currency_type: "GBP",
+    contribution_currency_value: "100.00",
+    contribution_sub_types: ["MONEY"]
+  };
+
+  it.each([
+    ["currency code", "GBP", false],
+    ["unconverted currency label", "Pound Sterling (GBP)", false],
+    ["different currency label", "Euro (EUR)", true]
+  ])("should compare currency by code when submitted with a %s", (_description, currency, expected) => {
+    expect(hasCapitalContributionChanged({ ...appointment, contribution_currency_type: currency }, appointment)).toBe(
+      expected
+    );
   });
 });

@@ -362,7 +362,7 @@ describe("Stop screen - no change", () => {
       ["person", "1000", "1000.00", getUrl(WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL)],
       ["legal entity", "1000.5", "1000.50", getUrl(WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL)]
     ])(
-      "should show the stop screen when the appointment contribution value %s is only missing decimal places",
+      "should show the stop screen for a %s when the appointment contribution value %s is only missing decimal places",
       async (partner: string, appointmentValue: string, partnerValue: string, whenDidUrl: string) => {
         const isPerson = partner === "person";
         const companyAppointmentBuilder = new CompanyAppointmentBuilder()

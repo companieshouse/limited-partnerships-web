@@ -166,6 +166,7 @@ describe("Update Capital Contribution Page", () => {
         partnershipType: PartnershipType.LP,
         contribution_currency_type: "Pound Sterling (GBP)",
         contribution_currency_value: "1000.00",
+        // different order to the appointment, to check order is ignored
         contribution_sub_types: [...appointmentSubTypes].reverse()
       };
 

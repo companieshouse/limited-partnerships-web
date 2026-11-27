@@ -171,7 +171,9 @@ class LimitedPartnerPostTransitionController extends PartnerController {
         const { fieldName, nextYesUrl, nextNoUrl } = pageRouting.data ?? {};
         const isYesNoPage = isCapitalContributionYesNoPage(pageType);
 
-        if (isYesNoPage && !request.body[fieldName]) {
+        const yesNoValue = request.body[fieldName];
+
+        if (isYesNoPage && yesNoValue !== "true" && yesNoValue !== "false") {
           const errors = new UIErrors().setWebError(
             fieldName,
             response.locals.i18n.errorMessages.partners.updateCapitalContributionRequired
@@ -214,7 +216,7 @@ class LimitedPartnerPostTransitionController extends PartnerController {
         }
 
         if (isYesNoPage) {
-          const nextUrl = request.body[fieldName] === "false" ? nextNoUrl : nextYesUrl;
+          const nextUrl = yesNoValue === "true" ? nextYesUrl : nextNoUrl;
 
           response.redirect(this.insertIdsInUrl(nextUrl, ids, request.url));
           return;
@@ -233,7 +235,7 @@ class LimitedPartnerPostTransitionController extends PartnerController {
     submittedCapitalContribution: Record<string, any>
   ): Promise<boolean> {
     if (!this.companyService) {
-      return true;
+      throw new Error("CompanyService is required to compare capital contribution with the appointment");
     }
 
     const limitedPartner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);

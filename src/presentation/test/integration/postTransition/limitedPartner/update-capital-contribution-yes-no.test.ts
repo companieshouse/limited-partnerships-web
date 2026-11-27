@@ -217,5 +217,16 @@ describe("Update Capital Contribution Yes No Page", () => {
       const errorMessage = enTranslationText.errorMessages.partners.updateCapitalContributionRequired;
       expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(2);
     });
+
+    it.each([
+      [config.person.url, PostTransitionPageType.updateLimitedPartnerPersonCapitalContributionYesNo],
+      [config.legalEntity.url, PostTransitionPageType.updateLimitedPartnerLegalEntityCapitalContributionYesNo]
+    ])("should return validation error when an unexpected value is posted", async (url: string, pageType: PostTransitionPageType) => {
+      const res = await request(app).post(`${url}`).send({ pageType, update_capital_contribution_required: "maybe" });
+
+      expect(res.status).toBe(200);
+      const errorMessage = enTranslationText.errorMessages.partners.updateCapitalContributionRequired;
+      expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(2);
+    });
   });
 });
