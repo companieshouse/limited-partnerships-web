@@ -129,23 +129,21 @@ export const isAddPartnerPage = (pageType: string): boolean => {
   return isAddPartnerPageTypes.includes(pageType);
 };
 
-const updatePartnerPageTypes: string[] = [
-  PostTransitionPageType.updateGeneralPartnerPerson,
-  PostTransitionPageType.updateGeneralPartnerLegalEntity,
-  PostTransitionPageType.updateLimitedPartnerPerson,
-  PostTransitionPageType.updateLimitedPartnerLegalEntity
-];
-
 export const isUpdatePartnerPage = (pageType: string): boolean => {
+  const updatePartnerPageTypes: string[] = [
+    PostTransitionPageType.updateGeneralPartnerPerson,
+    PostTransitionPageType.updateGeneralPartnerLegalEntity,
+    PostTransitionPageType.updateLimitedPartnerPerson,
+    PostTransitionPageType.updateLimitedPartnerLegalEntity
+  ];
   return updatePartnerPageTypes.includes(pageType);
 };
 
-const principalOfficeAddressYesNoPageTypes: string[] = [
-  PostTransitionPageType.updateGeneralPartnerPrincipalOfficeAddressYesNo,
-  PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo
-];
-
 export const isPrincipalOfficeAddressYesNoPage = (pageType: string): boolean => {
+  const principalOfficeAddressYesNoPageTypes: string[] = [
+    PostTransitionPageType.updateGeneralPartnerPrincipalOfficeAddressYesNo,
+    PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo
+  ];
   return principalOfficeAddressYesNoPageTypes.includes(pageType);
 };
 
@@ -158,12 +156,11 @@ export const isCapitalContributionYesNoPage = (pageType: string): boolean => {
   return capitalContributionYesNoPageTypes.includes(pageType);
 };
 
-const usualResidentialAddressYesNoPageTypes: string[] = [
-  PostTransitionPageType.updateGeneralPartnerUsualResidentialAddressYesNo,
-  PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo
-];
-
 export const isUsualResidentialAddressYesNoPage = (pageType: string): boolean => {
+  const usualResidentialAddressYesNoPageTypes: string[] = [
+    PostTransitionPageType.updateGeneralPartnerUsualResidentialAddressYesNo,
+    PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo
+  ];
   return usualResidentialAddressYesNoPageTypes.includes(pageType);
 };
 
